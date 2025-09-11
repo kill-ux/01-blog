@@ -1,3 +1,9 @@
 package api.model.user;
 
-public record LoginResponse(String token, String email, Long id) {}
+import lombok.Data;
+
+@Data
+public class LoginResponse {
+    private String token;
+    private long expiresIn;
+}
