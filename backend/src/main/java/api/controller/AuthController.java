@@ -44,11 +44,4 @@ public class AuthController {
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
         return ResponseEntity.ok(loginResponse);
     }
-
-    @GetMapping("/uss")
-    public ResponseEntity<List<UserRecord>> users() {
-        List<UserRecord> users = this.userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
-
 }

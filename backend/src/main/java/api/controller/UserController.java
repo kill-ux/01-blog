@@ -28,10 +28,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    // @GetMapping
-    // public ResponseEntity<List<UserRecord>> users() {
-    //     List<UserRecord> users = this.userService.getAllUsers();
-    //     return ResponseEntity.ok(users);
-    // }
+    @GetMapping
+    public ResponseEntity<List<UserRecord>> users() {
+        List<UserRecord> users = this.userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
 
 }
