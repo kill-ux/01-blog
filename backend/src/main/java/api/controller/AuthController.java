@@ -10,9 +10,13 @@ import api.model.user.UserRecord;
 import api.service.JwtService;
 import api.service.UserService;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,19 +30,25 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserRecord> createUser(@RequestBody UserRecord user) {
+    public ResponseEntity<UserRecord> register(@RequestBody UserRecord user) {
         UserRecord savedUser = this.userService.saveUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> postMethodName(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         User authenticatedUser = this.userService.authenticate(loginRequest);
         String jwtToken = jwtService.generateToken(authenticatedUser);
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @GetMapping("/uss")
+    public ResponseEntity<List<UserRecord>> users() {
+        List<UserRecord> users = this.userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
 }

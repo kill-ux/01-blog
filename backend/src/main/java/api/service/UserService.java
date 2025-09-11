@@ -31,7 +31,7 @@ public class UserService {
         return this.userRepository;
     }
 
-    public List<UserRecord> getAllProducts() {
+    public List<UserRecord> getAllUsers() {
         return this.userRepository
                 .findAll()
                 .stream()
