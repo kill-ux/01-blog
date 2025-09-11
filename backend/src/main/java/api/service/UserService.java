@@ -1,20 +1,24 @@
 package api.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import api.model.user.User;
 import api.model.user.UserRecord;
 import api.repository.UserRepository;
 
+@Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserRepository getUserRepository() {
@@ -38,7 +42,8 @@ public class UserService {
     public UserRecord saveUser(UserRecord userRecord) {
         User user = convertToEntity(userRecord);
         user.setRole("USER");
-        user.setPassword(PasswordEncoder.en);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreatedAt(LocalDateTime.now());
         User savedUser = this.userRepository.save(user);
         return convertToDTO(savedUser);
     }
