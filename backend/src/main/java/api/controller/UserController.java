@@ -3,11 +3,7 @@ package api.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import api.model.user.LoginRequest;
-import api.model.user.LoginResponse;
-import api.model.user.User;
 import api.model.user.UserRecord;
-import api.service.JwtService;
 import api.service.UserService;
 
 import java.util.List;

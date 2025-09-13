@@ -5,29 +5,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.model.user.LoginRequest;
 import api.model.user.LoginResponse;
-import api.model.user.User;
 import api.model.user.UserRecord;
-import api.service.JwtService;
 import api.service.UserService;
 import jakarta.validation.Valid;
 
-import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     private final UserService userService;
-    private final JwtService jwtService;
 
-    public AuthController(UserService userService, JwtService jwtService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.jwtService = jwtService;
     }
 
     @PostMapping("/signup")
@@ -38,11 +31,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        User authenticatedUser = this.userService.authenticate(loginRequest);
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        LoginResponse loginResponse = userService.login(loginRequest);
         return ResponseEntity.ok(loginResponse);
     }
 }

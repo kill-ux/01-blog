@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import api.model.user.LoginRequest;
+import api.model.user.LoginResponse;
 import api.model.user.User;
 import api.model.user.UserRecord;
 import api.repository.UserRepository;
@@ -20,12 +24,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager) {
+            AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public UserRepository getUserRepository() {
@@ -49,7 +55,7 @@ public class UserService {
     public UserRecord saveUser(@Valid UserRecord userRecord) {
 
         User user = convertToEntity(userRecord);
-        user.setRole("USER");
+        user.setRole("ROLE_USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         User savedUser;
@@ -92,9 +98,23 @@ public class UserService {
                 user.getAvatar(), user.getBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
-    public User authenticate(LoginRequest loginRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.nickname(), loginRequest.password()));
-        return userRepository.findByNickname(loginRequest.nickname()).orElseThrow();
+    public LoginResponse login(LoginRequest loginRequest) {
+        try {
+            // Authenticate credentials
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.nickname(), loginRequest.password()));
+            // Load the full user details after successful authentication
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            // Generate token with user details (not just nickname)
+            String jwtToken = jwtService.generateToken(userDetails);
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setToken(jwtToken);
+            loginResponse.setExpiresIn(jwtService.getExpirationTime());
+            return loginResponse;
+
+        } catch (Exception e) {
+            // This covers both wrong password and non-existent user
+            throw new BadCredentialsException("Invalid username or password");
+        }
     }
 }
