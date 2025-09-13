@@ -1,14 +1,18 @@
 package api.model.blog;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import org.springframework.data.annotation.Reference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -21,9 +25,9 @@ public class Blog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany()
-    @Column(nullable = false)
-    private long userId;
+    // @OneToMany()
+    // @Column(nullable = false)
+    // private long userId;
 
     private long parent;
 
@@ -39,5 +43,7 @@ public class Blog {
     private String media_type;
 
 
-    @OneToMany
+   @ManyToOne
+   @JoinColumn(name = "user_id")
+    private long userId;
 }
