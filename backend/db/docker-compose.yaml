@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-springboot
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: 01blog_db
+      POSTGRES_USER: muboutoub
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:
