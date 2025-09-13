@@ -12,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
@@ -22,12 +24,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Username is required")
     @Column(nullable = false, unique = true)
     private String nickname;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank(message = "Password is required")
     @Column(nullable = false)
     private String password;
 
@@ -36,6 +42,8 @@ public class User implements UserDetails {
 
     private String avatar;
     private LocalDateTime bannedUntil;
+
+    // @Past(message = "Birth date must be in the past")
     private LocalDateTime birthDate;
 
     @Column(nullable = false)

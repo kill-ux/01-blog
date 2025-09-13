@@ -2,13 +2,17 @@ package api.model.user;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public record UserRecord(
 		long id,
+		@NotBlank(message = "Username is required")
+
 		String nickname,
 
-		
-		String email,
-		String password,
+		@NotBlank(message = "Email is required") @Email(message = "Email should be valid") String email,
+		@NotBlank(message = "Password is required") String password,
 		String role,
 
 		String avatar,

@@ -13,6 +13,7 @@ import api.model.user.LoginRequest;
 import api.model.user.User;
 import api.model.user.UserRecord;
 import api.repository.UserRepository;
+import jakarta.validation.Valid;
 
 @Service
 public class UserService {
@@ -45,13 +46,26 @@ public class UserService {
                 .map(this::convertToDTO);
     }
 
-    public UserRecord saveUser(UserRecord userRecord) {
+    public UserRecord saveUser(@Valid UserRecord userRecord) {
+
         User user = convertToEntity(userRecord);
         user.setRole("USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
-        User savedUser = this.userRepository.save(user);
-        return convertToDTO(savedUser);
+        User savedUser;
+        try {
+            savedUser = this.userRepository.save(user);
+            return convertToDTO(savedUser);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            String err = "Data conflict - please check your input";
+            if (errorMessage.contains("nickname") && errorMessage.contains("unique")) {
+                err = "Username already exists";
+            } else if (errorMessage.contains("email") && errorMessage.contains("unique")) {
+                err = "Email already registered";
+            }
+            throw new IllegalStateException(err);
+        }
     }
 
     public void deleteUser(long id) {

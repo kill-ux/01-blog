@@ -9,6 +9,7 @@ import api.model.user.User;
 import api.model.user.UserRecord;
 import api.service.JwtService;
 import api.service.UserService;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -30,13 +31,13 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserRecord> register(@RequestBody UserRecord user) {
+    public ResponseEntity<UserRecord> register(@Valid @RequestBody UserRecord user) {
         UserRecord savedUser = this.userService.saveUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         User authenticatedUser = this.userService.authenticate(loginRequest);
         String jwtToken = jwtService.generateToken(authenticatedUser);
         LoginResponse loginResponse = new LoginResponse();

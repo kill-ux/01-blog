@@ -1,5 +1,6 @@
 package api.service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,18 +9,12 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 
 @Service
 public class JwtService {
@@ -65,37 +60,35 @@ public class JwtService {
     }
 
     public Claims extractAllClaims(String token) {
-        try {
-            return Jwts
-                    .parser()
-                    .verifyWith(getSignInKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (SignatureException e) {
-            throw new AccessDeniedException("Invalid token : " + e.getMessage());
-        }
-
+        return Jwts
+                .parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token.trim())
+                .getPayload();
     }
 
     public SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        // byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        // return Keys.hmacShaKeyFor(keyBytes);
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             final String nickname = extractNickname(token);
-            return (nickname != null && nickname.equals(userDetails.getUsername()) && !isTokenExpired(token));
-        } catch (AccessDeniedException e) {
-            return false; // Token is invalid due to signature, malformation, or other issues
+            return (nickname != null && nickname.equals(userDetails.getUsername()) &&
+                    !isTokenExpired(token));
+        } catch (Exception e) {
+            return false; // Token is invalid due to any JWT parsing issue
         }
     }
 
     public boolean isTokenExpired(String token) {
         try {
             return extractExpiration(token).before(new Date());
-        } catch (AccessDeniedException e) {
+        } catch (Exception e) {
             return true; // Consider expired if token cannot be parsed
         }
     }
