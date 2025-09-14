@@ -25,7 +25,7 @@ public class BlogService {
 
     public Blog convertToEntity(BlogRequest blogRequest) {
         Blog blog = new Blog();
-        blog.setUserId(blogRequest.userId());
+        // blog.setUser(blogRequest.userId());
         blog.setDescription(blogRequest.description());
         blog.setParent(blogRequest.parent());
         blog.setMedia_type(blogRequest.media_type());

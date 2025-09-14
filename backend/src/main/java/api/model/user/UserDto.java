@@ -1,6 +1,6 @@
 package api.model.user;
 
-public record UserResponse(
+public record UserDto(
         Long id,
         String email,
         String avatar,

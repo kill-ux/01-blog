@@ -5,9 +5,11 @@ import java.util.Set;
 
 import org.springframework.data.annotation.Reference;
 
+import api.model.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,8 +44,7 @@ public class Blog {
     private String media_url;
     private String media_type;
 
-
-   @ManyToOne
-   @JoinColumn(name = "user_id")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id" , nullable = false)
+    private User user;
 }

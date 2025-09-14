@@ -1,17 +1,22 @@
 package api.service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
 import api.model.user.LoginResponse;
 import api.model.user.User;
@@ -98,15 +103,15 @@ public class UserService {
                 user.getAvatar(), user.getBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
-    public LoginResponse login(LoginRequest loginRequest) {
+    public LoginResponse login(@Valid LoginRequest loginRequest) {
         try {
             // Authenticate credentials
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.nickname(), loginRequest.password()));
             // Load the full user details after successful authentication
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User user = (User) authentication.getPrincipal();
             // Generate token with user details (not just nickname)
-            String jwtToken = jwtService.generateToken(userDetails);
+            String jwtToken = jwtService.generateToken(user);
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setToken(jwtToken);
             loginResponse.setExpiresIn(jwtService.getExpirationTime());
@@ -117,4 +122,30 @@ public class UserService {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
+
+    public void subscribe(@Valid SubscribeRequest subscribeRequest) {
+        // Get username from security context
+        long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+
+        // Fetch the user from database within the transaction
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        User target = userRepository.findById(subscribeRequest.subscriberToId())
+                .orElseThrow(() -> new RuntimeException("Target user not found"));
+
+        boolean isSubscribed = new HashSet<>(user.getSubscribers()).contains(target);
+
+        if (isSubscribed) {
+            user.getSubscribers().remove(target);
+            // target.getSubscribed_to().remove(user);
+        } else {
+            user.getSubscribers().add(target);
+            // target.getSubscribed_to().add(user);
+        }
+
+        userRepository.save(user);
+        // userRepository.save(target);
+    }
+
 }

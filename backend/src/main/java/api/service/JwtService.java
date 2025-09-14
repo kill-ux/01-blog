@@ -9,10 +9,10 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import api.model.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -38,17 +38,15 @@ public class JwtService {
         return jwtExpiration;
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", userDetails.getAuthorities().stream()
-                .findFirst()
-                .map(GrantedAuthority::getAuthority)
-                .orElse("ROLE_USER"));
-        return generateToken(claims, userDetails);
+        claims.put("id", user.getId());
+        claims.put("role", user.getRole());
+        return generateToken(claims, user);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+    public String generateToken(Map<String, Object> extraClaims, User user) {
+        return buildToken(extraClaims, user, jwtExpiration);
     }
 
     public String buildToken(
@@ -84,7 +82,7 @@ public class JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             final String nickname = extractNickname(token);
-            return (nickname != null && nickname.equals(userDetails.getUsername()) );
+            return (nickname != null && nickname.equals(userDetails.getUsername()));
         } catch (Exception e) {
             return false; // Token is invalid due to any JWT parsing issue
         }

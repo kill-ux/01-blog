@@ -54,10 +54,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }
-            System.out.println(SecurityContextHolder.getContext().getAuthentication());
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
+            // System.out.println("##############################################################");
+            // System.out.println("##############################################################");
+            System.out.println(e);
+            // System.out.println("##############################################################");
+            // System.out.println("##############################################################");
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Invalid token\"}");
         }

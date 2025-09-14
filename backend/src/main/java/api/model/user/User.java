@@ -7,21 +7,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import api.model.blog.Blog;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
 @Table(name = "users")
+@EqualsAndHashCode(exclude = {"subscribers", "subscribed_to"}) // Also exclude from equals and hashCode
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,9 +44,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    private Set<Blog> blogs;
 
     @Override
     public String getUsername() {
@@ -81,4 +74,21 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Blog> blogs = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "subscription", 
+        joinColumns = @JoinColumn(name = "subscriber_id"), 
+        inverseJoinColumns = @JoinColumn(name = "subscriber_to_id"), 
+        uniqueConstraints = @UniqueConstraint(columnNames = {"subscriber_id", "subscriber_to_id" }))
+    @JsonIgnore
+    private Set<User> subscribers = new HashSet<>();;
+
+    @ManyToMany(mappedBy = "subscribers", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<User> subscribed_to = new HashSet<>();;
 }

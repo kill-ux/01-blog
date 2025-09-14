@@ -2,7 +2,7 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:postgresql://localhost:5432/01blog_db
+    url: jdbc:postgresql://localhost:5433/01blog_db
     username: muboutoub
     password: password
     driver-class-name: org.postgresql.Driver
@@ -13,6 +13,4 @@ spring:
 security:
   jwt:
     secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
-    expiration-time: 60000
-
-    # 3600000
+    expiration-time: 3600000
