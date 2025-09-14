@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -118,34 +119,39 @@ public class UserService {
             return loginResponse;
 
         } catch (Exception e) {
-            // This covers both wrong password and non-existent user
             throw new BadCredentialsException("Invalid username or password");
         }
     }
 
-    public void subscribe(@Valid SubscribeRequest subscribeRequest) {
-        // Get username from security context
+    public String subscribe(@Valid SubscribeRequest subscribeRequest) {
         long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-
-        // Fetch the user from database within the transaction
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+        User user = userRepository.findById(userId).get();
         User target = userRepository.findById(subscribeRequest.subscriberToId())
                 .orElseThrow(() -> new RuntimeException("Target user not found"));
 
-        boolean isSubscribed = new HashSet<>(user.getSubscribers()).contains(target);
-
+        boolean isSubscribed = target.getSubscribers().contains(user);
+        String operation = "subscribed";
         if (isSubscribed) {
-            user.getSubscribers().remove(target);
-            // target.getSubscribed_to().remove(user);
+            target.getSubscribers().remove(user);
+            operation = "unsubscribed";
         } else {
-            user.getSubscribers().add(target);
-            // target.getSubscribed_to().add(user);
+            target.getSubscribers().add(user);
         }
 
-        userRepository.save(user);
-        // userRepository.save(target);
+        userRepository.save(target);
+        return operation;
+    }
+
+    public Set<User> getSubscribers() {
+        long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        User user = this.userRepository.findById(userId).get();
+        return user.getSubscribers();
+    }
+
+    public Set<User> getSubscriptions() {
+        long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        User user = this.userRepository.findById(userId).get();
+        return user.getSubscribed_to();
     }
 
 }

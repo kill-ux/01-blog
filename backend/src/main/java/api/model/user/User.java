@@ -82,8 +82,8 @@ public class User implements UserDetails {
     @ManyToMany
     @JoinTable(
         name = "subscription", 
-        joinColumns = @JoinColumn(name = "subscriber_id"), 
-        inverseJoinColumns = @JoinColumn(name = "subscriber_to_id"), 
+        joinColumns = @JoinColumn(name = "subscriber_to_id"), 
+        inverseJoinColumns = @JoinColumn(name = "subscriber_id"), 
         uniqueConstraints = @UniqueConstraint(columnNames = {"subscriber_id", "subscriber_to_id" }))
     @JsonIgnore
     private Set<User> subscribers = new HashSet<>();;
