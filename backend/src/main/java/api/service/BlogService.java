@@ -27,7 +27,6 @@ public class BlogService {
         Blog blog = new Blog();
         // blog.setUser(blogRequest.userId());
         blog.setDescription(blogRequest.description());
-        blog.setParent(blogRequest.parent());
         blog.setMedia_type(blogRequest.media_type());
         blog.setMedia_url(blogRequest.media_url());
         return blog;

@@ -1,9 +1,13 @@
 package api.model.blog;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.annotation.Reference;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import api.model.user.User;
 import jakarta.persistence.CascadeType;
@@ -27,12 +31,6 @@ public class Blog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    // @OneToMany()
-    // @Column(nullable = false)
-    // private long userId;
-
-    private long parent;
-
     @Column(nullable = false)
     private String description;
 
@@ -45,6 +43,13 @@ public class Blog {
     private String media_type;
 
     @ManyToOne
-    @JoinColumn(name = "user_id" , nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
+    private List<Blog> blogs = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "blog_id")
+    private Blog blog;
 }
