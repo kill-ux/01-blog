@@ -28,8 +28,9 @@ public class DataLoader implements CommandLineRunner {
         User userTest = new User();
         userTest.setNickname("test");
         userTest.setEmail("test@gmail.com");
-        userTest.setPassword("test");
-        userTest.setRole("ROLE_USER");
+        // password is "test"
+        userTest.setPassword("$2a$10$U6RSphWBDit1fvQ1BLSfz.vDf8MrW0Bjj55.7nqMOmrwE9UMtrABm");
+        userTest.setRole("ROLE_ADMIN"); 
         userTest.setCreatedAt(LocalDateTime.now());
 
         this.userRepository.save(userTest);

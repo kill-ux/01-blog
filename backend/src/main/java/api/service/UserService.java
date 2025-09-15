@@ -148,16 +148,22 @@ public class UserService {
         return operation;
     }
 
-    public List<UserDto> getSubscribers() {
-        long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        User user = this.userRepository.findById(userId).get();
-        return user.getSubscribers().stream().map(this::convertToDTO2).toList();
+    public List<UserDto> getSubscribers(long userId, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+        return this.userRepository
+                .findSubscribersBySubscribedToId(userId, pageable)
+                .stream()
+                .map(this::convertToDTO2)
+                .toList();
     }
 
-    public List<UserDto> getSubscriptions() {
-        long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        User user = this.userRepository.findById(userId).get();
-        return user.getSubscribed_to().stream().map(this::convertToDTO2).toList();
+    public List<UserDto> getSubscriptions(long userId, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+        return this.userRepository
+                .findSubscriptionsBySubscribedId(userId, pageable)
+                .stream()
+                .map(this::convertToDTO2)
+                .toList();
     }
 
 }

@@ -3,6 +3,9 @@ package api.model.user;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @Table(name = "users")
-@EqualsAndHashCode(exclude = {"subscribers", "subscribed_to"}) // Also exclude from equals and hashCode
+@EqualsAndHashCode(exclude = { "subscribers", "subscribed_to" }) // Also exclude from equals and hashCode
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,8 +89,10 @@ public class User implements UserDetails {
         inverseJoinColumns = @JoinColumn(name = "subscriber_id"), 
         uniqueConstraints = @UniqueConstraint(columnNames = {"subscriber_id", "subscriber_to_id" }))
     @JsonIgnore
-    private Set<User> subscribers = new HashSet<>();;
+    private Set<User> subscribers = new HashSet<>();
+    
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "subscribers", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<User> subscribed_to = new HashSet<>();;

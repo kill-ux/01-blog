@@ -13,8 +13,12 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,18 +44,22 @@ public class UserController {
         return ResponseEntity.ok("successful operation: " + operation);
     }
 
-    @GetMapping("/subscribers")
-    public ResponseEntity<List<UserDto>> getSubscribers() {
-        return ResponseEntity.ok(this.userService.getSubscribers());
+    @GetMapping("{userId}/subscribers")
+    public ResponseEntity<List<UserDto>> getSubscribers(
+            @PathVariable long userId,
+            @RequestParam(defaultValue = "0") int pageNumber) {
+        return ResponseEntity.ok(this.userService.getSubscribers(userId, pageNumber));
     }
 
     // @GetMapping("/subscriptions")
     // public ResponseEntity<List<User>> getSubscribers() {
     // return ResponseEntity.ok();
     // }
-    @GetMapping("/subscriptions")
-    public ResponseEntity<List<UserDto>> getSubscriptions() {
-        return ResponseEntity.ok(this.userService.getSubscriptions());
+    @GetMapping("{userId}/subscriptions")
+    public ResponseEntity<List<UserDto>> getSubscriptions(
+            @PathVariable long userId,
+            @RequestParam(defaultValue = "0") int pageNumber) {
+        return ResponseEntity.ok(this.userService.getSubscriptions(userId, pageNumber));
     }
 
 }
