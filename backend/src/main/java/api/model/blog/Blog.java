@@ -50,6 +50,6 @@ public class Blog {
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "parent")
     private Blog blog;
 }

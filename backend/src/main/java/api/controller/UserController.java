@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserRecord>> users() {
-        List<UserRecord> users = this.userService.getAllUsers();
+    public ResponseEntity<List<UserRecord>> users(@RequestParam(defaultValue = "0") int pageNumber) {
+        List<UserRecord> users = this.userService.getAllUsers(pageNumber);
         return ResponseEntity.ok(users);
     }
 

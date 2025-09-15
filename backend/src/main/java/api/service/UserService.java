@@ -1,21 +1,20 @@
 package api.service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
@@ -44,9 +43,10 @@ public class UserService {
         return this.userRepository;
     }
 
-    public List<UserRecord> getAllUsers() {
+    public List<UserRecord> getAllUsers(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.userRepository
-                .findAll()
+                .findAll(pageable)
                 .stream()
                 .map(this::convertToDTO)
                 .toList();
