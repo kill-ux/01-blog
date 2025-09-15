@@ -21,9 +21,19 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (this.userRepository.count() > 100) {
+        if (this.userRepository.count() >= 100) {
             return;
         }
+
+        User userTest = new User();
+        userTest.setNickname("test");
+        userTest.setEmail("test@gmail.com");
+        userTest.setPassword("test");
+        userTest.setRole("ROLE_USER");
+        userTest.setCreatedAt(LocalDateTime.now());
+
+        this.userRepository.save(userTest);
+
         Faker faker = new Faker();
         IntStream.range(0, 100).forEach(i -> {
             String nickname = faker.internet().username();
@@ -38,8 +48,14 @@ public class DataLoader implements CommandLineRunner {
             user.setRole(role);
             user.setCreatedAt(LocalDateTime.now());
 
+            userTest.getSubscribers().add(user);
+            if (i % 2 == 0) {
+                user.getSubscribers().add(userTest);
+            }
             this.userRepository.save(user);
         });
+        this.userRepository.save(userTest);
+
         System.out.println("Generate 100 rando users");
     }
 }

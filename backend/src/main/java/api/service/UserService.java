@@ -20,6 +20,7 @@ import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
 import api.model.user.LoginResponse;
 import api.model.user.User;
+import api.model.user.UserDto;
 import api.model.user.UserRecord;
 import api.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -104,6 +105,11 @@ public class UserService {
                 user.getAvatar(), user.getBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
+    private UserDto convertToDTO2(User user) {
+        return new UserDto(user.getId(), user.getNickname(), user.getEmail(), user.getRole(),
+                user.getAvatar(), user.getBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
+    }
+
     public LoginResponse login(@Valid LoginRequest loginRequest) {
         try {
             // Authenticate credentials
@@ -142,16 +148,16 @@ public class UserService {
         return operation;
     }
 
-    public Set<User> getSubscribers() {
+    public List<UserDto> getSubscribers() {
         long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         User user = this.userRepository.findById(userId).get();
-        return user.getSubscribers();
+        return user.getSubscribers().stream().map(this::convertToDTO2).toList();
     }
 
-    public Set<User> getSubscriptions() {
+    public List<UserDto> getSubscriptions() {
         long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         User user = this.userRepository.findById(userId).get();
-        return user.getSubscribed_to();
+        return user.getSubscribed_to().stream().map(this::convertToDTO2).toList();
     }
 
 }

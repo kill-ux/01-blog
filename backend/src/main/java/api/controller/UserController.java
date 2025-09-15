@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.model.subscription.SubscribeRequest;
 import api.model.user.User;
+import api.model.user.UserDto;
 import api.model.user.UserRecord;
 import api.service.UserService;
 import jakarta.validation.Valid;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/subscribers")
-    public ResponseEntity<Set<User>> getSubscribers() {
+    public ResponseEntity<List<UserDto>> getSubscribers() {
         return ResponseEntity.ok(this.userService.getSubscribers());
     }
 
@@ -49,7 +50,7 @@ public class UserController {
     // return ResponseEntity.ok();
     // }
     @GetMapping("/subscriptions")
-    public ResponseEntity<Set<User>> getSubscriptions() {
+    public ResponseEntity<List<UserDto>> getSubscriptions() {
         return ResponseEntity.ok(this.userService.getSubscriptions());
     }
 
