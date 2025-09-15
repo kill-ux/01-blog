@@ -90,7 +90,7 @@ public class User implements UserDetails {
         uniqueConstraints = @UniqueConstraint(columnNames = {"subscriber_id", "subscriber_to_id" }))
     @JsonIgnore
     private Set<User> subscribers = new HashSet<>();
-    
+
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "subscribers", fetch = FetchType.LAZY)

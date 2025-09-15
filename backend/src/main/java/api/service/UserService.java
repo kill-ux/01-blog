@@ -82,7 +82,14 @@ public class UserService {
     }
 
     public void deleteUser(long id) {
+        this.userRepository.findById(id).get();
         this.userRepository.deleteById(id);
+    }
+
+    public void banUser(long id, LocalDateTime until) {
+        User user = this.userRepository.findById(id).get();
+        user.setBannedUntil(until);
+        this.userRepository.save(user);
     }
 
     private User convertToEntity(UserRecord userRecord) {
