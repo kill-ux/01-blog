@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     private final UserService userService;
 
@@ -42,9 +42,15 @@ public class AdminController {
     }
 
 
-    // @PatchMapping("/ban")
-    // public ResponseEntity<String> banUser(@Valid @RequestBody UserRequests.BanRequest request) {
-    //     this.userService.banUser(request.userId(),request.until());
-    //     return ResponseEntity.ok("success baned");
-    // }
+    @PatchMapping("/adminify")
+    public ResponseEntity<String> adminify(@RequestBody UserRequests.UserId request) {
+        this.userService.adminify(request.userId());
+        return ResponseEntity.ok("User successfully promoted to admin");
+    }
+
+     @PatchMapping("/deadminify")
+    public ResponseEntity<String> deadminify(@RequestBody UserRequests.UserId request) {
+        this.userService.deadminify(request.userId());
+        return ResponseEntity.ok("Admin successfully demoted to user");
+    }
 }

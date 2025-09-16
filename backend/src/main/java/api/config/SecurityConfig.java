@@ -23,7 +23,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import api.repository.UserRepository;
 import api.service.JwtService;
 
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
 

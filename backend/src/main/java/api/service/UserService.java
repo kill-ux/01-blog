@@ -101,6 +101,18 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void adminify(long id) {
+        User user = this.userRepository.findById(id).get();
+        user.setRole("ROLE_ADMIN");
+        userRepository.save(user);
+    }
+
+    public void deadminify(long id) {
+        User user = this.userRepository.findById(id).get();
+        user.setRole("ROLE_USER");
+        userRepository.save(user);
+    }
+
     private User convertToEntity(UserRecord userRecord) {
         User user = new User();
         user.setId(userRecord.id());
@@ -154,11 +166,14 @@ public class UserService {
 
     public String subscribe(@Valid SubscribeRequest subscribeRequest) {
         long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+
+        if (userId == subscribeRequest.subscriberToId()) {
+            throw new IllegalArgumentException("you can't subscribe yourself");
+        }
+
         User user = userRepository.findById(userId).get();
         User target = userRepository.findById(subscribeRequest.subscriberToId())
                 .orElseThrow(() -> new RuntimeException("Target user not found"));
-
-        // user.setAvatar("/im");
 
         boolean isSubscribed = target.getSubscribers().contains(user);
         String operation = "subscribed";
