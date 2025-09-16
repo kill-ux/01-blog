@@ -13,6 +13,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByNickname(String nickname);
+    Optional<User> findByEmail(String nickname);
+
+    Optional<User> findByNicknameOrEmail(String nickname, String email);
 
     @Query("SELECT u FROM User u JOIN u.subscribed_to sub WHERE sub.id = :userId")
     Page<User> findSubscribersBySubscribedToId(@Param("userId") Long userId, Pageable pageable);

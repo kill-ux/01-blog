@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
@@ -82,14 +85,20 @@ public class UserService {
     }
 
     public void deleteUser(long id) {
-        this.userRepository.findById(id).get();
         this.userRepository.deleteById(id);
     }
 
+    // @Transactional
     public void banUser(long id, LocalDateTime until) {
         User user = this.userRepository.findById(id).get();
         user.setBannedUntil(until);
-        this.userRepository.save(user);
+        userRepository.save(user);
+    }
+
+    public void unBanUser(long id) {
+        User user = this.userRepository.findById(id).get();
+        user.setBannedUntil(null);
+        userRepository.save(user);
     }
 
     private User convertToEntity(UserRecord userRecord) {
@@ -124,6 +133,11 @@ public class UserService {
                     new UsernamePasswordAuthenticationToken(loginRequest.nickname(), loginRequest.password()));
             // Load the full user details after successful authentication
             User user = (User) authentication.getPrincipal();
+
+            LocalDateTime until = user.getBannedUntil();
+            if (until != null && until.isAfter(LocalDateTime.now())) {
+                throw new DisabledException(String.format("Account is banned until ", until.toString()));
+            }
             // Generate token with user details (not just nickname)
             String jwtToken = jwtService.generateToken(user);
             LoginResponse loginResponse = new LoginResponse();
@@ -131,6 +145,8 @@ public class UserService {
             loginResponse.setExpiresIn(jwtService.getExpirationTime());
             return loginResponse;
 
+        } catch (DisabledException e) {
+            throw e;
         } catch (Exception e) {
             throw new BadCredentialsException("Invalid username or password");
         }
@@ -141,6 +157,8 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         User target = userRepository.findById(subscribeRequest.subscriberToId())
                 .orElseThrow(() -> new RuntimeException("Target user not found"));
+
+        // user.setAvatar("/im");
 
         boolean isSubscribed = target.getSubscribers().contains(user);
         String operation = "subscribed";

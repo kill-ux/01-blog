@@ -8,9 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record UserRecord(
 		long id,
-		@NotBlank(message = "Username is required")
-		@Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Username can only contain letters, numbers, and underscores") 
-		String nickname,
+		@NotBlank(message = "Username is required") @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Username can only contain letters, numbers, and underscores") String nickname,
 
 		@NotBlank(message = "Email is required") @Email(message = "Email should be valid") String email,
 		@NotBlank(message = "Password is required") String password,

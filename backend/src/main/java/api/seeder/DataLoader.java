@@ -25,19 +25,30 @@ public class DataLoader implements CommandLineRunner {
             return;
         }
 
+        User userAdmin = new User();
+        userAdmin.setNickname("admin");
+        userAdmin.setEmail("admin@gmail.com");
+        // password is "admin"
+        userAdmin.setPassword("$2a$10$ooAXC7h9lFD0Gf7DHliYWekayBZ0KMVLWBX6EjmA2NHvZ8Q18LtyO");
+        userAdmin.setRole("ROLE_ADMIN"); 
+        userAdmin.setCreatedAt(LocalDateTime.now());
+
+        this.userRepository.save(userAdmin);
+
+
         User userTest = new User();
         userTest.setNickname("test");
         userTest.setEmail("test@gmail.com");
         // password is "test"
         userTest.setPassword("$2a$10$U6RSphWBDit1fvQ1BLSfz.vDf8MrW0Bjj55.7nqMOmrwE9UMtrABm");
-        userTest.setRole("ROLE_ADMIN"); 
+        userTest.setRole("ROLE_USER"); 
         userTest.setCreatedAt(LocalDateTime.now());
 
         this.userRepository.save(userTest);
 
         Faker faker = new Faker();
         IntStream.range(0, 100).forEach(i -> {
-            String nickname = faker.internet().username();
+            String nickname = faker.internet().username().replaceAll("[^a-zA-Z0-9_-]", "");
             String email = faker.internet().emailAddress();
             String password = faker.internet().uuid();
             String role = "ROLE_USER";

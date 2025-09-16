@@ -4,18 +4,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import api.model.subscription.SubscribeRequest;
-import api.model.user.User;
 import api.model.user.UserDto;
 import api.model.user.UserRecord;
 import api.service.UserService;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Set;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,10 +45,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getSubscribers(userId, pageNumber));
     }
 
-    // @GetMapping("/subscriptions")
-    // public ResponseEntity<List<User>> getSubscribers() {
-    // return ResponseEntity.ok();
-    // }
+
     @GetMapping("{userId}/subscriptions")
     public ResponseEntity<List<UserDto>> getSubscriptions(
             @PathVariable long userId,

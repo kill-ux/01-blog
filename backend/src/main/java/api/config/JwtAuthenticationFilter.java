@@ -1,8 +1,10 @@
 package api.config;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import api.model.user.User;
 import api.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,6 +47,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (nickname != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(nickname);
+
+                    LocalDateTime until = ((User) userDetails).getBannedUntil();
+                    if (until != null && until.isAfter(LocalDateTime.now())) {
+                        throw new DisabledException(String.format("Account is banned until ", until.toString()));
+                    }
+
                     if (jwtService.isTokenValid(jwt, userDetails)) {
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                                 userDetails,
@@ -56,12 +65,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
 
+        } catch (DisabledException ex) {
+            response.setStatus(403);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"" + ex.getMessage() + "\"}");
         } catch (Exception e) {
-            // System.out.println("##############################################################");
-            // System.out.println("##############################################################");
-            System.out.println(e);
-            // System.out.println("##############################################################");
-            // System.out.println("##############################################################");
+            response.setStatus(401);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Invalid token\"}");
         }

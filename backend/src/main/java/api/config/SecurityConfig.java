@@ -41,7 +41,7 @@ public class SecurityConfig {
     @Bean
     UserDetailsService userDetailsService() {
         return nickname -> userRepository
-                .findByNickname(nickname)
+                .findByNicknameOrEmail(nickname, nickname)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

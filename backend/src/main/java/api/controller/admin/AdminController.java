@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.model.user.UserRequests;
 import api.service.UserService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -23,14 +24,27 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteUser(@RequestBody UserRequests.UserId userId) {
-        this.userService.deleteUser(userId.userId());
+    public ResponseEntity<String> deleteUser(@RequestBody UserRequests.UserId request) {
+        this.userService.deleteUser(request.userId());
         return ResponseEntity.ok("success delete");
     }
 
     @PatchMapping("/ban")
-    public ResponseEntity<String> banUser(@RequestBody UserRequests.BanRequest request) {
+    public ResponseEntity<String> banUser(@Valid @RequestBody UserRequests.BanRequest request) {
         this.userService.banUser(request.userId(),request.until());
-        return ResponseEntity.ok("success delete");
+        return ResponseEntity.ok("success baned");
     }
+
+    @PatchMapping("/unban")
+    public ResponseEntity<String> unBanUser(@RequestBody UserRequests.UserId request) {
+        this.userService.unBanUser(request.userId());
+        return ResponseEntity.ok("success unbaned");
+    }
+
+
+    // @PatchMapping("/ban")
+    // public ResponseEntity<String> banUser(@Valid @RequestBody UserRequests.BanRequest request) {
+    //     this.userService.banUser(request.userId(),request.until());
+    //     return ResponseEntity.ok("success baned");
+    // }
 }
