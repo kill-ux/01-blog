@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,13 +43,11 @@ public class AdminController {
 
     @PatchMapping("/adminify")
     public ResponseEntity<String> adminify(@RequestBody UserRequests.UserId request) {
-        this.userService.adminify(request.userId());
-        return ResponseEntity.ok("User successfully promoted to admin");
+        return ResponseEntity.ok(this.userService.adminify(request.userId()));
     }
 
      @PatchMapping("/deadminify")
     public ResponseEntity<String> deadminify(@RequestBody UserRequests.UserId request) {
-        this.userService.deadminify(request.userId());
-        return ResponseEntity.ok("Admin successfully demoted to user");
+        return ResponseEntity.ok(this.userService.deadminify(request.userId())); 
     }
 }

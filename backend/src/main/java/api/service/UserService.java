@@ -101,16 +101,18 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void adminify(long id) {
+    public String adminify(long id) {
         User user = this.userRepository.findById(id).get();
         user.setRole("ROLE_ADMIN");
         userRepository.save(user);
+        return String.format("%s successfully promoted to admin", user.getNickname());
     }
 
-    public void deadminify(long id) {
+    public String deadminify(long id) {
         User user = this.userRepository.findById(id).get();
         user.setRole("ROLE_USER");
         userRepository.save(user);
+        return String.format("%s successfully demoted to user", user.getNickname());
     }
 
     private User convertToEntity(UserRecord userRecord) {

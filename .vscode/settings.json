@@ -1,4 +1,9 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "material-icon-theme.folders.associations": {
+        "blog": "content",
+        "user" : "client",
+        "subscription":"connection"
+    }
 }
