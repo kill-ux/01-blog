@@ -1,8 +1,5 @@
 package api.controller.blog;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import api.model.blog.Blog;
 import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
@@ -25,8 +22,8 @@ public class BlogController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BlogResponse>> getBlogs() {
-        List<BlogResponse> savedBlog = this.blogService.getBlogs();
+    public ResponseEntity<List<BlogResponse>> getBlogs(@RequestParam(defaultValue = "0") int pageNumber) {
+        List<BlogResponse> savedBlog = this.blogService.getBlogs(pageNumber);
         return ResponseEntity.ok(savedBlog);
     }
 
@@ -36,11 +33,25 @@ public class BlogController {
         return ResponseEntity.ok(savedBlog);
     }
 
+    @GetMapping("{blogId}")
+    public ResponseEntity<BlogResponse> getBlog(
+            @PathVariable long blogId) {
+        BlogResponse savedBlog = this.blogService.getBlog(blogId);
+        return ResponseEntity.ok(savedBlog);
+    }
+
+    @GetMapping("{blogId}/children")
+    public ResponseEntity<List<BlogResponse>> getBlogChildren(
+            @PathVariable long blogId) {
+        List<BlogResponse> savedBlog = this.blogService.getBlogChildren(blogId);
+        return ResponseEntity.ok(savedBlog);
+    }
+
     @PostMapping("{blogId}/update")
     public ResponseEntity<BlogResponse> updateBlog(
             @Valid @RequestBody BlogRequest blogRequest,
             @PathVariable long blogId) {
-        BlogResponse savedBlog = this.blogService.updateBlog(blogRequest,blogId);
+        BlogResponse savedBlog = this.blogService.updateBlog(blogRequest, blogId);
         return ResponseEntity.ok(savedBlog);
     }
 

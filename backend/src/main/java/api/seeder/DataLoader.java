@@ -1,12 +1,15 @@
 package api.seeder;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import api.model.blog.Blog;
 import api.model.user.User;
+import api.repository.BlogRepository;
 import api.repository.UserRepository;
 import net.datafaker.Faker;
 
@@ -14,9 +17,11 @@ import net.datafaker.Faker;
 public class DataLoader implements CommandLineRunner {
 
     private UserRepository userRepository;
+    private BlogRepository blogRepository;
 
-    public DataLoader(UserRepository userRepository) {
+    public DataLoader(UserRepository userRepository,BlogRepository blogRepository) {
         this.userRepository = userRepository;
+        this.blogRepository = blogRepository;
     }
 
     @Override
@@ -65,6 +70,13 @@ public class DataLoader implements CommandLineRunner {
                 user.getSubscribers().add(userTest);
             }
             this.userRepository.save(user);
+            String description = faker.joke().pun();
+            Blog blog = new Blog();
+            blog.setDescription(description);
+            blog.setUser(userTest);
+            blog.setCreatedAt(LocalDateTime.now());
+            this.blogRepository.save(blog);
+            
         });
         this.userRepository.save(userTest);
 

@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,9 +34,10 @@ public class BlogService {
         this.userRepository = userRepository;
     }
 
-    public List<BlogResponse> getBlogs() {
+    public List<BlogResponse> getBlogs(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.blogRepository
-                .findBlogsWithPagination()
+                .findBlogsWithPagination(pageable)
                 .stream()
                 .map(blog -> new BlogResponse(blog))
                 .toList();
@@ -53,6 +57,15 @@ public class BlogService {
         return userRepository.findById(user.getId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, String.format(ERROR_USER_NOT_FOUND, user.getId())));
+    }
+
+    public BlogResponse getBlog(long blogId) {
+        return this.blogRepository.findById(blogId).map(BlogResponse::new).get();
+    }
+
+    public List<BlogResponse> getBlogChildren(long blogId) {
+        Blog blog = this.blogRepository.findById(blogId).get();
+        return blog.getBlogs().stream().map(BlogResponse::new).toList();
     }
 
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {
