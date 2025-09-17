@@ -1,13 +1,15 @@
-package api.error;
+package api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +27,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getReason()), ex.getStatusCode());
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, String>> handleBadCredentials(BadCredentialsException ex) {
         Map<String, String> response = new HashMap<>();
@@ -32,11 +39,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @ExceptionHandler(DisabledException.class)
-    public ResponseEntity<Map<String, String>> handleDisabledException(DisabledException ex) {
+    @ExceptionHandler({ DisabledException.class, AuthorizationDeniedException.class })
+    public ResponseEntity<Map<String, String>> handleDisabledException(Exception ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
     @ExceptionHandler({ IllegalStateException.class, IllegalArgumentException.class, NoSuchElementException.class })

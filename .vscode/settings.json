@@ -4,6 +4,7 @@
     "material-icon-theme.folders.associations": {
         "blog": "content",
         "user" : "client",
-        "subscription":"connection"
+        "subscription":"connection",
+        "exceptions":"error"
     }
 }

@@ -3,9 +3,7 @@ package api.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -17,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
@@ -166,7 +163,7 @@ public class UserService {
         }
     }
 
-    public String subscribe(@Valid SubscribeRequest subscribeRequest) {
+    public String subscribe(SubscribeRequest subscribeRequest) {
         long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
         if (userId == subscribeRequest.subscriberToId()) {
@@ -175,7 +172,7 @@ public class UserService {
 
         User user = userRepository.findById(userId).get();
         User target = userRepository.findById(subscribeRequest.subscriberToId())
-                .orElseThrow(() -> new RuntimeException("Target user not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Target user not found"));
 
         boolean isSubscribed = target.getSubscribers().contains(user);
         String operation = "subscribed";

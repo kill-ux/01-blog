@@ -2,7 +2,9 @@ package api.config;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import api.model.user.User;
 import api.service.JwtService;
@@ -24,6 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public JwtAuthenticationFilter(
             HandlerExceptionResolver handlerExceptionResolver,
@@ -66,15 +71,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (DisabledException ex) {
-            response.setStatus(403);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"" + ex.getMessage() + "\"}");
+            sendErrorResponse(response, HttpStatus.LOCKED, ex.getMessage());
         } catch (Exception e) {
-            response.setStatus(401);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Invalid token\"}");
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Invalid token");
         }
 
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message)
+            throws IOException {
+        response.setStatus(status.value());
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().write(objectMapper.writeValueAsString(Map.of("error", message)));
+        response.getWriter().flush();
     }
 
 }
