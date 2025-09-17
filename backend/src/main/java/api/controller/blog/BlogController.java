@@ -42,8 +42,9 @@ public class BlogController {
 
     @GetMapping("{blogId}/children")
     public ResponseEntity<List<BlogResponse>> getBlogChildren(
+            @RequestParam(defaultValue = "0") int pageNumber,
             @PathVariable long blogId) {
-        List<BlogResponse> savedBlog = this.blogService.getBlogChildren(blogId);
+        List<BlogResponse> savedBlog = this.blogService.getBlogChildren(blogId, pageNumber);
         return ResponseEntity.ok(savedBlog);
     }
 

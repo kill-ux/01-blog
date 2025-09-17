@@ -41,7 +41,6 @@ public class Blog {
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToOne
-    // @JoinColumn(name = "parent")
     private Blog parent;
 
     private boolean hidden;

@@ -63,9 +63,13 @@ public class BlogService {
         return this.blogRepository.findById(blogId).map(BlogResponse::new).get();
     }
 
-    public List<BlogResponse> getBlogChildren(long blogId) {
-        Blog blog = this.blogRepository.findById(blogId).get();
-        return blog.getBlogs().stream().map(BlogResponse::new).toList();
+    public List<BlogResponse> getBlogChildren(long blogId, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+        return this.blogRepository
+                .findChildrenBlogById(blogId, pageable)
+                .stream()
+                .map(BlogResponse::new)
+                .toList();
     }
 
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {
