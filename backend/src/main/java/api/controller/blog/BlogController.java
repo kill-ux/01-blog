@@ -9,10 +9,10 @@ import api.model.blog.BlogResponse;
 import api.service.BlogService;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/blogs")
@@ -22,6 +22,12 @@ public class BlogController {
 
     public BlogController(BlogService blogService) {
         this.blogService = blogService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<BlogResponse>> getBlogs() {
+        List<BlogResponse> savedBlog = this.blogService.getBlogs();
+        return ResponseEntity.ok(savedBlog);
     }
 
     @PostMapping("/store")

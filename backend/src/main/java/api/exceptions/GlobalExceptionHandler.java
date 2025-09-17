@@ -5,11 +5,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.security.SignatureException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +45,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @ExceptionHandler({ DisabledException.class, AuthorizationDeniedException.class })
+    @ExceptionHandler({ AuthenticationException.class })
     public ResponseEntity<Map<String, String>> handleDisabledException(Exception ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
@@ -51,6 +57,13 @@ public class GlobalExceptionHandler {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler({ JwtException.class }) // For invalid JWT signature
+    public ResponseEntity<Map<String, String>> handleSignatureException(JwtException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Invalid JWT");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(Exception.class)

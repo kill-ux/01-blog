@@ -1,6 +1,7 @@
 package api.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,14 @@ public class BlogService {
     public BlogService(BlogRepository blogRepository, UserRepository userRepository) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
+    }
+
+    public List<BlogResponse> getBlogs() {
+        return this.blogRepository
+                .findBlogsWithPagination()
+                .stream()
+                .map(blog -> new BlogResponse(blog))
+                .toList();
     }
 
     public BlogResponse saveBlog(BlogRequest blogRequest) {
@@ -58,7 +67,7 @@ public class BlogService {
         validateMediaType(blogRequest.mediaType());
         updateBlogEntity(blog, blogRequest);
 
-        return new BlogResponse(this.blogRepository.save(blog), blogRequest.parent());
+        return new BlogResponse(this.blogRepository.save(blog), Long.MAX_VALUE);
     }
 
     public Blog convertToEntity(BlogRequest blogRequest) {

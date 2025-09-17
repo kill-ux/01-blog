@@ -26,8 +26,19 @@ public class BlogResponse {
         this.hidden = blog.isHidden();
         this.createdAt = blog.getCreatedAt();
         this.updatedAt = blog.getUpdatedAt();
-        if (parent != null) {
+        if (parent != null && blog.getParent() != null) {
             this.parent = new BlogResponse(blog.getParent(), null);
         }
+    }
+
+    public BlogResponse(Blog blog) {
+        this.id = blog.getId();
+        this.description = blog.getDescription();
+        this.mediaUrl = blog.getMediaUrl();
+        this.mediaType = blog.getMediaType();
+        this.user = new UserResponse(blog.getUser());
+        this.hidden = blog.isHidden();
+        this.createdAt = blog.getCreatedAt();
+        this.updatedAt = blog.getUpdatedAt();
     }
 }

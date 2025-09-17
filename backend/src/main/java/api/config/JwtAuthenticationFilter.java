@@ -29,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     public JwtAuthenticationFilter(
             HandlerExceptionResolver handlerExceptionResolver,
@@ -36,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
     @Override
@@ -69,21 +71,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request, response);
-
-        } catch (DisabledException ex) {
-            sendErrorResponse(response, HttpStatus.LOCKED, ex.getMessage());
-        } catch (Exception e) {
-            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Invalid token");
+        } catch (Exception ex) {
+            handlerExceptionResolver.resolveException(request, response, null, ex);
         }
 
-    }
-
-    private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message)
-            throws IOException {
-        response.setStatus(status.value());
-        response.setContentType("application/json; charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(Map.of("error", message)));
-        response.getWriter().flush();
     }
 
 }
