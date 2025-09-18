@@ -17,7 +17,7 @@ public class BlogResponse {
     private LocalDateTime updatedAt;
     private BlogResponse parent;
 
-    public BlogResponse(Blog blog, Long parent) {
+    public BlogResponse(Blog blog) {
         this.id = blog.getId();
         this.description = blog.getDescription();
         this.mediaUrl = blog.getMediaUrl();
@@ -26,12 +26,12 @@ public class BlogResponse {
         this.hidden = blog.isHidden();
         this.createdAt = blog.getCreatedAt();
         this.updatedAt = blog.getUpdatedAt();
-        if (parent != null && blog.getParent() != null) {
-            this.parent = new BlogResponse(blog.getParent(), null);
+        if (blog.getParent() != null) {
+            this.parent = new BlogResponse(blog.getParent(), true);
         }
     }
 
-    public BlogResponse(Blog blog) {
+    public BlogResponse(Blog blog, boolean parent) {
         this.id = blog.getId();
         this.description = blog.getDescription();
         this.mediaUrl = blog.getMediaUrl();

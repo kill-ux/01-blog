@@ -1,14 +1,17 @@
 package api.controller.blog;
 
-import api.model.blog.Blog;
 import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
+import api.model.user.User;
 import api.service.BlogService;
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,12 +51,25 @@ public class BlogController {
         return ResponseEntity.ok(savedBlog);
     }
 
-    @PostMapping("{blogId}/update")
+    @PutMapping("{blogId}/update")
+    @PreAuthorize("hasRole('ADMIN') or @blogService.getBlog(#blogId).user.id == authentication.principal.id")
     public ResponseEntity<BlogResponse> updateBlog(
             @Valid @RequestBody BlogRequest blogRequest,
             @PathVariable long blogId) {
         BlogResponse savedBlog = this.blogService.updateBlog(blogRequest, blogId);
         return ResponseEntity.ok(savedBlog);
+    }
+
+    @DeleteMapping("{blogId}/delete")
+    @PreAuthorize("hasRole('ADMIN') or @blogService.getBlog(#blogId).user.id == authentication.principal.id")
+    public ResponseEntity<String> deleteBlog(@PathVariable long blogId) {
+        this.blogService.deleteBlog(blogId);
+        return ResponseEntity.ok("success deleted of BLOG");
+    }
+
+    @PostMapping("{blogId}/like")
+    public ResponseEntity<Map<String, Integer>> likeBlog(@PathVariable long blogId) {
+        return ResponseEntity.ok(this.blogService.likeBlog(blogId));
     }
 
 }

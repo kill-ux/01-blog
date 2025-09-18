@@ -5,6 +5,7 @@
         "blog": "content",
         "user" : "client",
         "subscription":"connection",
-        "exceptions":"error"
+        "exceptions":"error",
+        "likes":"policy"
     }
 }

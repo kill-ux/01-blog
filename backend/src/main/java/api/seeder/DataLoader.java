@@ -26,7 +26,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (this.userRepository.count() >= 100) {
+        if (this.userRepository.count() >= 10) {
             return;
         }
 

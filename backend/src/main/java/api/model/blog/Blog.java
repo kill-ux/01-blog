@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import api.model.user.User;
 import jakarta.persistence.CascadeType;
@@ -14,9 +15,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Entity
@@ -37,7 +41,8 @@ public class Blog {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    // @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToOne
@@ -48,4 +53,12 @@ public class Blog {
     @Column(nullable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @ManyToMany
+    @JoinTable(
+        name = "likes", 
+        joinColumns = @JoinColumn(name = "user_id"), 
+        inverseJoinColumns = @JoinColumn(name = "blog_id"), 
+        uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "blog_id" }))
+    private List<User> likedBy = new ArrayList<>();
 }

@@ -2,13 +2,13 @@ package api.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,7 +19,6 @@ import api.model.blog.BlogResponse;
 import api.model.user.User;
 import api.repository.BlogRepository;
 import api.repository.UserRepository;
-import jakarta.validation.Valid;
 
 @Service
 public class BlogService {
@@ -39,7 +38,7 @@ public class BlogService {
         return this.blogRepository
                 .findBlogsWithPagination(pageable)
                 .stream()
-                .map(blog -> new BlogResponse(blog))
+                .map(BlogResponse::new)
                 .toList();
     }
 
@@ -49,7 +48,7 @@ public class BlogService {
         Blog blog = convertToEntity(blogRequest);
         blog.setUser(user);
         blog.setCreatedAt(LocalDateTime.now());
-        return new BlogResponse(this.blogRepository.save(blog), blogRequest.parent());
+        return new BlogResponse(this.blogRepository.save(blog));
     }
 
     public User getAuthenticatedUser() {
@@ -63,6 +62,11 @@ public class BlogService {
         return this.blogRepository.findById(blogId).map(BlogResponse::new).get();
     }
 
+    public void deleteBlog(long blogId) {
+        this.blogRepository.findById(blogId).get();
+        this.blogRepository.deleteById(blogId);
+    }
+
     public List<BlogResponse> getBlogChildren(long blogId, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.blogRepository
@@ -73,18 +77,10 @@ public class BlogService {
     }
 
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {
-        long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        Blog blog = this.blogRepository
-                .findById(blogId)
-                .orElseThrow(() -> new IllegalArgumentException("FAILED: there is no post with this ID"));
-
-        if (userId != blog.getUser().getId()) {
-            throw new AccessDeniedException("Access denied: You are not authorized to update this blog post");
-        }
+        Blog blog = this.blogRepository.findById(blogId).get();
         validateMediaType(blogRequest.mediaType());
         updateBlogEntity(blog, blogRequest);
-
-        return new BlogResponse(this.blogRepository.save(blog), Long.MAX_VALUE);
+        return new BlogResponse(this.blogRepository.save(blog));
     }
 
     public Blog convertToEntity(BlogRequest blogRequest) {
@@ -112,5 +108,21 @@ public class BlogService {
         blog.setMediaType(blogRequest.mediaType());
         blog.setMediaUrl(blogRequest.mediaUrl());
         blog.setUpdatedAt(LocalDateTime.now());
+    }
+
+    // likes
+    public Map<String, Integer> likeBlog(long blogId) {
+        User user = getAuthenticatedUser();
+        Blog blog = this.blogRepository.findById(blogId).get();
+        boolean isLiked = user.getLikedBlogs().contains(blog);
+        if (!isLiked) {
+            blog.getLikedBy().add(user);
+            this.blogRepository.save(blog);
+            return Map.of("like", 1);
+        } else {
+            blog.getLikedBy().remove(user);
+            this.blogRepository.save(blog);
+            return Map.of("like", -1);
+        }
     }
 }
