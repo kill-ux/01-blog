@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,8 +24,15 @@ public class BlogController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<BlogResponse>> getBlogs(@RequestParam(defaultValue = "0") int pageNumber) {
         List<BlogResponse> savedBlog = this.blogService.getBlogs(pageNumber);
+        return ResponseEntity.ok(savedBlog);
+    }
+
+    @GetMapping("/networks")
+    public ResponseEntity<List<BlogResponse>> getBlogsNetworks(@RequestParam(defaultValue = "0") int pageNumber) {
+        List<BlogResponse> savedBlog = this.blogService.getBlogsNetworks(pageNumber);
         return ResponseEntity.ok(savedBlog);
     }
 
@@ -60,6 +66,12 @@ public class BlogController {
         return ResponseEntity.ok(savedBlog);
     }
 
+    @PutMapping("{blogId}/hide")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String,Boolean>> hideBlog(@PathVariable long blogId) {
+        return ResponseEntity.ok(Map.of("hide",this.blogService.hideBlog(blogId)));
+    }
+
     @DeleteMapping("{blogId}/delete")
     @PreAuthorize("hasRole('ADMIN') or @blogService.getBlog(#blogId).user.id == authentication.principal.id")
     public ResponseEntity<String> deleteBlog(@PathVariable long blogId) {
@@ -70,6 +82,11 @@ public class BlogController {
     @PostMapping("{blogId}/like")
     public ResponseEntity<Map<String, Integer>> likeBlog(@PathVariable long blogId) {
         return ResponseEntity.ok(this.blogService.likeBlog(blogId));
+    }
+
+    @GetMapping("{blogId}/likes")
+    public ResponseEntity<Map<String, Integer>> getLikes(@PathVariable long blogId) {
+        return ResponseEntity.ok(this.blogService.getLikes(blogId));
     }
 
 }

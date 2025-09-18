@@ -42,6 +42,16 @@ public class BlogService {
                 .toList();
     }
 
+    public List<BlogResponse> getBlogsNetworks(int pageNumber) {
+        User user = getAuthenticatedUser();
+        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+        return this.blogRepository
+                .findSubscribedUsersBlogs(user.getId(), pageable)
+                .stream()
+                .map(BlogResponse::new)
+                .toList();
+    }
+
     public BlogResponse saveBlog(BlogRequest blogRequest) {
         User user = getAuthenticatedUser();
         validateMediaType(blogRequest.mediaType());
@@ -81,6 +91,13 @@ public class BlogService {
         validateMediaType(blogRequest.mediaType());
         updateBlogEntity(blog, blogRequest);
         return new BlogResponse(this.blogRepository.save(blog));
+    }
+
+    public boolean hideBlog(long blogId) {
+        Blog blog = this.blogRepository.findById(blogId).get();
+        blog.setHidden(!blog.isHidden());
+        this.blogRepository.save(blog);
+        return blog.isHidden();
     }
 
     public Blog convertToEntity(BlogRequest blogRequest) {
@@ -124,5 +141,10 @@ public class BlogService {
             this.blogRepository.save(blog);
             return Map.of("like", -1);
         }
+    }
+
+    public Map<String, Integer> getLikes(long blogId) {
+        Blog blog = this.blogRepository.findById(blogId).get();
+        return Map.of("count", blog.getLikedBy().size());
     }
 }
