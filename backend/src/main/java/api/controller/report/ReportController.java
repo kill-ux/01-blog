@@ -20,6 +20,9 @@ public class ReportController {
 
     @PostMapping("/store")
     public ResponseEntity<String> reportUser(@Valid ReportRequest request) {
+        if (!request.isValid()) {
+            
+        }
         this.reportService.reportUser(request);
         return ResponseEntity.ok("success reported");
     }
