@@ -36,29 +36,38 @@ public class BlogService {
         this.userRepository = userRepository;
     }
 
-    public List<BlogResponse> getBlogs(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+    public List<BlogResponse> getBlogs(long cursor) {
+        Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
         return this.blogRepository
-                .findByParentIsNull(pageable)
+                .findByParentIsNullAndIdLessThan(cursor, pageable)
                 .stream()
                 .map(BlogResponse::new)
                 .toList();
     }
 
-    public List<BlogResponse> getBlogsNetworks(int pageNumber) {
+    public List<BlogResponse> getBlogsNetworks(long cursor) {
         User user = getAuthenticatedUser();
-        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
         return this.blogRepository
-                .findSubscribedUsersBlogs(user.getId(), pageable)
+                .findSubscribedUsersBlogsAndIdLessThan(user.getId(), cursor, pageable)
                 .stream()
                 .map(BlogResponse::new)
                 .toList();
     }
 
-    public List<BlogResponse> getBlogsByUser(long userId, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+    public List<BlogResponse> getBlogsByUser(long userId, long cursor) {
+        Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
         return this.blogRepository
-                .findByUserIdAndParentIsNull(userId, pageable)
+                .findByUserIdAndParentIsNullAndIdLessThan(userId, cursor, pageable)
                 .stream()
                 .map(BlogResponse::new)
                 .toList();

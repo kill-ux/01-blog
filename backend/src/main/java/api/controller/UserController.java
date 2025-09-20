@@ -59,8 +59,8 @@ public class UserController {
     @GetMapping("{userId}/blogs")
     public ResponseEntity<List<BlogResponse>> getBlogsByUser(
             @PathVariable long userId,
-            @RequestParam(defaultValue = "0") int pageNumber) {
-        List<BlogResponse> savedBlog = this.blogService.getBlogsByUser(userId, pageNumber);
+            @RequestParam(defaultValue = "0") long cursor) {
+        List<BlogResponse> savedBlog = this.blogService.getBlogsByUser(userId, cursor);
         return ResponseEntity.ok(savedBlog);
     }
 

@@ -27,14 +27,14 @@ public class BlogController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<BlogResponse>> getBlogs(@RequestParam(defaultValue = "0") int pageNumber) {
-        List<BlogResponse> savedBlog = this.blogService.getBlogs(pageNumber);
+    public ResponseEntity<List<BlogResponse>> getBlogs(@RequestParam(defaultValue = "0") long cursor) {
+        List<BlogResponse> savedBlog = this.blogService.getBlogs(cursor);
         return ResponseEntity.ok(savedBlog);
     }
 
     @GetMapping("/networks")
-    public ResponseEntity<List<BlogResponse>> getBlogsNetworks(@RequestParam(defaultValue = "0") int pageNumber) {
-        List<BlogResponse> savedBlog = this.blogService.getBlogsNetworks(pageNumber);
+    public ResponseEntity<List<BlogResponse>> getBlogsNetworks(@RequestParam(defaultValue = "0") long cursor) {
+        List<BlogResponse> savedBlog = this.blogService.getBlogsNetworks(cursor);
         return ResponseEntity.ok(savedBlog);
     }
 
