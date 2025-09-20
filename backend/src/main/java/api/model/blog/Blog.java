@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import api.model.report.Report;
 import api.model.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -61,4 +62,8 @@ public class Blog {
         inverseJoinColumns = @JoinColumn(name = "blog_id"), 
         uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "blog_id" }))
     private List<User> likedBy = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Report> reports = new ArrayList<>();
 }

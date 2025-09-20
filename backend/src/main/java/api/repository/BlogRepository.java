@@ -1,6 +1,6 @@
 package api.repository;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,16 +24,28 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             "WHERE sub.id = :userId AND b.parent IS NULL AND b.hidden = false")
     Page<Blog> findSubscribedUsersBlogs(@Param("userId") Long userId, Pageable pageable);
 
-    Page<Blog> findByUserSubscribersAndParentIsNull(Long userId, Pageable pageable);
+    // Page<Blog> findByUserSubscribersAndParentIsNull(Long userId, Pageable pageable);
+
+    Page<Blog> findByUserSubscribersAndParentIsNullAndIdLessThan(Long userId, long cursor, Pageable pageable);
 
     // @Query("SELECT b FROM Blog b WHERE b.user.id = :userId AND b.parent IS NULL")
-    // Page<Blog> findBlogsByUserId(@Param("userId") long userId, Pageable pageable);
+    // Page<Blog> findBlogsByUserId(@Param("userId") long userId, Pageable
+    // pageable);
 
-    Page<Blog> findByUserIdAndParentIsNull(Long userId, Pageable pageable);
+    // Page<Blog> findByUserIdAndParentIsNull(Long userId, Pageable pageable);
+
+    Page<Blog> findByUserIdAndParentIsNullAndIdLessThan(Long userId, long cursor, Pageable pageable);
 
     // @Query("SELECT b FROM Blog b WHERE b.parent.id = :blogId")
-    // Page<Blog> findChildrenBlogById(@Param("blogId") Long blogId, Pageable pageable);
+    // Page<Blog> findChildrenBlogById(@Param("blogId") Long blogId, Pageable
+    // pageable);
 
-    Page<Blog> findByParentId(Long parentId, Pageable pageable);
+    Page<Blog> findByParentIdAndIdLessThan(Long parentId, long cursor, Pageable pageable);
+
+    // Page<Blog> findByParentId(Long parentId, Pageable pageable);
+
+    long countByParentId(Long parentId);
+
+    // long countByParentId(long parentId);
 
 }

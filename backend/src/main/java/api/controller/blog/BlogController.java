@@ -2,10 +2,12 @@ package api.controller.blog;
 
 import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
+import api.model.blog.ChildrenResponse;
 import api.model.user.User;
 import api.service.BlogService;
 import jakarta.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -50,15 +52,15 @@ public class BlogController {
     }
 
     @GetMapping("{blogId}/children")
-    public ResponseEntity<List<BlogResponse>> getBlogChildren(
-            @RequestParam(defaultValue = "0") int pageNumber,
+    public ResponseEntity<ChildrenResponse> getBlogChildren(
+            @RequestParam(defaultValue = "0") long cursor,
             @PathVariable long blogId) {
-        List<BlogResponse> savedBlog = this.blogService.getBlogChildren(blogId, pageNumber);
+        ChildrenResponse savedBlog = this.blogService.getBlogChildren(blogId, cursor);
         return ResponseEntity.ok(savedBlog);
     }
 
     @PutMapping("{blogId}/update")
-    @PreAuthorize("hasRole('ADMIN') or @blogService.getBlog(#blogId).user.id == authentication.principal.id")
+    @PreAuthorize("@blogService.getBlog(#blogId).user.id == authentication.principal.id")
     public ResponseEntity<BlogResponse> updateBlog(
             @Valid @RequestBody BlogRequest blogRequest,
             @PathVariable long blogId) {

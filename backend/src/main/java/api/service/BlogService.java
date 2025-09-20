@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import api.model.blog.Blog;
 import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
+import api.model.blog.ChildrenResponse;
 import api.model.user.User;
 import api.repository.BlogRepository;
 import api.repository.UserRepository;
@@ -52,7 +55,7 @@ public class BlogService {
                 .toList();
     }
 
-    public List<BlogResponse> getBlogsByUser(long userId ,int pageNumber) {
+    public List<BlogResponse> getBlogsByUser(long userId, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.blogRepository
                 .findByUserIdAndParentIsNull(userId, pageable)
@@ -86,13 +89,18 @@ public class BlogService {
         this.blogRepository.deleteById(blogId);
     }
 
-    public List<BlogResponse> getBlogChildren(long blogId, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
-        return this.blogRepository
-                .findByParentId(blogId, pageable)
-                .stream()
-                .map(BlogResponse::new)
-                .toList();
+    public ChildrenResponse getBlogChildren(long blogId, long cursor) {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt", "id").descending());
+        Page<Blog> page;
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
+        page = this.blogRepository.findByParentIdAndIdLessThan(blogId, cursor, pageable);
+
+        ChildrenResponse children = new ChildrenResponse();
+        children.setChildren(page.stream().map(blog -> new BlogResponse(blog, false)).toList());
+        children.setCount(this.blogRepository.countByParentId(blogId));
+        return children;
     }
 
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {

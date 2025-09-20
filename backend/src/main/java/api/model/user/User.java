@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import api.model.blog.Blog;
+import api.model.report.Report;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -98,4 +99,10 @@ public class User implements UserDetails {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "likedBy")
     private List<Blog> likedBlogs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reportingUser", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Report> submittedReports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reportedUser" , cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Report> reportsAboutMe = new ArrayList<>();
 }

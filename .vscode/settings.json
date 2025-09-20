@@ -6,6 +6,6 @@
         "user" : "client",
         "subscription":"connection",
         "exceptions":"error",
-        "likes":"policy"
+        "seeder": "content"
     }
 }
