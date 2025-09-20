@@ -36,7 +36,7 @@ public class BlogService {
     public List<BlogResponse> getBlogs(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.blogRepository
-                .findBlogsWithPagination(pageable)
+                .findByParentIsNull(pageable)
                 .stream()
                 .map(BlogResponse::new)
                 .toList();
@@ -47,6 +47,15 @@ public class BlogService {
         Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.blogRepository
                 .findSubscribedUsersBlogs(user.getId(), pageable)
+                .stream()
+                .map(BlogResponse::new)
+                .toList();
+    }
+
+    public List<BlogResponse> getBlogsByUser(long userId ,int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+        return this.blogRepository
+                .findByUserIdAndParentIsNull(userId, pageable)
                 .stream()
                 .map(BlogResponse::new)
                 .toList();
@@ -80,7 +89,7 @@ public class BlogService {
     public List<BlogResponse> getBlogChildren(long blogId, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.blogRepository
-                .findChildrenBlogById(blogId, pageable)
+                .findByParentId(blogId, pageable)
                 .stream()
                 .map(BlogResponse::new)
                 .toList();
