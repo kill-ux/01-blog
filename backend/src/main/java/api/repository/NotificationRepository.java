@@ -9,3 +9,5 @@ import api.model.notification.Notification;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     Page<Notification> findByUserIdAndIdLessThan(long userId, long cursor, Pageable pageable);
 }
+
+
