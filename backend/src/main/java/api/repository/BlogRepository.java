@@ -18,10 +18,8 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query("SELECT b FROM Blog b " +
             "JOIN b.user author " +
             "JOIN author.subscribers sub " +
-            "WHERE sub.id = :userId AND b.parent IS NULL AND b.hidden = false")
-    Page<Blog> findSubscribedUsersBlogsAndIdLessThan(@Param("userId") Long userId, long cursor, Pageable pageable);
-
-    Page<Blog> findByUserSubscribersAndParentIsNullAndIdLessThan(Long userId, long cursor, Pageable pageable);
+            "WHERE b.id < :cursor AND sub.id = :userId AND b.parent IS NULL AND b.hidden = false")
+    Page<Blog> findSubscribedUsersBlogs(@Param("userId") Long userId, long cursor, Pageable pageable);
 
     Page<Blog> findByUserIdAndParentIsNullAndIdLessThan(Long userId, long cursor, Pageable pageable);
 
@@ -29,6 +27,8 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     long countByParentId(Long parentId);
 }
+
+
 
 /*
  * 
@@ -57,4 +57,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
  * 
  * 
  * // long countByParentId(long parentId);
+ * 
+ * 
+    Page<Blog> findByUserSubscribersAndParentIsNullAndIdLessThan(Long userId, long cursor, Pageable pageable);
  */

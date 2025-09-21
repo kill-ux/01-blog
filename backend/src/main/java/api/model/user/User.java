@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import api.model.blog.Blog;
+import api.model.notification.Notification;
 import api.model.report.Report;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -105,4 +106,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "reportedUser" , cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Report> reportsAboutMe = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Notification> notifications;
 }

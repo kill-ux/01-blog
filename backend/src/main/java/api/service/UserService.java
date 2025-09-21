@@ -187,19 +187,25 @@ public class UserService {
         return operation;
     }
 
-    public List<UserDto> getSubscribers(long userId, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+    public List<UserDto> getSubscribers(long userId, long cursor) {
+        Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
         return this.userRepository
-                .findSubscribersBySubscribedToId(userId, pageable)
+                .findSubscribersBySubscribedToId(userId,cursor, pageable)
                 .stream()
                 .map(this::convertToDTO2)
                 .toList();
     }
 
-    public List<UserDto> getSubscriptions(long userId, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+    public List<UserDto> getSubscriptions(long userId, long cursor) {
+        Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
         return this.userRepository
-                .findSubscriptionsBySubscribedId(userId, pageable)
+                .findSubscriptionsBySubscribedId(userId,cursor, pageable)
                 .stream()
                 .map(this::convertToDTO2)
                 .toList();

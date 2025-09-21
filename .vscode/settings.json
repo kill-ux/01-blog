@@ -6,6 +6,7 @@
         "user" : "client",
         "subscription":"connection",
         "exceptions":"error",
-        "seeder": "content"
+        "seeder": "content",
+        "notification": "mail"
     }
 }

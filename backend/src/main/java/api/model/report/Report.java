@@ -20,14 +20,13 @@ public class Report {
     private LocalDateTime updatedAt;
 
     @ManyToOne
-    private Blog blog;
-
-    @ManyToOne
     @JoinColumn(name = "reporter_id")
     private User reportingUser;
 
     @ManyToOne
     @JoinColumn(name = "reported_user_id")
     private User reportedUser;
+
+    private Long blogId;
 }
 

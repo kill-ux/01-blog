@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import api.model.notification.Notification;
 import api.model.report.Report;
 import api.model.user.User;
 import jakarta.persistence.CascadeType;
@@ -63,7 +64,6 @@ public class Blog {
         uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "blog_id" }))
     private List<User> likedBy = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Report> reports = new ArrayList<>();
+    private List<Notification> notifications;
 }

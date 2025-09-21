@@ -17,9 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByNicknameOrEmail(String nickname, String email);
 
-    @Query("SELECT u FROM User u JOIN u.subscribed_to sub WHERE sub.id = :userId")
-    Page<User> findSubscribersBySubscribedToId(@Param("userId") Long userId, Pageable pageable);
+    @Query("SELECT u FROM User u JOIN u.subscribed_to sub WHERE sub.id = :userId AND u.id < :cursor")
+    Page<User> findSubscribersBySubscribedToId(@Param("userId") Long userId,long cursor, Pageable pageable); // AndIdLessThan
 
-    @Query("SELECT u FROM User u JOIN u.subscribers sub WHERE sub.id = :userId")
-    Page<User> findSubscriptionsBySubscribedId(@Param("userId") Long userId, Pageable pageable);
+    @Query("SELECT u FROM User u JOIN u.subscribers sub WHERE sub.id = :userId AND u.id < :cursor")
+    Page<User> findSubscriptionsBySubscribedId(@Param("userId") Long userId,long cursor, Pageable pageable);
 }

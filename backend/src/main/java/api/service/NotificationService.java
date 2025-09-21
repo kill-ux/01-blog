@@ -1,0 +1,54 @@
+package api.service;
+
+import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+
+import api.model.blog.Blog;
+import api.model.notification.Notification;
+import api.model.notification.NotificationResponse;
+import api.model.user.User;
+import api.repository.NotificationRepository;
+
+@Service
+public class NotificationService {
+    private final NotificationRepository notificationRepository;
+
+    public NotificationService(NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
+    }
+
+    public void saveNotification(Blog blog) {
+        User user = blog.getUser();
+        for (User subscriber : user.getSubscribers()) {
+            Notification notification = new Notification();
+            notification.setBlog(blog);
+            notification.setUser(subscriber);
+            this.notificationRepository.save(notification);
+        }
+    }
+
+    public List<NotificationResponse> getNotification(long userId, long cursor) {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt", "id").descending());
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
+        return this.notificationRepository
+                .findByUserIdAndIdLessThan(userId, cursor, pageable)
+                .map(NotificationResponse::new)
+                .toList();
+    }
+
+    public NotificationResponse readNotification(long ntfId,long userId){
+        Notification ntf = this.notificationRepository.findById(ntfId).get();
+        if (ntf.getUser().getId() != userId) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        ntf.setRead(true);
+        return new NotificationResponse(this.notificationRepository.save(ntf));
+    }
+}

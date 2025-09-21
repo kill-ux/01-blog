@@ -28,12 +28,16 @@ public class BlogService {
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
+
+    private final NotificationService notificationService;
     private static final Set<String> VALID_MEDIA_TYPES = Set.of("image", "video");
     private static final String ERROR_USER_NOT_FOUND = "User not found with ID: %d";
 
-    public BlogService(BlogRepository blogRepository, UserRepository userRepository) {
+    public BlogService(BlogRepository blogRepository, UserRepository userRepository,
+            NotificationService notificationService) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public List<BlogResponse> getBlogs(long cursor) {
@@ -55,7 +59,7 @@ public class BlogService {
             cursor = Long.MAX_VALUE;
         }
         return this.blogRepository
-                .findSubscribedUsersBlogsAndIdLessThan(user.getId(), cursor, pageable)
+                .findSubscribedUsersBlogs(user.getId(), cursor, pageable)
                 .stream()
                 .map(BlogResponse::new)
                 .toList();
@@ -79,7 +83,12 @@ public class BlogService {
         Blog blog = convertToEntity(blogRequest);
         blog.setUser(user);
         blog.setCreatedAt(LocalDateTime.now());
-        return new BlogResponse(this.blogRepository.save(blog));
+        Blog savedBlog = this.blogRepository.save(blog);
+        // save notifaction
+        if (blogRequest.parent() == null) {
+            this.notificationService.saveNotification(savedBlog);
+        }
+        return new BlogResponse(savedBlog);
     }
 
     public User getAuthenticatedUser() {
