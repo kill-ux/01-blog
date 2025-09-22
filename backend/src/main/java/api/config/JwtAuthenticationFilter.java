@@ -2,9 +2,7 @@ package api.config;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +13,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import api.model.user.User;
 import api.service.JwtService;
@@ -28,7 +25,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     public JwtAuthenticationFilter(

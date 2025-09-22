@@ -4,11 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import api.model.notification.Notification;
-import api.model.report.Report;
 import api.model.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,7 +40,6 @@ public class Blog {
     private User user;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToOne

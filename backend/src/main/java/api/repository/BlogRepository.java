@@ -1,7 +1,5 @@
 package api.repository;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,37 +25,3 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     long countByParentId(Long parentId);
 }
-
-
-
-/*
- * 
- * // @Query("SELECT b FROM Blog b WHERE b.parent IS NULL")
- * // Page<Blog> findBlogsWithPagination(Pageable pageable);
- * 
- * 
- * // Page<Blog> findByUserSubscribersAndParentIsNull(Long userId, Pageable
- * pageable);
- * 
- * 
- * // @Query("SELECT b FROM Blog b WHERE b.user.id = :userId AND b.parent IS NULL"
- * )
- * // Page<Blog> findBlogsByUserId(@Param("userId") long userId, Pageable
- * // pageable);
- * 
- * // Page<Blog> findByUserIdAndParentIsNull(Long userId, Pageable pageable);
- * 
- * 
- * // @Query("SELECT b FROM Blog b WHERE b.parent.id = :blogId")
- * // Page<Blog> findChildrenBlogById(@Param("blogId") Long blogId, Pageable
- * // pageable);
- * 
- * 
- * // Page<Blog> findByParentId(Long parentId, Pageable pageable);
- * 
- * 
- * // long countByParentId(long parentId);
- * 
- * 
-    Page<Blog> findByUserSubscribersAndParentIsNullAndIdLessThan(Long userId, long cursor, Pageable pageable);
- */

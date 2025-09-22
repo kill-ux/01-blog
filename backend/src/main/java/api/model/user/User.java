@@ -3,7 +3,6 @@ package api.model.user;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;

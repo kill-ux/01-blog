@@ -2,7 +2,6 @@ package api.model.report;
 
 import java.time.LocalDateTime;
 
-import api.model.blog.Blog;
 import api.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
