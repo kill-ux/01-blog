@@ -19,4 +19,8 @@ public record UserRecord(
 		LocalDateTime birthDate,
 		LocalDateTime createdAt,
 		LocalDateTime updatedAt) {
+
+	public UserRecord(String nickname, String email, String password) {
+		this(0L, nickname, email, password, null, null, null, null, null, null);
+	}
 }

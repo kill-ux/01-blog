@@ -40,6 +40,8 @@ dependencies {
 	
 	testCompileOnly("org.projectlombok:lombok:1.18.40")
 	testAnnotationProcessor("org.projectlombok:lombok:1.18.40")
+
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
