@@ -46,7 +46,17 @@ echo "🔍 Verifying installation..."
 docker --version || echo "⚠️ Docker not found in PATH yet."
 docker compose version || echo "⚠️ Docker Compose not found in PATH yet."
 
+echo "DOCKER_HOST=unix:///run/user/1125/docker.sock" >> ~/.zshrc
+
+# echo "nohup ~/bin/dockerd-rootless.sh > ~/docker-rootless.log 2>&1 &" >> ~/.zshrc
+
+cat << 'EOF' >> ~/.zshrc
+# Check if dockerd is already running
+if ! pgrep -f "dockerd" > /dev/null; then
+    nohup ~/bin/dockerd-rootless.sh > ~/docker-rootless.log 2>&1 &
+fi
+EOF
+
 echo ""
 echo "✅ All done! Run 'source ~/.zshrc' or restart your terminal to apply environment changes."
 
-echo "nohup ~/bin/dockerd-rootless.sh > ~/docker-rootless.log 2>&1 &" >> ~/.zshrc
