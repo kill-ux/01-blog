@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { SigninCredentials, SignupCredentials } from '../models/model';
 
 @Injectable({
     providedIn: 'root'
@@ -10,11 +11,11 @@ export class AuthService {
 
     constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: any) { }
 
-    signin(credentials: { nickname: string, password: string }) {
+    signin(credentials: SigninCredentials) {
         return this.http.post<{ token: string }>("http://localhost:8080/api/auth/login", credentials)
     }
 
-    signup(credentials: { nickname: string, email: string, password: string }) {
+    signup(credentials: SignupCredentials) {
         return this.http.post<{}>("http://localhost:8080/api/auth/signup", credentials)
     }
 

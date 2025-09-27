@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +20,7 @@ export class Signup {
   hidePassword = true;
   isLoading = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.myForm = this.fb.group({
       nickname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -34,6 +35,7 @@ export class Signup {
       this.authService.signup(this.myForm.value).subscribe({
         next: (res) => {
           console.log('Signup successful', res)
+          this.router.navigate(["/auth/signin"])
           // navigate this.router.navigate(["/home"])
         },
         error: (err) => console.log('Login faild', err)
