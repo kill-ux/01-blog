@@ -1,26 +1,68 @@
-<p>signin works!</p>
 
-<!-- <p>{{counter()}}</p>
+<div class="signin-container">
+    <mat-card class="signin-card">
+        <mat-card-header class="signin-header">
+            <mat-card-title class="signin-title">Welcome Back</mat-card-title>
+            <mat-card-subtitle class="signin-subtitle">Sign in to your account</mat-card-subtitle>
+        </mat-card-header>
 
-<button mat-button (click)="update()" >update</button> -->
+        <mat-card-content>
+            <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="signin-form">
+                <!-- Nickname Field -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nickname</mat-label>
+                    <input matInput formControlName="nickname" placeholder="Enter your nickname"
+                        autocomplete="username">
+                    <mat-icon matSuffix>person</mat-icon>
 
-<form [formGroup]="myForm" (submit)="onSubmit()">
-    <mat-form-field>
-        <mat-label>Your Name</mat-label>
-        <input matInput formControlName="nickname" placeholder="Enter your Nickname">
-        @if (myForm.get('nickname')?.hasError('required')) {
-        <mat-error>Nickname is required</mat-error>
-        }
-    </mat-form-field>
+                    @if (nickname?.hasError('required') && nickname?.touched) {
+                    <mat-error>Nickname is required</mat-error>
+                    }
+                    @if (nickname?.hasError('minlength') && nickname?.touched) {
+                    <mat-error>Nickname must be at least 3 characters</mat-error>
+                    }
+                    @if (nickname?.hasError('pattern') && nickname?.touched) {
+                    <mat-error>Only letters, numbers, and underscores allowed</mat-error>
+                    }
+                </mat-form-field>
 
-    <br>
+                <!-- Password Field -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                        placeholder="Enter your password" autocomplete="current-password">
+                    <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
 
-    <mat-form-field>
-        <mat-label>Your Password</mat-label>
-        <input matInput formControlName="password" placeholder="Enter your name">
-    </mat-form-field>
+                    @if (password?.hasError('required') && password?.touched) {
+                    <mat-error>Password is required</mat-error>
+                    }
+                    @if (password?.hasError('minlength') && password?.touched) {
+                    <mat-error>Password must be at least 6 characters</mat-error>
+                    }
+                    @if (password?.hasError('pattern') && password?.touched) {
+                    <mat-error>Must include uppercase, lowercase, and number</mat-error>
+                    }
+                </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-</form>
+                <!-- Submit Button -->
+                <button mat-raised-button color="secondary" type="submit" class="submit-button" [disabled]="isLoading">
 
-<!-- // @angualr/from  -->
+                    @if (isLoading) {
+                    <!-- <mat-spinner diameter="20" class="button-spinner"></mat-spinner> -->
+                    Signing In...
+                    } @else {
+                    Sign In
+                    }
+                </button>
+
+                <!-- Helper Links -->
+                <div class="helper-links">
+                    <a href="auth/signup" class="helper-link">Sign Up</a>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

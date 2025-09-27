@@ -4,30 +4,41 @@ import { MatButtonModule } from '@angular/material/button'
 
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input';
-import { AuthApi } from '../services/auth-api';
+import { AuthService } from '../services/auth-api';
+import { MatCardModule } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 @Component({
 	selector: 'app-signin',
-	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule],
+	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule,MatIcon],
 	templateUrl: './signin.html',
 	styleUrl: './signin.css'
 })
 export class Signin {
 	myForm: FormGroup;
+	hidePassword = true;
+	isLoading = false;
 
-	constructor(private fb: FormBuilder, private authApi: AuthApi) {
+	constructor(private fb: FormBuilder, private authService: AuthService) {
 		this.myForm = this.fb.group({
-			nickname: ['', Validators.required],
+			nickname: ['', [
+				Validators.required,
+				Validators.minLength(3),
+				Validators.maxLength(20),
+				Validators.pattern(/^[a-zA-Z0-9_-]+$/)
+			]],
 			password: ['', Validators.required]
 		})
 	}
 
 	onSubmit() {
 		if (this.myForm.valid) {
+			this.isLoading = true;
 			console.log('Form data:', this.myForm.value);
-			this.authApi.signin(this.myForm.value).subscribe({
+			this.authService.signin(this.myForm.value).subscribe({
 				next: (res) => {
-					this.authApi.setAuthToken(res.token)
+					this.authService.setAuthToken(res.token)
 					// navigate this.router.navigate(["/home"])
 				},
 				error: (err) => console.log('Login faild', err)
@@ -35,4 +46,18 @@ export class Signin {
 			})
 		}
 	}
+
+
+	get nickname() {
+		return this.myForm.get("nickname")
+	}
+
+	get password() {
+		return this.myForm.get("password")
+	}
+
+	togglePasswordVisibility(): void {
+		this.hidePassword = !this.hidePassword;
+	}
+
 }

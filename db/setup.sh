@@ -73,22 +73,20 @@ else
     fi
 fi
 
-# # Optional: install Docker Compose v2
-# echo "📦 Installing Docker Compose v2..."
+# Optional: install Docker Compose v2
+echo "📦 Installing Docker Compose v2..."
+mkdir -p ~/.docker/cli-plugins
+if [ ! -f ~/.docker/cli-plugins/docker-compose ]; then
+    curl -SL https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-linux-x86_64 \
+      -o ~/.docker/cli-plugins/docker-compose
+    chmod +x ~/.docker/cli-plugins/docker-compose
+    echo "✅ Docker Compose installed."
+else
+    echo "✅ Docker Compose already installed."
+fi
 
-# sed -i.bak '/export PATH=.*cli-plugins/d' ~/.zshrc
-# mkdir -p ~/.docker/cli-plugins
-# if [ ! -f ~/.docker/cli-plugins/docker-compose ]; then
-#     curl -SL https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-linux-x86_64 \
-#       -o ~/.docker/cli-plugins/docker-compose
-#     chmod +x ~/.docker/cli-plugins/docker-compose
-#     echo "✅ Docker Compose installed."
-# else
-#     echo "✅ Docker Compose already installed."
-# fi
-
-# echo 'export PATH=$HOME/.docker/cli-plugins:$PATH' >> ~/.zshrc
-# export PATH=$HOME/.docker/cli-plugins:$PATH
+echo 'export PATH=$HOME/.docker/cli-plugins:$PATH' >> ~/.zshrc
+export PATH=$HOME/.docker/cli-plugins:$PATH
 
 # Verify installation
 echo "🔍 Verifying installation..."
