@@ -21,3 +21,4 @@ export class AuthApi {
         return localStorage.getItem(this.tokenKey)
     }
 }
+
