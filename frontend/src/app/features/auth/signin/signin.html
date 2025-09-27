@@ -1,0 +1,26 @@
+<p>signin works!</p>
+
+<!-- <p>{{counter()}}</p>
+
+<button mat-button (click)="update()" >update</button> -->
+
+<form [formGroup]="myForm" (submit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Your Name</mat-label>
+        <input matInput formControlName="nickname" placeholder="Enter your Nickname">
+        @if (myForm.get('nickname')?.hasError('required')) {
+        <mat-error>Nickname is required</mat-error>
+        }
+    </mat-form-field>
+
+    <br>
+
+    <mat-form-field>
+        <mat-label>Your Password</mat-label>
+        <input matInput formControlName="password" placeholder="Enter your name">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>
+
+<!-- // @angualr/from  -->
