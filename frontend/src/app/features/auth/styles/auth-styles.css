@@ -76,7 +76,9 @@ mat-card {
 	--color-black: #222;
 	--color-white: #fff;
 	--color-blue: #459ffb;
-	--color-current-taxonomy: #459ffb;
+	/* --color-current-taxonomy: #459ffb;   */
+	--color-current-taxonomy: #030213;  
+	--primary: #030213;
 	--color-bg: #f8fafc;
 	--color-text-primary: #1a202c;
 	--color-text-secondary: #4a5568;

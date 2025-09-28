@@ -1,0 +1,69 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-content">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon btn">01</div>
+                <span class="logo-text">Blog</span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="nav-links">
+                <ul class="nav-links-list">
+                    <li><a href="#" class="nav-link active">Feed</a></li>
+                    <li><a href="#" class="nav-link">My Block</a></li>
+                    <li><a href="#" class="nav-link">Discover</a></li>
+                    <li><a href="#" class="nav-link">Community</a></li>
+                </ul>
+            </div>
+
+            <!-- Desktop Action Buttons -->
+            <div class="action-buttons">
+                <!-- <a href="#" class="btn btn-ghost">Login</a> -->
+                <svg width="20" height="20" viewBox="0 0 20 20"
+                    class="fill-current text-icon hover:text-current-taxonomy dark-icon" style="">
+                    <path d="M14 6H6V14H14V6Z"></path>
+                    <path d="M11 2H9V6H11V2Z"></path>
+                    <path d="M14 9L14 11L18 11L18 9L14 9Z"></path>
+                    <path d="M2 9L2 11L6 11L6 9L2 9Z"></path>
+                    <path d="M11 18H9V14H11V18Z"></path>
+                    <path d="M6 4H4V6H6V4Z"></path>
+                    <path d="M6 16H4V14H6V16Z"></path>
+                    <path d="M14 4H16V6H14V4Z"></path>
+                    <path d="M14 16H16V14H14V16Z"></path>
+                </svg>
+                <a href="#" class="btn btn-primary">Create</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <svg id="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <svg id="close-icon" style="display: none;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="#" class="mobile-nav-link active">Feed</a>
+                <a href="#" class="mobile-nav-link">My Block</a>
+                <a href="#" class="mobile-nav-link">Discover</a>
+                <a href="#" class="mobile-nav-link">Community</a>
+
+                <div class="mobile-actions">
+                    <a href="#" class="btn btn-ghost mobile-btn">Login</a>
+                    <a href="#" class="btn btn-primary mobile-btn">Join 01Blog</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

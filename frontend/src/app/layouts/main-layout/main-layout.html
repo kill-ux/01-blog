@@ -1,1 +1,24 @@
-<p>main-layout works!</p>
+<div class="main-layout">
+
+    <!-- Navigation Bar -->
+    <app-navbar></app-navbar>
+
+    <!-- Main Content -->
+    <main style="display: flex; align-items: center; justify-content: center; height: 400px;" class="main-content">
+        <div style="text-align: center;" class="container">
+            <h1>Welcome to 01Blog</h1>
+            <p style="color: var(--muted-foreground); margin-top: 0.5rem;">Share your learning journey with the
+                community</p>
+
+            <router-outlet></router-outlet>
+        </div>
+    </main> 
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Your footer content -->
+        </div>
+    </footer>
+</div>

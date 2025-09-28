@@ -1,28 +1,38 @@
 import { Component } from '@angular/core';
-import { Router } from 'express';
-import { AuthService } from '../../features/auth/services/auth-api';
+import { UserService } from '../../features/user/services/user-service';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { M } from '@angular/cdk/keycodes';
+import { Navbar } from "../navbar/navbar";
 
 @Component({
   selector: 'app-main-layout',
-  imports: [],
+  imports: [RouterOutlet, RouterLink, MatToolbarModule, Navbar],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.css'
 })
 export class MainLayout {
-  // isLoggedIn = false;
-  // currentUser: any;
+  isLoggedIn = false;
+  currentUser: any;
 
-  // constructor(
-  //   private authService: AuthService,
-  //   private router: Router
-  // ) { }
+  constructor(
+    private router: Router,
+    private userService: UserService
+  ) { }
 
-  // ngOnInit() {
-  //   this.authService.currentUser$.subscribe(user => {
-  //     this.isLoggedIn = !!user;
-  //     this.currentUser = user;
-  //   });
-  // }
+  ngOnInit() {
+    this.userService.getProfile().subscribe({
+      next: (user) => {
+        this.isLoggedIn = true;
+        this.currentUser = user;
+        console.log(user);
+      },
+      error: (err) => {
+        this.isLoggedIn = false;
+        this.currentUser = null;
+      }
+    })
+  }
 
   // logout() {
   //   this.authService.logout();

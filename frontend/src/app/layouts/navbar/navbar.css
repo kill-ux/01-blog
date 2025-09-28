@@ -1,0 +1,233 @@
+:root,
+:host {
+    --background: #ffffff;
+    --foreground: #2d3748;
+    --primary: #030213;
+    --primary-foreground: #ffffff;
+    --muted-foreground: #718096;
+    --border: rgba(0, 0, 0, 0.1);
+    --color-current-taxonomy: #459ffb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+.navbar {
+    background-color: var(--background);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.navbar-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon {
+    width: 3rem;
+    height: 2rem;
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    font-size: 1.3rem;
+
+    font-family: "Pixelify Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    border-radius: 0;
+}
+
+.logo-text {
+    margin-left: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--foreground);
+
+    font-family: "Pixelify Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    /* font-style: normal; */
+}
+
+/* Desktop Navigation */
+.nav-links {
+    display: none;
+    margin-left: 2.5rem;
+}
+
+.nav-links-list {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-link {
+    color: var(--muted-foreground);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+.nav-link.active {
+    color: var(--foreground);
+}
+
+/* Desktop Action Buttons */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+}
+
+.btn-ghost {
+    background-color: transparent;
+    color: var(--foreground);
+}
+
+.btn-ghost:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+    background-color: #1a1a2e;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.mobile-menu-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: currentColor;
+}
+
+/* Mobile Navigation Menu */
+.mobile-menu {
+    display: none;
+}
+
+.mobile-menu.active {
+    display: block;
+}
+
+.mobile-menu-content {
+    padding: 0.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.mobile-nav-link {
+    color: var(--muted-foreground);
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: color 0.2s ease;
+}
+
+.mobile-nav-link:hover {
+    color: var(--primary);
+}
+
+.mobile-nav-link.active {
+    color: var(--foreground);
+}
+
+.mobile-actions {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mobile-btn {
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .navbar-container {
+        padding: 0 1.5rem;
+    }
+
+    .nav-links {
+        display: block;
+    }
+
+    .action-buttons {
+        display: flex;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+    }
+}
+
+@media (min-width: 1024px) {
+    .navbar-container {
+        padding: 0 2rem;
+    }
+}
+
+.dark-icon:hover {
+    fill: var(--color-current-taxonomy);
+}
+
+.dark-icon {
+    width: 40px;
+    margin: 10px;
+}
