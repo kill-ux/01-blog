@@ -1,3 +1,11 @@
+@font-face {
+    font-family: "BoldPixels";
+    src: url("../../../styles/fonts/BoldPixels.ttf") format("truetype");
+    font-weight: 100 800;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root,
 :host {
     --background: #ffffff;
@@ -63,22 +71,22 @@ body {
 }
 
 .logo-text {
-    margin-left: 0.5rem;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--foreground);
-
-    font-family: "Pixelify Sans", sans-serif;
-    font-optical-sizing: auto;
+    margin-left: 0.7rem;
+    color: var(--primary);
+    font-family: "BoldPixels", sans-serif;
     font-weight: 800;
-    /* font-style: normal; */
+    font-size: 1.8rem;
+}
+
+.logo-text span {
+    color: rgb(220, 20, 60);
 }
 
 /* Desktop Navigation */
 .nav-links {
-    display: none;
-    margin-left: 2.5rem;
 }
+
+
 
 .nav-links-list {
     display: flex;
@@ -93,6 +101,13 @@ body {
     padding: 0.5rem 0.75rem;
     border-radius: 0.375rem;
     transition: color 0.2s ease;
+    /* margin-left: 2.5rem; */
+    display: flex;
+    /* margin-left: 2.5rem; */
+}
+
+.nav-link svg {
+    margin-right: 0.5rem;
 }
 
 .nav-link:hover {
