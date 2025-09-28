@@ -22,6 +22,7 @@ import api.model.user.LoginResponse;
 import api.model.user.User;
 import api.model.user.UserDto;
 import api.model.user.UserRecord;
+import api.model.user.UserResponse;
 import api.repository.UserRepository;
 import jakarta.validation.Valid;
 
@@ -32,12 +33,15 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
+    private final AuthUtils authUtils;
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager, JwtService jwtService) {
+            AuthenticationManager authenticationManager, JwtService jwtService,AuthUtils authUtils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.authUtils = authUtils;
     }
 
     public UserRepository getUserRepository() {
@@ -53,10 +57,13 @@ public class UserService {
                 .toList();
     }
 
-    public Optional<UserRecord> getUserById(long id) {
+    public UserResponse getUserById(long id) {
+        if (id == 0) {
+            id = this.authUtils.getAuthenticatedUser().getId();
+        }
         return this.userRepository
                 .findById(id)
-                .map(this::convertToDTO);
+                .map(UserResponse::new).get();
     }
 
     public UserRecord saveUser(@Valid UserRecord userRecord) {

@@ -7,11 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../services/auth-api';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { MatSpinner } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-signin',
-	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule,MatIcon],
+	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon],
 	templateUrl: './signin.html',
 	styleUrl: './signin.css'
 })
@@ -20,7 +20,7 @@ export class Signin {
 	hidePassword = true;
 	isLoading = false;
 
-	constructor(private fb: FormBuilder, private authService: AuthService) {
+	constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 		this.myForm = this.fb.group({
 			nickname: ['', [
 				Validators.required,
@@ -39,7 +39,7 @@ export class Signin {
 			this.authService.signin(this.myForm.value).subscribe({
 				next: (res) => {
 					this.authService.setAuthToken(res.token)
-					// navigate this.router.navigate(["/home"])
+					this.router.navigate(["/users/profile"])
 				},
 				error: (err) => console.log('Login faild', err)
 

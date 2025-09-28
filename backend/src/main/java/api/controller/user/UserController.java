@@ -9,12 +9,15 @@ import api.model.subscription.SubscribeRequest;
 import api.model.user.User;
 import api.model.user.UserDto;
 import api.model.user.UserRecord;
+import api.model.user.UserResponse;
 import api.service.BlogService;
 import api.service.NotificationService;
 import api.service.UserService;
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +50,12 @@ public class UserController {
     public ResponseEntity<String> subscribe(@Valid @RequestBody SubscribeRequest subscribeRequest) {
         String operation = this.userService.subscribe(subscribeRequest);
         return ResponseEntity.ok("successful operation: " + operation);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<Map<String, UserResponse>> getSubscribers(
+            @RequestParam(defaultValue = "0") long userId) {
+        return ResponseEntity.ok(Map.of("user", this.userService.getUserById(userId)));
     }
 
     @GetMapping("{userId}/subscribers")
