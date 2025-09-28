@@ -1,8 +1,8 @@
-
 <div class="signin-container">
     <mat-card class="signin-card">
         <mat-card-header class="signin-header">
-            <mat-card-title class="signin-title">Welcome Back</mat-card-title>
+            <mat-card-title class="signin-title">Hi there!</mat-card-title>
+    
             <mat-card-subtitle class="signin-subtitle">Sign in to your account</mat-card-subtitle>
         </mat-card-header>
 
@@ -46,23 +46,16 @@
                     <mat-error>Must include uppercase, lowercase, and number</mat-error>
                     }
                 </mat-form-field>
-
-                <!-- Submit Button -->
-                <button mat-raised-button color="secondary" type="submit" class="submit-button" [disabled]="isLoading">
-
-                    @if (isLoading) {
-                    <!-- <mat-spinner diameter="20" class="button-spinner"></mat-spinner> -->
-                    Signing In...
-                    } @else {
+                <button class="btn-primary btn" type="submit" [disabled]="isLoading">
                     Sign In
-                    }
                 </button>
 
-                <!-- Helper Links -->
-                <div class="helper-links">
-                    <a href="auth/signup" class="helper-link">Sign Up</a>
-                </div>
+
             </form>
         </mat-card-content>
+
+        <div class="helper-links">
+            <a href="auth/signup" class="helper-link">Sign Up</a>
+        </div>
     </mat-card>
 </div>

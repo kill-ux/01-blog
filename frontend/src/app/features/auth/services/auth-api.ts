@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { SigninCredentials, SignupCredentials } from '../models/model';
+import { AuthState, SigninCredentials, SignupCredentials } from '../models/model';
 
 @Injectable({
     providedIn: 'root'
@@ -16,26 +16,26 @@ export class AuthService {
     }
 
     signup(credentials: SignupCredentials) {
-        return this.http.post<{}>("http://localhost:8080/api/auth/signup", credentials)
+        return this.http.post<AuthState>("http://localhost:8080/api/auth/signup", credentials)
     }
 
     setAuthToken(token: string) {
-        if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem(this.tokenKey, token)
-        }
+        // if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem(this.tokenKey, token)
+        // }
     }
 
     getAuthToken(): string | null {
-        if (isPlatformBrowser(this.platformId)) {
-            return localStorage.getItem(this.tokenKey)
-        }
-        return null
+        // if (isPlatformBrowser(this.platformId)) {
+        return localStorage.getItem(this.tokenKey)
+        // }
+        // return null
     }
 
     removeAuthToken() {
-        if (isPlatformBrowser(this.platformId)) {
-            localStorage.removeItem(this.tokenKey);
-        }
+        // if (isPlatformBrowser(this.platformId)) {
+        localStorage.removeItem(this.tokenKey);
+        // }
     }
 }
 

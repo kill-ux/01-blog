@@ -2,6 +2,12 @@ interface user {
     id: number;
     nickname: string;
     email: string;
+    role: string;
+    avatar: string;
+    bannedUntil: string | null;
+    birthDate: string | null;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface AuthState {
