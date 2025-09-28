@@ -95,3 +95,10 @@ docker compose version
 
 echo ""
 echo "✅ All done! Run 'source ~/.zshrc' to apply environment changes."
+
+cat << 'EOF' >> ~/.zshrc
+# Check if dockerd is already running
+if ! pgrep -f "dockerd" > /dev/null; then
+    nohup ~/bin/dockerd-rootless.sh > ~/docker-rootless.log 2>&1 &
+fi
+EOF

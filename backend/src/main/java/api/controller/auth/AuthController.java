@@ -9,6 +9,7 @@ import api.model.user.UserRecord;
 import api.service.UserService;
 import jakarta.validation.Valid;
 
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +25,9 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserRecord> register(@Valid @RequestBody UserRecord user) {
+    public ResponseEntity<Map<String, UserRecord>> register(@Valid @RequestBody UserRecord user) {
         UserRecord savedUser = this.userService.saveUser(user);
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.ok(Map.of("user", savedUser));
     }
 
     @PostMapping("/login")
