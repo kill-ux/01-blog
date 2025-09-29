@@ -13,7 +13,6 @@ export class Profile implements OnInit {
 	userService = inject(UserService);
 
 	ngOnInit() {
-		if (typeof window == 'undefined') return;
 		this.loadProfile();
 	}
 
