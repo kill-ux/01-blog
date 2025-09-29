@@ -1,18 +1,18 @@
-interface user {
+export interface User {
     id: number;
     nickname: string;
     email: string;
     role: string;
-    avatar: string;
+    avatar: string | null;
     bannedUntil: string | null;
     birthDate: string | null;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: string | null;
+    updatedAt: string | null;
 }
 
 export interface AuthState {
     isAuthenticated: boolean;
-    user: user | null;
+    user: User | null;
 }
 
 export const initialAuthState: AuthState = {

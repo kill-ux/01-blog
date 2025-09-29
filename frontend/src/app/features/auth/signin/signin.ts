@@ -38,8 +38,8 @@ export class Signin {
 			console.log('Form data:', this.myForm.value);
 			this.authService.signin(this.myForm.value).subscribe({
 				next: (res) => {
-					this.authService.setAuthToken(res.token)
-					this.router.navigate(["/users/profile"])
+					// this.authService.setAuthToken(res.token)
+					this.router.navigate(["/"])
 				},
 				error: (err) => console.log('Login faild', err)
 

@@ -4,12 +4,14 @@ import { UsersRoutes } from './features/user/auth.routes';
 import { MainLayout } from './layouts/main-layout/main-layout';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { homeRoutes } from './features/home/home.routes';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
     {
         path: '',
         component: MainLayout,
-        children: homeRoutes
+        children: homeRoutes,
+        canActivate: [authGuard]
     },
     {
         path: 'auth',
@@ -20,5 +22,5 @@ export const routes: Routes = [
     //     path: 'users',
     //     children: UsersRoutes
     // },
-  
+
 ];

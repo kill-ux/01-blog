@@ -83,8 +83,7 @@ body {
 }
 
 /* Desktop Navigation */
-.nav-links {
-}
+.nav-links {}
 
 
 
@@ -245,4 +244,12 @@ body {
 .dark-icon {
     width: 40px;
     margin: 10px;
+}
+
+.img-profile {
+    width: 80px;
+}
+
+.profile {
+    margin-left: 10px;
 }

@@ -62,3 +62,23 @@ body {
     width: 100%;
     padding: 0.5rem 1rem;
 }
+
+.pixel-corners {
+    --size: 4px;
+    clip-path: polygon(var(--size)0,
+            calc(100% - var(--size))0,
+            calc(100% - var(--size))var(--size),
+            100% var(--size),
+            100% calc(100% - var(--size)),
+            calc(100% - var(--size))calc(100% - var(--size)),
+            calc(100% - var(--size))100%, var(--size)100%,
+            var(--size)calc(100% - var(--size)),
+            0 calc(100% - var(--size)), 0 var(--size),
+            var(--size)var(--size));
+}
+
+img {
+    max-width: 100%;
+    display: initial;
+    height: auto;
+}
