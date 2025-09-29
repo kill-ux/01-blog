@@ -82,3 +82,67 @@ img {
     display: initial;
     height: auto;
 }
+
+.custom-dialog-class {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+}
+
+.custom-dialog-class .mat-mdc-dialog-title {
+    margin-bottom: 12px;
+}
+
+.custom-dialog-class .mat-mdc-dialog-content {
+    padding: 16px;
+}
+
+.custom-dialog-class .mat-mdc-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 16px;
+}
+
+.custom-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 600px) {
+    .custom-dialog-class {
+        width: 95vw;
+        padding: 12px;
+    }
+}
+
+.custom-dialog-class{
+    border-radius: 0;
+    background-color: #f7faf9 ;
+    
+    --size: 4px;
+    clip-path: polygon(var(--size) 0,
+            calc(100% - var(--size)) 0,
+            calc(100% - var(--size)) var(--size),
+            100% var(--size),
+            100% calc(100% - var(--size)),
+            calc(100% - var(--size)) calc(100% - var(--size)),
+            calc(100% - var(--size)) 100%,
+            var(--size) 100%,
+            var(--size) calc(100% - var(--size)),
+            0 calc(100% - var(--size)),
+            0 var(--size),
+            var(--size) var(--size));
+
+    border: 5px #03021327 solid;
+}
+
+/* .mat-mdc-dialog-surface {
+    background-color: red;
+} */
+
+.custom-dialog-class * {
+    background-color: #f7faf9 ;
+    /* background-color: #ffffff !important; */
+    border-radius: 0 !important;
+}

@@ -52,13 +52,14 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AuthState, SigninCredentials, SignupCredentials, User } from '../models/model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     private tokenKey: string = "token";
-    private apiUrl: string = "http://localhost:8080/api";
+    private apiUrl;
 
     private currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
@@ -69,6 +70,7 @@ export class AuthService {
         private router: Router
     ) {
         this.initializeUserFromToken();
+        this.apiUrl = environment.apiUrl
     }
 
     signin(credentials: SigninCredentials): Observable<{ token: string }> {

@@ -1,0 +1,37 @@
+/* .links-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+} */
+
+.links-list {
+    /* background-color: rgba(0, 0, 0, 0.699);
+    border: 2px solid rgba(0, 0, 0, 0.63);
+    padding: 10px; */
+}
+
+.links-list div {
+    width: 102px;
+    padding: 4px;
+    border-bottom: 1px solid black;
+}
+
+.links-list .profile {
+    width: 90%;
+}
+
+.nav-link {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.041);
+    margin: 2px;
+}
+
+.profile {
+    /* background-color: red; */
+    border-bottom: none;
+}
