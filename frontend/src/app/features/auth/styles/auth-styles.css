@@ -1,5 +1,5 @@
-h1{
-    color: red;
+h1 {
+	color: red;
 }
 
 
@@ -35,7 +35,7 @@ h1{
 .signin-header {
 	text-align: center;
 	padding: 32px 24px 16px;
-    /* color: white */
+	/* color: white */
 }
 
 .signin-title {
@@ -63,6 +63,8 @@ mat-card {
 	flex-direction: column;
 	/* justify-content: center;
 	align-items: center; */
+
+
 }
 
 
@@ -72,11 +74,13 @@ mat-card {
 	box-sizing: border-box;
 } */
 
-:root, :host {
+:root,
+:host {
 	--color-black: #222;
 	--color-white: #fff;
 	--color-blue: #459ffb;
-	--color-current-taxonomy: #459ffb;
+	/* --color-current-taxonomy: #459ffb; */
+	--color-current-taxonomy: #222;
 	--color-bg: #f8fafc;
 	--color-text-primary: #1a202c;
 	--color-text-secondary: #4a5568;
@@ -112,6 +116,98 @@ body {
 	overflow: hidden;
 }
 
+.card {
+	
+	/* position: relative; */
+
+	width: 25rem;
+	border-radius: 1.8rem;
+	color: #fff;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	transition: all 0.4s ease-in-out, transform 0.4s ease-out;
+
+	&::before {
+		content: "";
+		display: block;
+		--offset: 1rem;
+		width: calc(100% + 2 * 1rem);
+		height: calc(100% + 2 * 1rem);
+		position: absolute;
+		left: calc(-1 * 1rem);
+		right: calc(-1 * 1rem);
+		top: calc(-1 * 1rem);
+		bottom: calc(-1 * 1rem);
+		margin: auto;
+		box-shadow: inset 0 0 0px 0.06rem rgba(255, 255, 255, 0.13);
+		border-radius: 2.6rem;
+		--ax: 4rem;
+		clip-path: polygon(4rem 0,
+				0 0,
+				0 4rem,
+				4rem 4rem,
+				4rem calc(100% - 4rem),
+				0 calc(100% - 4rem),
+				0 100%,
+				4rem 100%,
+				4rem calc(100% - 4rem),
+				calc(100% - 4rem) calc(100% - 4rem),
+				calc(100% - 4rem) 100%,
+				100% 100%,
+				100% calc(100% - 4rem),
+				calc(100% - 4rem) calc(100% - 4rem),
+				calc(100% - 4rem) 4rem,
+				100% 4rem,
+				100% 0,
+				calc(100% - 4rem) 0,
+				calc(100% - 4rem) 4rem,
+				4rem 4rem);
+		transition: all 0.4s ease-in-out;
+	}
+
+	&:hover {
+		transform: translateY(-0.2rem);
+	}
+
+	&:hover::before {
+		--offset: 0.5rem;
+		--ax: 8rem;
+		width: calc(100% + 2 * 0.5rem);
+		height: calc(100% + 2 * 0.5rem);
+		left: calc(-1 * 0.5rem);
+		right: calc(-1 * 0.5rem);
+		top: calc(-1 * 0.5rem);
+		bottom: calc(-1 * 0.5rem);
+		border-radius: 2.2rem;
+		box-shadow: inset 0 0 0 0.08rem rgba(255, 255, 255, 0.07);
+		clip-path: polygon(8rem 0,
+				0 0,
+				0 8rem,
+				8rem 8rem,
+				8rem calc(100% - 8rem),
+				0 calc(100% - 8rem),
+				0 100%,
+				8rem 100%,
+				8rem calc(100% - 8rem),
+				calc(100% - 8rem) calc(100% - 8rem),
+				calc(100% - 8rem) 100%,
+				100% 100%,
+				100% calc(100% - 8rem),
+				calc(100% - 8rem) calc(100% - 8rem),
+				calc(100% - 8rem) 8rem,
+				100% 8rem,
+				100% 0,
+				calc(100% - 8rem) 0,
+				calc(100% - 8rem) 8rem,
+				8rem 8rem);
+
+		background-color: rgba(0, 0, 0, 0.082);
+		border: rgba(0, 0, 0, 0.068) solid 1px;
+	}
+}
+
 .signin-header {
 	text-align: center;
 	padding: 32px 24px 16px;
@@ -132,7 +228,7 @@ body {
 
 .signin-subtitle {
 	font-size: 0.875rem;
-    color: rgb(156, 156, 156);
+	color: rgb(156, 156, 156);
 }
 
 .signin-form {
@@ -208,7 +304,7 @@ body {
 }
 
 .btn-primary:hover {
-	background: #3578c5;
+	background: #333333;
 	transform: translateY(-1px);
 }
 
@@ -270,7 +366,7 @@ body {
 	margin-bottom: 14px;
 }
 
-.helper-link{
+.helper-link {
 	text-decoration: none;
 	color: var(--color-text-primary);
 }

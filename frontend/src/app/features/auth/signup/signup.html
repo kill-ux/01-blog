@@ -3,76 +3,78 @@
 
 
 <div class="signin-container">
-    <mat-card class="signin-card">
-        <mat-card-header class="signin-header">
-            <mat-card-title class="signin-title">Create your account</mat-card-title>
-            <mat-card-subtitle class="signin-subtitle">Let's get started</mat-card-subtitle>
-        </mat-card-header>
+    <div class="card">
+        <mat-card class="signin-card">
+            <mat-card-header class="signin-header">
+                <mat-card-title class="signin-title">Create your account</mat-card-title>
+                <mat-card-subtitle class="signin-subtitle">Let's get started</mat-card-subtitle>
+            </mat-card-header>
 
-        <mat-card-content>
-            <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="signin-form">
-                <!-- Nickname Field -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Nickname</mat-label>
-                    <input matInput formControlName="nickname" placeholder="Enter your nickname"
-                        autocomplete="username">
-                    <mat-icon matSuffix>person</mat-icon>
+            <mat-card-content>
+                <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="signin-form">
+                    <!-- Nickname Field -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Nickname</mat-label>
+                        <input matInput formControlName="nickname" placeholder="Enter your nickname"
+                            autocomplete="username">
+                        <mat-icon matSuffix>person</mat-icon>
 
-                    @if (nickname?.hasError('required') && nickname?.touched) {
-                    <mat-error>Nickname is required</mat-error>
-                    }
-                    @if (nickname?.hasError('minlength') && nickname?.touched) {
-                    <mat-error>Nickname must be at least 3 characters</mat-error>
-                    }
-                    @if (nickname?.hasError('pattern') && nickname?.touched) {
-                    <mat-error>Only letters, numbers, and underscores allowed</mat-error>
-                    }
-                </mat-form-field>
+                        @if (nickname?.hasError('required') && nickname?.touched) {
+                        <mat-error>Nickname is required</mat-error>
+                        }
+                        @if (nickname?.hasError('minlength') && nickname?.touched) {
+                        <mat-error>Nickname must be at least 3 characters</mat-error>
+                        }
+                        @if (nickname?.hasError('pattern') && nickname?.touched) {
+                        <mat-error>Only letters, numbers, and underscores allowed</mat-error>
+                        }
+                    </mat-form-field>
 
-                <!--Email Faild-->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" placeholder="Enter your email" autocomplete="email">
-                    <mat-icon matSuffix>email</mat-icon>
+                    <!--Email Faild-->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" placeholder="Enter your email" autocomplete="email">
+                        <mat-icon matSuffix>email</mat-icon>
 
-                    @if (email?.hasError('required') && email?.touched) {
-                    <mat-error>Email is required</mat-error>
-                    }
-                    @if (email?.hasError('email') && email?.touched) {
-                    <mat-error>Enter a valid email</mat-error>
-                    }
-                </mat-form-field>
+                        @if (email?.hasError('required') && email?.touched) {
+                        <mat-error>Email is required</mat-error>
+                        }
+                        @if (email?.hasError('email') && email?.touched) {
+                        <mat-error>Enter a valid email</mat-error>
+                        }
+                    </mat-form-field>
 
-                <!-- Password Field -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Password</mat-label>
-                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
-                        placeholder="Enter your password" autocomplete="current-password">
-                    <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
-                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    <!-- Password Field -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                            placeholder="Enter your password" autocomplete="current-password">
+                        <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+
+                        @if (password?.hasError('required') && password?.touched) {
+                        <mat-error>Password is required</mat-error>
+                        }
+                        @if (password?.hasError('minlength') && password?.touched) {
+                        <mat-error>Password must be at least 6 characters</mat-error>
+                        }
+                        @if (password?.hasError('pattern') && password?.touched) {
+                        <mat-error>Must include uppercase, lowercase, and number</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <!-- Submit Button -->
+                    <button class="btn-primary btn" type="submit">
+                        Sign Up
                     </button>
 
-                    @if (password?.hasError('required') && password?.touched) {
-                    <mat-error>Password is required</mat-error>
-                    }
-                    @if (password?.hasError('minlength') && password?.touched) {
-                    <mat-error>Password must be at least 6 characters</mat-error>
-                    }
-                    @if (password?.hasError('pattern') && password?.touched) {
-                    <mat-error>Must include uppercase, lowercase, and number</mat-error>
-                    }
-                </mat-form-field>
-
-                <!-- Submit Button -->
-                <button class="btn-primary btn" type="submit">
-                    Sign Up
-                </button>
-
-            </form>
-        </mat-card-content>
-        <div class="helper-links">
-            <a href="auth/signin" class="helper-link">Sign In</a>
-        </div>
-    </mat-card>
+                </form>
+            </mat-card-content>
+            <div class="helper-links">
+                <a href="auth/signin" class="helper-link">Sign In</a>
+            </div>
+        </mat-card>
+    </div>
 </div>
