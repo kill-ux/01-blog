@@ -2,10 +2,11 @@ import { Component, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 import { DialogProfile } from './dialog-profile/dialog-profile';
 import { AuthService } from '../../features/auth/services/auth-api';
+import { RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'app-navbar',
-	imports: [MatDialogModule],
+	imports: [MatDialogModule, RouterLink],
 	templateUrl: './navbar.html',
 	styleUrl: './navbar.css'
 })

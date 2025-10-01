@@ -1,0 +1,33 @@
+<!-- <h6>
+  angular&#64;{{ angularVersion }} | ngx-markdown&#64;{{ ngxMarkdownVersion }}
+</h6>
+<br>
+<textarea class="variable-textarea" [(ngModel)]="markdown"></textarea>
+<markdown class="variable-binding" [data]="markdown"></markdown> -->
+
+<div class="markdown-editor-container">
+
+    <div class="editor-layout">
+        <div class="shadow">
+            <form >
+                <div class="editor-panel">
+                    <label class="panel-label">
+                        <span>Markdown Input</span>
+                        <button type="submit" class="btn btn-primary with-100">save</button>
+                    </label>
+
+                    <textarea class="markdown-textarea" [(ngModel)]="markdown"
+                        placeholder="Start typing your markdown here..."></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="shadow">
+            <div class="preview-panel">
+                <label class="panel-label">Preview</label>
+                <div class="preview-content">
+                    <markdown class="markdown-preview" [data]="markdown"></markdown>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

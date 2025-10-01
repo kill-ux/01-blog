@@ -28,7 +28,6 @@
               "src/custom-theme.scss",
               "src/styles.css"
             ]
-            
           },
           "configurations": {
             "production": {
