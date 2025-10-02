@@ -1,15 +1,9 @@
-<!-- <h6>
-  angular&#64;{{ angularVersion }} | ngx-markdown&#64;{{ ngxMarkdownVersion }}
-</h6>
-<br>
-<textarea class="variable-textarea" [(ngModel)]="markdown"></textarea>
-<markdown class="variable-binding" [data]="markdown"></markdown> -->
-
+<!--
 <div class="markdown-editor-container">
 
     <div class="editor-layout">
         <div class="shadow">
-            <!-- <form [formGroup]="formBlog" (ngSubmit)="onSubmit()">
+            <form [formGroup]="formBlog" (ngSubmit)="onSubmit()">
                 <div class="editor-panel">
                     <mat-form-field appearance="outline">
                         <label class="panel-label">
@@ -22,7 +16,7 @@
 
                     </mat-form-field>
                 </div>
-            </form> -->
+            </form> 
 
             <form [formGroup]="formBlog" (ngSubmit)="onSubmit()">
                 <div class="editor-panel">
@@ -41,13 +35,42 @@
 
 
         </div>
-        <!-- <div class="shadow">
+         <div class="shadow">
             <div class="preview-panel">
                 <label class="panel-label">Preview</label>
                 <div class="preview-content">
                     <markdown class="markdown-preview" [data]="markdown"></markdown>
                 </div>
             </div>
-        </div> -->
+        </div> 
+    </div>
+</div> -->
+
+
+
+
+<div class="markdown-editor-container">
+
+    <div class="editor-layout">
+        <div class="shadow">
+            <form [formGroup]="formBlog" (submit)="onSubmit()">
+                <!-- <mat-form-field appearance="outline">
+
+                </mat-form-field> -->
+                <div class="editor-panel">
+                    <div class="NgxEditor__Wrapper">
+                        <label class="panel-label">
+                            <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
+                            <button type="submit" class="btn btn-primary with-100">save</button>
+                        </label>
+
+                        <ngx-editor class="markdown-textarea" [editor]="editor" formControlName="html"
+                            [disabled]="false" [placeholder]="'Type here...'">
+                        </ngx-editor>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
 </div>

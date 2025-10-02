@@ -17,7 +17,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 	formBlog: FormGroup;
 	constructor(private fb: FormBuilder) {
 		this.formBlog = this.fb.group({
-			content: ['Hello', Validators.required]
+			html: ['', Validators.required]
 		})
 	}
 
@@ -31,44 +31,10 @@ export class CreateBlog implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.editor = new Editor();
 		this.editor.commands
-			.textColor('red')
-			.insertText(`
-	sd
-
-	sdf
-	sd
-	fs
-	df
-	sdf
-	sd
-	f
-	sdf
-	sd
-	f
-	sd
-	fsd
-	f
-	sdf
-
-		sdf
-	sd
-	f
-	sdf
-	sd
-	f
-	sd
-	fsd
-	f
-	sd
-	fsd
-	f
-	sdf
-	sd
-	f`)
 			.focus()
-			.scrollIntoView()
 			.exec();
 	}
+
 	ngOnDestroy(): void {
 		this.editor?.destroy();
 	}

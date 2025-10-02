@@ -13,17 +13,17 @@
 }
 
 .editor-layout {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 24px;
-	padding-inline: 100px;
+	/* display: grid; */
+	/* grid-template-columns: 1fr 1fr 1fr ; */
+	padding-inline: 300px;
 	/* height: 600px; */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
 	.editor-layout {
-		grid-template-columns: 1fr;
-		height: auto;
+		/* grid-template-columns: 1fr; */
+		/* height: auto; */
+		padding: 5px;
 	}
 }
 
@@ -55,22 +55,14 @@
 	height: 50px;
 }
 
-.markdown-textarea {
-	flex: 1;
-	border: none;
-	outline: none;
+/* .markdown-textarea {
 	padding: 16px;
 	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-	font-size: 14px;
-	line-height: 1.5;
-	resize: none;
 	background: white;
 	color: #1f2937;
+} */
 
-	overflow: auto;
-	background-color: red;
-	text-align: start;
-}
+
 
 .NgxEditor__Wrapper {
 	border: none;
@@ -97,81 +89,6 @@
 	text-align: start;
 }
 
-
-/* Toolbar Styles */
-/* .toolbar {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.toolbar-group {
-  display: flex;
-  gap: 4px;
-  padding-right: 12px;
-  border-right: 1px solid #e5e7eb;
-}
-
-.toolbar-group:last-child {
-  border-right: none;
-  padding-right: 0;
-}
-
-.toolbar-btn {
-  padding: 6px 10px;
-  border: 1px solid #d1d5db;
-  background: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  color: #374151;
-}
-
-.toolbar-btn:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-  transform: translateY(-1px);
-}
-
-.toolbar-btn:active {
-  transform: translateY(0);
-}
-
-.toolbar-btn strong {
-  font-weight: 700;
-}
-
-.toolbar-btn em {
-  font-style: italic;
-}
-
-.toolbar-btn s {
-  text-decoration: line-through;
-}
-
-@media (max-width: 768px) {
-  .toolbar {
-    gap: 6px;
-    padding: 8px 12px;
-  }
-  
-  .toolbar-group {
-    padding-right: 8px;
-  }
-  
-  .toolbar-btn {
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-} */
 
 
 .shadow {
@@ -214,4 +131,20 @@
 	border: 1px solid #e5e7eb;
 	;
 
+}
+
+
+/* Ngx-Editor Custom Styles */
+::ng-deep .NgxEditor {
+	/* min-height: 100% !important; */
+	height: auto !important;
+	border: none !important;
+	line-height: 1.6 !important;
+	overflow: auto !important;
+	height: 600px !important;
+}
+
+::ng-deep .NgxEditor__Content {
+	min-height: 95% !important;
+	text-align: start;
 }
