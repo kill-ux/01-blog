@@ -28,6 +28,8 @@ body {
     --color-btn-text: white;
     --spacing: 0.25rem;
     --font-grotesk: 'Hanken Grotesk', sans-serif;
+
+    --primary-foreground: #ffffff;
 }
 
 
@@ -145,4 +147,9 @@ img {
     background-color: #f7faf9 ;
     /* background-color: #ffffff !important; */
     border-radius: 0 !important;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
 }
