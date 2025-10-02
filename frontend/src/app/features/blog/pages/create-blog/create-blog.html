@@ -9,25 +9,45 @@
 
     <div class="editor-layout">
         <div class="shadow">
-            <form >
+            <!-- <form [formGroup]="formBlog" (ngSubmit)="onSubmit()">
                 <div class="editor-panel">
-                    <label class="panel-label">
-                        <span>Markdown Input</span>
-                        <button type="submit" class="btn btn-primary with-100">save</button>
-                    </label>
+                    <mat-form-field appearance="outline">
+                        <label class="panel-label">
+                            <span>Markdown Input</span>
+                            <button type="submit" class="btn btn-primary with-100">save</button>
+                        </label>
 
-                    <textarea class="markdown-textarea" [(ngModel)]="markdown"
-                        placeholder="Start typing your markdown here..."></textarea>
+                        <textarea rows="24" matInput class="markdown-textarea" [(ngModel)]="markdown"
+                            placeholder="Start typing your markdown here..." formControlName="content"></textarea>
+
+                    </mat-form-field>
+                </div>
+            </form> -->
+
+            <form [formGroup]="formBlog" (ngSubmit)="onSubmit()">
+                <div class="editor-panel">
+                    <div class="NgxEditor__Wrapper">
+                        <label class="panel-label">
+                            <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+                            <button type="submit" class="btn btn-primary with-100">save</button>
+                        </label>
+                        <ngx-editor class="markdown-textarea" [editor]="editor" [ngModel]="html" [disabled]="false"
+                            [placeholder]="'Type here...'"></ngx-editor>
+                    </div>
                 </div>
             </form>
+
+
+
+
         </div>
-        <div class="shadow">
+        <!-- <div class="shadow">
             <div class="preview-panel">
                 <label class="panel-label">Preview</label>
                 <div class="preview-content">
                     <markdown class="markdown-preview" [data]="markdown"></markdown>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
