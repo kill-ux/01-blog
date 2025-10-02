@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
 import { BlogResponce } from '../../model/model';
+import { DatePipe } from '@angular/common';
+
+import sanitizeHtml from 'sanitize-html';
 
 @Component({
 	selector: 'app-blogs',
-	imports: [],
+	imports: [DatePipe],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css'
 })
@@ -23,7 +26,7 @@ export class Blogs implements OnInit {
 	loadBlogs() {
 		this.blogService.getBlogsNetworks().subscribe({
 			next: (res) => {
-				console.log(res)
+				console.log("res", res)
 				this.blogs = res;
 				console.log(this.blogs)
 			},
@@ -32,4 +35,28 @@ export class Blogs implements OnInit {
 			}
 		})
 	}
+
+	sanitizeHtml(text: string) {
+		return sanitizeHtml(this.blogs[0].description, {
+			allowedTags: ALLOWED_TAGS,
+			allowedAttributes: { 'a': ['href'], 'img': ['src'] }
+		})
+	}
+
+	toggleLike(blogResponce: BlogResponce) {
+
+	}
 }
+
+
+
+const ALLOWED_TAGS = [
+	'h1', 'h2', 'h3', 'b', 'i', 'em', 'strong', 'u',
+	'p', 'br', 'span', 'div',
+	'ul', 'ol', 'li',
+	'a', 'img', 'video',
+	'blockquote',
+	'code', 'pre'
+]
+
+// const ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'style']
