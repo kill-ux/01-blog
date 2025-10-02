@@ -148,3 +148,10 @@
 	min-height: 95% !important;
 	text-align: start;
 }
+
+.error {
+	/* background-color: rgba(255, 0, 0, 0.048); */
+	color: red;
+	padding: 2px;
+	/* border: #3741510a solid 1px; */
+}
