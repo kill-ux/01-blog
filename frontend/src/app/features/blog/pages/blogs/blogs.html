@@ -29,7 +29,8 @@
             <div class="blog-content">
                 <div class="blog-description">
                     <!-- {{ item.description }} -->
-                    <div [innerHTML]="sanitizeHtml(item.description)"></div>
+                    <!-- <div [innerHTML]="sanitizeHtml(item.description)"></div> -->
+                    <markdown class="markdown-preview" [data]="sanitizeHtml(item.description)"></markdown>
                 </div>
             </div>
 
