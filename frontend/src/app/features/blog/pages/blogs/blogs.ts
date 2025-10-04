@@ -45,8 +45,28 @@ export class Blogs implements OnInit {
 	}
 
 	toggleLike(blogResponce: BlogResponce) {
-
+		this.blogService.toggleLike(blogResponce).subscribe({
+			next: res => {
+				console.log(res)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
 	}
+
+	// getLikes(blogResponce: BlogResponce) {
+	// 	return this.blogService.getLikes(blogResponce).subscribe({
+	// 		next: res => {
+	// 			console.log(res)
+	// 			return res.count
+	// 		},
+	// 		error: err => {
+	// 			console.log(err)
+	// 			return 0
+	// 		}
+	// 	})
+	// }
 }
 
 

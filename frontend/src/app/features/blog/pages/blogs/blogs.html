@@ -27,18 +27,22 @@
 
             <!-- Blog content -->
             <div class="blog-content">
-                <div class="blog-description">
-                    <!-- {{ item.description }} -->
-                    <!-- <div [innerHTML]="sanitizeHtml(item.description)"></div> -->
-                    <markdown class="markdown-preview" [data]="sanitizeHtml(item.description)"></markdown>
+                <div class="blog-title">
+                    <h3>{{ item.title.substring(0,255) }}</h3>
                 </div>
             </div>
+
+            <!-- <div class="blog-content">
+                <div class="blog-description">
+                    <markdown class="markdown-preview" [data]="item.description.substring(0,255)"></markdown>
+                </div>
+            </div> -->
 
             <!-- Footer with stats -->
             <footer class="blog-footer">
                 <div class="blog-stats">
-                    <span class="stat">
-                        <svg width="20" height="20" viewBox="0 0 20 20" class="fill-current">
+                    <span class="stat" [class.liked] = "item.like" [class.not-liked] = "!item.like">
+                        <svg (click)="toggleLike(item)" width="20" height="20" viewBox="0 0 20 20" class="fill-current">
                             <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
                             <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
                             <path d="M14.3043 1.59375H11.4492V4.48449H14.3043V1.59375Z"></path>
@@ -54,11 +58,11 @@
                             <path d="M17.1519 10.2451H14.2969V13.1359H17.1519V10.2451Z"></path>
                             <path d="M20.0006 7.36133H17.1455V10.2521H20.0006V7.36133Z"></path>
                         </svg>
-                        {{ 0 }}
+                        {{ item.likes }}
                     </span>
                     <span class="stat">
                         <svg width="23" height="23" viewBox="0 0 16 16" fill="none"
-                            class="text-text-primary fill-current">
+                            class="text-text-primary fill-current comment-svg">
                             <path d="M12.7992 2.40002H3.19922V4.00002H12.7992V2.40002Z"></path>
                             <path d="M12.8008 10.4H4.80078V12H12.8008V10.4Z"></path>
                             <path d="M4.79922 12H3.19922V13.6H4.79922V12Z"></path>
@@ -68,6 +72,9 @@
                         </svg>
                         {{ 0 }}
                     </span>
+
+                </div>
+                <div class="blog-stats">
                     <span class="stat">
                         <svg width="20" viewBox="0 0 20 20"
                             class="hover:text-blue transition-colors duration-500 hover:scale-98">

@@ -31,6 +31,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 		console.log(this.pasteMarkdown())
 		this.formBlog = this.fb.group({
 			description: ['', Validators.required],
+			title: ['',Validators.required]
 		})
 	}
 
@@ -42,15 +43,10 @@ export class CreateBlog implements OnInit, OnDestroy {
 	};
 
 	onSubmit() {
-		let str = this.formBlog.value.description
-		this.formBlog.setValue({ description: str.replaceAll(/<[^>]*>*<\/[^>]*>/g, "") });
-		this.formBlog.setValue({ description: str.replaceAll(/<[^>]*>*<\/[^>]*>/g, "") });
 		this.formBlog.markAllAsTouched();
 
 		if (this.formBlog.valid) {
 			console.log('data', this.formBlog.value.description)
-			// const htmlContent = marked.parse(this.formBlog.value.description);
-			// console.log(htmlContent)
 			this.blogService.saveBlog(this.formBlog.value).subscribe({
 				next: (res) => {
 					console.log("ok")

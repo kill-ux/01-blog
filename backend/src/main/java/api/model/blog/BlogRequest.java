@@ -4,7 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record BlogRequest(
-        @Size(max = 1000, message = "Description must not exceed 1000 characters")
+        @Size(max = 255, message = "title must not exceed 255 characters")
+        String title,
+        @Size(max = 5000, message = "Description must not exceed 1000 characters")
         @NotBlank(message = "description is required")
         String description,
 

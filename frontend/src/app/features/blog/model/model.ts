@@ -1,15 +1,19 @@
 import { User } from "../../auth/models/model";
 
 export interface BlogRequest {
+    title: string;
     description: string;
     parent: number
 }
 
 export interface BlogResponce {
     id: number;
+    title: string;
     description: string;
     parent: BlogResponce
     user: User
     createdAt: Date;
     updatedAt: Date;
+    likes: number
+    like: boolean
 }

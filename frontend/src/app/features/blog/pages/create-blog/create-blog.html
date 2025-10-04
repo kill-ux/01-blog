@@ -6,12 +6,17 @@
                     <label class="panel-label">
                         <button type="submit" class="btn btn-primary with-100">save</button>
                     </label>
+                    <label class="panel-label">
+                        <input class="title-input"
+                            formControlName="title" placeholder="New post title here" type="text"/>
+                    </label>
+
 
                     <textarea class="markdown-textarea NgxEditor__Wrapper" formControlName="description"
                         placeholder="Start typing your markdown here..."></textarea>
 
                     <!-- Proper error handling -->
-                    <div  class="panel-label error">
+                    <div class="panel-label error">
                         @if (formBlog.get('description')?.invalid && formBlog.get('description')?.touched) {
                         <mat-error>Content is required</mat-error>
                         }
@@ -22,6 +27,7 @@
                 </form>
             </div>
             <div class="preview-panel">
+                <h1>{{ this.formBlog.value.title }}</h1>
                 <markdown class="markdown-preview" [data]="this.formBlog.value.description"></markdown>
             </div>
             <!-- </div> -->
