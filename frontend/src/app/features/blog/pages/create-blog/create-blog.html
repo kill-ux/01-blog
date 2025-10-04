@@ -1,27 +1,30 @@
 <div class="markdown-editor-container">
-    <div class="editor-layout">
-        <div class="shadow">
-            <form [formGroup]="formBlog" (submit)="onSubmit()">
-                <div class="editor-panel">
-                    <div class="NgxEditor__Wrapper">
-                        <label class="panel-label">
-                            <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
-                            <button type="submit" class="btn btn-primary with-100">save</button>
-                        </label>
+    <div class="shadow">
+        <div class="editor-layout">
+            <div class="editor-panel">
+                <form [formGroup]="formBlog" (submit)="onSubmit()" class="form-blog">
+                    <label class="panel-label">
+                        <button type="submit" class="btn btn-primary with-100">save</button>
+                    </label>
 
-                        <ngx-editor class="markdown-textarea" [editor]="editor" formControlName="description"
-                            [disabled]="false" [placeholder]="'Type here...'">
-                        </ngx-editor>
+                    <textarea class="markdown-textarea NgxEditor__Wrapper" formControlName="description"
+                        placeholder="Start typing your markdown here..."></textarea>
 
-                        <!-- Proper error handling -->
-                        <div class="error">
-                            @if (formBlog.get('description')?.invalid && formBlog.get('description')?.touched) {
-                            <mat-error>Content is required</mat-error>
-                            }
-                        </div>
+                    <!-- Proper error handling -->
+                    <div  class="panel-label error">
+                        @if (formBlog.get('description')?.invalid && formBlog.get('description')?.touched) {
+                        <mat-error>Content is required</mat-error>
+                        }
                     </div>
-                </div>
-            </form>
+                    <!-- <label >
+                        <button type="submit" class="btn btn-primary with-100">save</button>
+                    </label> -->
+                </form>
+            </div>
+            <div class="preview-panel">
+                <markdown class="markdown-preview" [data]="this.formBlog.value.description"></markdown>
+            </div>
+            <!-- </div> -->
         </div>
     </div>
 </div>

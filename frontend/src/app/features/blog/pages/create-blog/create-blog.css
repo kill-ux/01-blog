@@ -13,17 +13,17 @@
 }
 
 .editor-layout {
-	/* display: grid; */
-	/* grid-template-columns: 1fr 1fr 1fr ; */
-	padding-inline: 300px;
+	display: grid;
+	grid-template-columns: 1fr 1fr ;
+	/* padding-inline: 300px; */
 	/* height: 600px; */
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 700px) {
 	.editor-layout {
-		/* grid-template-columns: 1fr; */
-		/* height: auto; */
-		padding: 5px;
+		grid-template-columns: 1fr;
+		height: auto;
+		/* padding: 5px; */
 	}
 }
 
@@ -44,6 +44,8 @@
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+
+
 .panel-label {
 	padding: 12px 16px;
 	background: #f8fafc;
@@ -55,26 +57,31 @@
 	height: 50px;
 }
 
-/* .markdown-textarea {
-	padding: 16px;
+.markdown-textarea {
+	/* padding: 16px;
 	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 	background: white;
-	color: #1f2937;
-} */
+	color: #1f2937; */
+	/* width: 500px; */
+	/* height: 544px; */
+} 
 
+textarea:focus {
+	outline: none;
+}
 
 
 .NgxEditor__Wrapper {
 	border: none;
+	width: 89%;
+	/* height: 100%; */
+	padding: 40px;
 }
 
-.markdown-textarea:focus {
-	background: #fafafa;
+textarea:focus {
+	/* background-color: red; */
 }
 
-.markdown-textarea::placeholder {
-	color: #9ca3af;
-}
 
 .preview-content {
 	flex: 1;
@@ -87,6 +94,7 @@
 .markdown-preview {
 	min-height: 100%;
 	text-align: start;
+	padding: 50px;
 }
 
 
@@ -154,4 +162,10 @@
 	color: red;
 	padding: 2px;
 	/* border: #3741510a solid 1px; */
+}
+
+.form-blog {
+	display: grid;
+	grid-template-rows: 1fr 10fr 1fr;
+	height: 100%;
 }
