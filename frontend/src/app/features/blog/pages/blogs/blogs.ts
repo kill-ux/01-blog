@@ -15,26 +15,47 @@ import { MarkdownComponent } from "ngx-markdown";
 export class Blogs implements OnInit {
 	// private 
 	public blogs: BlogResponce[];
+	public lastBlog = 0;
+	private isLoading = false;
 	constructor(private blogService: BlogService) {
 		this.blogs = [];
 	}
 
 	ngOnInit(): void {
 		console.log("feeds")
-		this.loadBlogs()
+		this.loadBlogs(0)
 	}
 
-	loadBlogs() {
-		this.blogService.getBlogsNetworks().subscribe({
+	loadBlogs(cursor: number) {
+		if (this.isLoading) return;
+		this.isLoading = true;
+		this.blogService.getBlogsNetworks(cursor).subscribe({
 			next: (res) => {
 				console.log("res", res)
-				this.blogs = res;
+				this.blogs = [...this.blogs, ...res];
+				if (res.length > 0) {
+					this.lastBlog = res[res.length - 1].id;
+				} else {
+					this.lastBlog = 0;
+				}
+
 				console.log(this.blogs)
+				this.isLoading = false;
 			},
 			error: (err) => {
 				console.log(err)
+				this.isLoading = false;
 			}
 		})
+
+	}
+
+	loadMoreBlogs() {
+		if (this.lastBlog !== 0 && !this.isLoading) {
+			this.loadBlogs(this.lastBlog);
+		}
+		// this.lastBlog = 0
+		console.log("aa")
 	}
 
 	sanitizeHtml(text: string) {

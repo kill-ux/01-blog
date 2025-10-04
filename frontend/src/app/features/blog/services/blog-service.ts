@@ -14,8 +14,8 @@ export class BlogService {
 		return this.http.post<BlogResponce>(`${this.API_URL}/blogs/store`, blogRequest)
 	}
 
-	getBlogsNetworks() {
-		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs/networks`)
+	getBlogsNetworks(cursor: number) {
+		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs/networks?cursor=${cursor}`)
 	}
 
 	toggleLike(blogResponce: BlogResponce) {

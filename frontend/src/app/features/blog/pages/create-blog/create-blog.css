@@ -14,7 +14,7 @@
 
 .editor-layout {
 	display: grid;
-	grid-template-columns: 1fr 1fr ;
+	grid-template-columns: 1fr 1fr;
 	/* padding-inline: 300px; */
 	/* height: 600px; */
 }
@@ -64,7 +64,7 @@
 	color: #1f2937; */
 	/* width: 500px; */
 	/* height: 544px; */
-} 
+}
 
 textarea:focus {
 	outline: none;
@@ -92,7 +92,7 @@ textarea:focus {
 }
 
 .markdown-preview {
-	min-height: 100%;
+	/* min-height: 100%; */
 	text-align: start;
 	padding-inline: 50px;
 	padding-block: 10;
@@ -171,9 +171,7 @@ textarea:focus {
 	height: 100%;
 }
 
-.markdown-preview {
-    overflow: scroll;
-}
+
 
 .title-input {
 	width: 100%;
@@ -182,10 +180,26 @@ textarea:focus {
 	padding: 6px;
 	font-size: xx-large;
 	font-weight: 900;
+
 }
 
 .preview-panel h1 {
 	text-align: start;
 	padding: 10px;
 	padding-inline: 50px;
+
+	line-height: 1.3;
+}
+
+.preview-panel * {
+	line-height: 1.3;
+}
+
+.preview-panel {
+
+	overflow: scroll;
+}
+
+code {
+	background-color: red;
 }

@@ -20,8 +20,8 @@
                         <!-- <i class="icon-heart">{{ item.likes || 0 }}</i> -->
                     </button>
                     <!-- <button class="btn-icon">
-                        <i class="icon-share"></i>
-                    </button> -->
+                            <i class="icon-share"></i>
+                        </button> -->
                 </div>
             </header>
 
@@ -32,16 +32,23 @@
                 </div>
             </div>
 
+            <!-- Load more when last item is in viewport -->
+            @if (lastBlog == item.id) {
+                <div #loadTrigger></div>
+                @defer (on viewport(loadTrigger)) {
+                    <div>{{ loadMoreBlogs() }}</div>
+                }
+            }
             <!-- <div class="blog-content">
-                <div class="blog-description">
-                    <markdown class="markdown-preview" [data]="item.description.substring(0,255)"></markdown>
-                </div>
-            </div> -->
+                    <div class="blog-description">
+                        <markdown class="markdown-preview" [data]="item.description.substring(0,255)"></markdown>
+                    </div>
+                </div> -->
 
             <!-- Footer with stats -->
             <footer class="blog-footer">
                 <div class="blog-stats">
-                    <span class="stat" [class.liked] = "item.like" [class.not-liked] = "!item.like">
+                    <span class="stat" [class.liked]="item.like" [class.not-liked]="!item.like">
                         <svg (click)="toggleLike(item)" width="20" height="20" viewBox="0 0 20 20" class="fill-current">
                             <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
                             <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
