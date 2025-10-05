@@ -28,10 +28,9 @@ export class BlogService {
 
 	uploadFile(file: File) {
 		const formData = new FormData();
-		formData.append('file',file)
-		formData.append('type',file.type.split("/")[0])
-		
-		
+		formData.append('file', file)
+		formData.append('type', file.type.split("/")[0])
+		return this.http.post<{url: string}>(`${this.API_URL}/upload`, formData)
 	}
 
 	// getLikes(blogResponce: BlogResponce) {

@@ -42,6 +42,10 @@ dependencies {
 	testAnnotationProcessor("org.projectlombok:lombok:1.18.40")
 
 	testImplementation 'org.springframework.security:spring-security-test'
+
+
+
+    implementation("com.cloudinary:cloudinary-http44:1.38.0")
 }
 
 tasks.named('test') {

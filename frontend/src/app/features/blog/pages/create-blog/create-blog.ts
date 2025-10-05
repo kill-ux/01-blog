@@ -173,14 +173,17 @@ export class CreateBlog implements OnInit, OnDestroy {
 
 		try {
 			// Upload to backend
-			const uploadedUrl = await this.blogService.uploadFile(file);
-
-			// Insert markdown based on file type
-			if (file.type.startsWith('image/')) {
-				this.insertMarkdownImage(uploadedUrl);
-			} else if (file.type.startsWith('video/')) {
-				this.insertMarkdownVideo(uploadedUrl);
+			const uploadedUrl = await this.blogService.uploadFile(file).toPromise();
+			if (uploadedUrl) {
+				// Insert markdown based on file type
+				if (file.type.startsWith('image/')) {
+					this.insertMarkdownImage(uploadedUrl.url);
+				} else if (file.type.startsWith('video/')) {
+					this.insertMarkdownVideo(uploadedUrl.url);
+				}
 			}
+
+
 
 		} catch (error) {
 			console.error('Upload failed:', error);
@@ -206,7 +209,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 		document.execCommand('insertText', false, `<video controls><source src="${pastedText}"></video>`);
 	}
 
-	
+
 
 
 	validateFile(file: File): { isValid: boolean; error?: string } {
