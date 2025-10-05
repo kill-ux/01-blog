@@ -26,6 +26,14 @@ export class BlogService {
 		return this.http.post<{ like: number }>(`${this.API_URL}/blogs/${blogResponce.id}/like`, {})
 	}
 
+	uploadFile(file: File) {
+		const formData = new FormData();
+		formData.append('file',file)
+		formData.append('type',file.type.split("/")[0])
+		
+		
+	}
+
 	// getLikes(blogResponce: BlogResponce) {
 	// 	return this.http.get<{count: number}>(`${this.API_URL}/blogs/${blogResponce.id}/likes`, {})
 	// }

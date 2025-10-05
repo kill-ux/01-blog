@@ -27,6 +27,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 	markdown = ``;
 	formBlog: FormGroup;
 	previewUrl = "";
+	isUploading = false;
 
 	constructor(private fb: FormBuilder, private blogService: BlogService) {
 		console.log(this.pasteMarkdown())
@@ -90,7 +91,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 	}
 
 
-	onPaste(event: ClipboardEvent) {
+	async onPaste(event: ClipboardEvent) {
 		const clipboardData = event.clipboardData;
 
 
@@ -124,29 +125,14 @@ export class CreateBlog implements OnInit, OnDestroy {
 							console.log(file.type)
 							let previewUrl = URL.createObjectURL(file)
 							document.execCommand('insertText', false, `![image](${previewUrl})`);
+
+							await this.handleFileUpload(file);
 						}
 					}
 				}
 			}
 		}
 
-
-
-		// console.log(pastedText)
-		// document.execCommand('insertText', false, `![image](${pastedText})`);
-
-
-
-		// if (pastedText) {
-		// 	event.preventDefault();
-
-		// 	// Now marked.parse() returns string directly (not Promise)
-		// 	console.log(pa)
-		// 	const html = marked.parse(pastedText) as string;
-		// 	console.log('Converted HTML:', html);
-
-		// // 	// this.insertHtmlAtCursor(html);
-		// }
 	}
 
 	onDrop(event: DragEvent) {
@@ -172,6 +158,91 @@ export class CreateBlog implements OnInit, OnDestroy {
 
 	isVideo(filename: string): boolean {
 		return videoExtensions.has(this.getExtension(filename));
+	}
+
+
+	async handleFileUpload(file: File): Promise<void> {
+		// Validate file
+		const validation = this.validateFile(file);
+		if (!validation.isValid) {
+			alert(validation.error);
+			return;
+		}
+
+		this.isUploading = true;
+
+		try {
+			// Upload to backend
+			const uploadedUrl = await this.blogService.uploadFile(file);
+
+			// Insert markdown based on file type
+			if (file.type.startsWith('image/')) {
+				this.insertMarkdownImage(uploadedUrl);
+			} else if (file.type.startsWith('video/')) {
+				this.insertMarkdownVideo(uploadedUrl);
+			}
+
+		} catch (error) {
+			console.error('Upload failed:', error);
+			alert('File upload failed. Please try again.');
+		} finally {
+			this.isUploading = false;
+		}
+	}
+
+	// Insert markdown image syntax
+	insertMarkdownImage(url: string): void {
+		const markdown = `![image](${url})`;
+		this.insertText(markdown);
+	}
+
+	// Insert markdown video syntax
+	insertMarkdownVideo(url: string): void {
+		const markdown = `<video controls src="${url}" ></video>`;
+		this.insertText(markdown);
+	}
+
+	insertText(pastedText: string) {
+		document.execCommand('insertText', false, `<video controls><source src="${pastedText}"></video>`);
+	}
+
+	
+
+
+	validateFile(file: File): { isValid: boolean; error?: string } {
+		const maxSize = 10 * 1024 * 1024; // 10MB
+		const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+		const allowedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+
+		if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+			return {
+				isValid: false,
+				error: 'Please select only image or video files'
+			};
+		}
+
+		if (file.type.startsWith('image/') && !allowedImageTypes.includes(file.type)) {
+			return {
+				isValid: false,
+				error: 'Image type not supported. Use JPEG, PNG, GIF, or WebP.'
+			};
+		}
+
+		if (file.type.startsWith('video/') && !allowedVideoTypes.includes(file.type)) {
+			return {
+				isValid: false,
+				error: 'Video type not supported. Use MP4, WebM, or OGG.'
+			};
+		}
+
+		if (file.size > maxSize) {
+			return {
+				isValid: false,
+				error: 'File size too large. Maximum size is 10MB.'
+			};
+		}
+
+		return { isValid: true };
 	}
 
 }
