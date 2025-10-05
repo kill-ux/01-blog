@@ -26,6 +26,7 @@ marked.setOptions({
 export class CreateBlog implements OnInit, OnDestroy {
 	markdown = ``;
 	formBlog: FormGroup;
+	previewUrl = "";
 
 	constructor(private fb: FormBuilder, private blogService: BlogService) {
 		console.log(this.pasteMarkdown())
@@ -119,6 +120,11 @@ export class CreateBlog implements OnInit, OnDestroy {
 						event.preventDefault()
 						const file = item.getAsFile();
 						console.log('Pasted file:', file);
+						if (file) {
+							console.log(file.type)
+							let previewUrl = URL.createObjectURL(file)
+							document.execCommand('insertText', false, `![image](${previewUrl})`);
+						}
 					}
 				}
 			}
@@ -141,6 +147,19 @@ export class CreateBlog implements OnInit, OnDestroy {
 
 		// // 	// this.insertHtmlAtCursor(html);
 		// }
+	}
+
+	onDrop(event: DragEvent) {
+		event.preventDefault();
+		const files = event.dataTransfer?.files;
+		console.log(files)
+		if (files) {
+			for (const file of files) {
+				let previewUrl = URL.createObjectURL(file)
+				document.execCommand('insertText', false, `![image](${previewUrl})`);
+			}
+		}
+
 	}
 
 	getExtension(filename: string): string {
