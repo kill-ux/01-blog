@@ -1,7 +1,7 @@
 <div class="container-blogs">
     @for (item of this.blogs; track item.id) {
-    <article class="blog-card-back">
 
+    <article class="blog-card-back" (click)="clickOnnArcticle(item.id)">
         <article class="blog-card">
             <!-- Header with user info -->
             <header class="blog-header">
@@ -15,15 +15,8 @@
                         <span class="post-date">{{ item.createdAt | date:'mediumDate' }}</span>
                     </div>
                 </div>
-                <div class="blog-actions">
-                    <button class="btn-icon" (click)="toggleLike(item)">
-                        <!-- <i class="icon-heart">{{ item.likes || 0 }}</i> -->
-                    </button>
-                    <!-- <button class="btn-icon">
-                            <i class="icon-share"></i>
-                        </button> -->
-                </div>
             </header>
+
 
             <!-- Blog content -->
             <div class="blog-content">
@@ -34,10 +27,10 @@
 
             <!-- Load more when last item is in viewport -->
             @if (lastBlog == item.id) {
-                <div #loadTrigger></div>
-                @defer (on viewport(loadTrigger)) {
-                    <div>{{ loadMoreBlogs() }}</div>
-                }
+            <div #loadTrigger></div>
+            @defer (on viewport(loadTrigger)) {
+            <div>{{ loadMoreBlogs() }}</div>
+            }
             }
             <!-- <div class="blog-content">
                     <div class="blog-description">
@@ -48,8 +41,9 @@
             <!-- Footer with stats -->
             <footer class="blog-footer">
                 <div class="blog-stats">
-                    <span class="stat" [class.liked]="item.like" [class.not-liked]="!item.like">
-                        <svg (click)="toggleLike(item)" width="20" height="20" viewBox="0 0 20 20" class="fill-current">
+                    <span class="stat">
+                        <svg (click)="toggleLike(item); $event.stopPropagation()" width="20" height="20"
+                            viewBox="0 0 20 20" [class.liked]="item.like" [class.not-liked]="!item.like">
                             <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
                             <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
                             <path d="M14.3043 1.59375H11.4492V4.48449H14.3043V1.59375Z"></path>
@@ -77,14 +71,26 @@
                             <path d="M14.4008 4H12.8008V10.4H14.4008V4Z"></path>
                             <path d="M3.20156 4H1.60156V10.4H3.20156V4Z"></path>
                         </svg>
-                        {{ 0 }}
+                        {{ item.childrenCount || 0 }}
                     </span>
 
                 </div>
                 <div class="blog-stats">
                     <span class="stat">
-                        <svg width="20" viewBox="0 0 20 20"
-                            class="hover:text-blue transition-colors duration-500 hover:scale-98">
+                        <!-- Copied confirmation icon (shown after copy) -->
+                        <!-- <span class="btn copied-icon">Copied!</span> -->
+                        @if (item.isCopied) {
+                        <span class="btn copied-icon">Copied!</span>
+                        <svg width="30" viewBox="0 0 16 13" >
+                            <rect x="0.25" y="6.2002" width="3.1" height="3.1"></rect>
+                            <rect x="3.34961" y="9.2998" width="3.1" height="3.1"></rect>
+                            <rect x="6.4502" y="6.2002" width="3.1" height="3.1"></rect>
+                            <rect x="9.5498" y="3.09961" width="3.1" height="3.1"></rect>
+                            <rect x="12.6504" width="3.1" height="3.1"></rect>
+                        </svg>
+                        } @else {
+                        <svg (click)="copyLink(item); $event.stopPropagation()" role="button" tabindex="0" width="20"
+                            viewBox="0 0 20 20">
                             <g class="fill-icon">
                                 <path d="M17 1H3V3H17V1Z"></path>
                                 <path d="M19 3H17V17H19V3Z"></path>
@@ -93,9 +99,12 @@
                                 <path d="M8 3H6V17H8V3Z"></path>
                             </g>
                         </svg>
+                        }
+
+                        <!-- Original share/link icon (shown by default) -->
+
                     </span>
                 </div>
-
             </footer>
         </article>
     </article>

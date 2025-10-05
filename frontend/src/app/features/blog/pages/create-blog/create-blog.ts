@@ -19,7 +19,7 @@ marked.setOptions({
 
 @Component({
 	selector: 'app-create-blog',
-	imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, NgxEditorComponent, NgxEditorMenuComponent, LMarkdownEditorModule, MarkdownComponent],
+	imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, LMarkdownEditorModule, MarkdownComponent],
 	templateUrl: './create-blog.html',
 	styleUrl: './create-blog.css'
 })

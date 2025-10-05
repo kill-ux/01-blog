@@ -16,4 +16,6 @@ export interface BlogResponce {
     updatedAt: Date;
     likes: number
     like: boolean
+    childrenCount : number
+    isCopied: boolean
 }

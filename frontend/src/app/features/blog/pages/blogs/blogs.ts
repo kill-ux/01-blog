@@ -5,10 +5,11 @@ import { DatePipe } from '@angular/common';
 
 import sanitizeHtml from 'sanitize-html';
 import { MarkdownComponent } from "ngx-markdown";
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'app-blogs',
-	imports: [DatePipe, MarkdownComponent],
+	imports: [DatePipe, MarkdownComponent, RouterLink],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css'
 })
@@ -17,7 +18,7 @@ export class Blogs implements OnInit {
 	public blogs: BlogResponce[];
 	public lastBlog = 0;
 	private isLoading = false;
-	constructor(private blogService: BlogService) {
+	constructor(private blogService: BlogService, private router: Router) {
 		this.blogs = [];
 	}
 
@@ -69,12 +70,31 @@ export class Blogs implements OnInit {
 		this.blogService.toggleLike(blogResponce).subscribe({
 			next: res => {
 				console.log(res)
+				blogResponce.like = res.like == 1
+				blogResponce.likes += res.like;
 			},
 			error: err => {
 				console.log(err)
 			}
 		})
 	}
+
+	clickOnnArcticle(id: number) {
+		this.router.navigate(["blog", id])
+	}
+
+	copyLink(blogResponce: BlogResponce) {
+		const blogUrl = `${window.location.origin}/blog/${blogResponce.id}`
+		navigator.clipboard.writeText(blogUrl).then(() => {
+			blogResponce.isCopied = true;
+			setTimeout(() => {
+				blogResponce.isCopied = false;
+			}, 1000)
+		}).catch(err => {
+			console.error('Failed to copy link:', err);
+		});
+	}
+
 
 	// getLikes(blogResponce: BlogResponce) {
 	// 	return this.blogService.getLikes(blogResponce).subscribe({

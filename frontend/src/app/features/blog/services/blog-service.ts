@@ -18,8 +18,12 @@ export class BlogService {
 		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs/networks?cursor=${cursor}`)
 	}
 
+	getBlog(blogId: any) {
+		return this.http.get<BlogResponce>(`${this.API_URL}/blogs/${blogId}`)
+	}
+
 	toggleLike(blogResponce: BlogResponce) {
-		return this.http.post(`${this.API_URL}/blogs/${blogResponce.id}/like`, {})
+		return this.http.post<{ like: number }>(`${this.API_URL}/blogs/${blogResponce.id}/like`, {})
 	}
 
 	// getLikes(blogResponce: BlogResponce) {

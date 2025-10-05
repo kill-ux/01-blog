@@ -81,7 +81,7 @@ public class BlogService {
 
     public BlogResponse saveBlog(BlogRequest blogRequest) {
         User user = getAuthenticatedUser();
-        validateMediaType(blogRequest.mediaType());
+        // validateMediaType(blogRequest.mediaType());
         Blog blog = convertToEntity(blogRequest);
         blog.setUser(user);
         blog.setCreatedAt(LocalDateTime.now());
@@ -148,10 +148,14 @@ public class BlogService {
             Blog parent = this.blogRepository.findById(blogRequest.parent())
                     .orElseThrow(() -> new IllegalArgumentException("FAILED: there is no post with this ID"));
             blog.setParent(parent);
+        } else {
+            if (blogRequest.title() == null) {
+                throw new IllegalArgumentException("must be to set the title");
+            }
+            blog.setTitle(blogRequest.title());
         }
         blog.setCreatedAt(LocalDateTime.now());
         blog.setDescription(blogRequest.description());
-        blog.setTitle(blogRequest.title());
         return blog;
     }
 
