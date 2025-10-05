@@ -12,7 +12,7 @@
                     </label>
 
 
-                    <textarea class="markdown-textarea NgxEditor__Wrapper" formControlName="description"
+                    <textarea (paste)="onPaste($event)" class="markdown-textarea NgxEditor__Wrapper" formControlName="description"
                         placeholder="Start typing your markdown here..."></textarea>
 
                     <!-- Proper error handling -->

@@ -96,6 +96,7 @@ textarea:focus {
 	text-align: start;
 	padding-inline: 50px;
 	padding-block: 10;
+	word-break: break-all;
 }
 
 
@@ -202,4 +203,9 @@ textarea:focus {
 
 code {
 	background-color: red;
+}
+
+::ng-deep video {
+	width: 100%;
+	height: auto;
 }

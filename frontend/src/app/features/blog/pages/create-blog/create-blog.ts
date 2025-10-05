@@ -31,7 +31,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 		console.log(this.pasteMarkdown())
 		this.formBlog = this.fb.group({
 			description: ['', Validators.required],
-			title: ['',Validators.required]
+			title: ['', Validators.required]
 		})
 	}
 
@@ -68,6 +68,17 @@ export class CreateBlog implements OnInit, OnDestroy {
 			.exec();
 	}
 
+	replaceSelectedText() {
+		const selection = window.getSelection();
+		if (selection && selection.toString() && selection.rangeCount > 0) {
+			const range = selection.getRangeAt(0);
+			range.deleteContents();
+			range.insertNode(document.createTextNode('new text'));
+		} else {
+			console.log('No selection or range. rangeCount:', selection?.rangeCount, 'Selected text:', selection?.toString());
+		}
+	}
+
 	ngOnDestroy(): void {
 		this.editor?.destroy();
 	}
@@ -79,8 +90,46 @@ export class CreateBlog implements OnInit, OnDestroy {
 
 
 	onPaste(event: ClipboardEvent) {
-		// const clipboardData = event.clipboardData;
-		// const pastedText = clipboardData?.getData('text/plain');
+		const clipboardData = event.clipboardData;
+
+
+		const pastedText = clipboardData?.getData('text/plain');
+		if (pastedText) {
+			try {
+				const url = new URL(pastedText)
+				if (this.isImage(url.pathname)) {
+					event.preventDefault()
+					console.log('Image detected');
+					document.execCommand('insertText', false, `![image](${pastedText})`);
+				} else if (this.isVideo(url.pathname)) {
+					event.preventDefault()
+					console.log('Video detected');
+					document.execCommand('insertText', false, `<video controls><source src="${pastedText}"></video>`);
+				}
+			} catch {
+				console.log("hh")
+				return
+			}
+
+		} else {
+			if (clipboardData?.items) {
+				for (const item of clipboardData?.items) {
+					console.log(item)
+					if (item.kind == 'file') {
+						event.preventDefault()
+						const file = item.getAsFile();
+						console.log('Pasted file:', file);
+					}
+				}
+			}
+		}
+
+
+
+		// console.log(pastedText)
+		// document.execCommand('insertText', false, `![image](${pastedText})`);
+
+
 
 		// if (pastedText) {
 		// 	event.preventDefault();
@@ -94,4 +143,19 @@ export class CreateBlog implements OnInit, OnDestroy {
 		// }
 	}
 
+	getExtension(filename: string): string {
+		return filename.split('.').pop()?.toLowerCase() || '';
+	}
+
+	isImage(filename: string): boolean {
+		return imageExtensions.has(this.getExtension(filename));
+	}
+
+	isVideo(filename: string): boolean {
+		return videoExtensions.has(this.getExtension(filename));
+	}
+
 }
+
+const imageExtensions = new Set(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp', 'svg']);
+const videoExtensions = new Set(['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'm4v']);
