@@ -12,9 +12,7 @@
                     </label>
 
                     <!-- <img [src]="previewUrl" alt="Preview" class="preview-image" /> -->
-
-
-                    <textarea (drop)="onDrop($event)" (paste)="onPaste($event)" class="markdown-textarea NgxEditor__Wrapper" formControlName="description"
+                    <textarea tool (drop)="onDrop($event)" (paste)="onPaste($event)" class="markdown-textarea NgxEditor__Wrapper" formControlName="description"
                         placeholder="Start typing your markdown here..."></textarea>
 
                     <!-- Proper error handling -->

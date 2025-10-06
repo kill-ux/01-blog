@@ -10,5 +10,5 @@ import { Navbar } from './layouts/navbar/navbar';
 })
 
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly title = 'frontend';
 }

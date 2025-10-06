@@ -2,6 +2,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 
+/* @import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css'); */
+@import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-coy.css');
+
+
 html,
 body {
     height: 100%;
@@ -17,7 +21,7 @@ body {
     --color-black: #222;
     --color-white: #fff;
     --color-blue: #459ffb;
-    /* --color-current-taxonomy: #459ffb;   */
+    --color-current-taxonomy: #459ffb;
     --color-current-taxonomy: #030213;
     --primary: #030213;
     --color-bg: #f8fafc;
@@ -118,10 +122,10 @@ img {
     }
 }
 
-.custom-dialog-class{
+.custom-dialog-class {
     border-radius: 0;
-    background-color: #f7faf9 ;
-    
+    background-color: #f7faf9;
+
     --size: 4px;
     clip-path: polygon(var(--size) 0,
             calc(100% - var(--size)) 0,
@@ -139,13 +143,8 @@ img {
     border: 5px #03021327 solid;
 }
 
-/* .mat-mdc-dialog-surface {
-    background-color: red;
-} */
-
 .custom-dialog-class * {
-    background-color: #f7faf9 ;
-    /* background-color: #ffffff !important; */
+    background-color: #f7faf9;
     border-radius: 0 !important;
 }
 
@@ -153,4 +152,3 @@ img {
     background-color: var(--primary);
     color: var(--primary-foreground);
 }
-
