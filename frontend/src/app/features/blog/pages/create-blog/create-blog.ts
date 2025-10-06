@@ -12,9 +12,7 @@ import { BlogService } from '../../services/blog-service';
 	styleUrl: './create-blog.css'
 })
 export class CreateBlog {
-	markdown = ``;
 	formBlog: FormGroup;
-	previewUrl = "";
 	isUploading = false;
 
 	constructor(private fb: FormBuilder, private blogService: BlogService) {
@@ -28,7 +26,6 @@ export class CreateBlog {
 		this.formBlog.markAllAsTouched();
 
 		if (this.formBlog.valid) {
-			console.log('data', this.formBlog.value.description)
 			this.blogService.saveBlog(this.formBlog.value).subscribe({
 				next: (res) => {
 					console.log("ok")
@@ -64,14 +61,13 @@ export class CreateBlog {
 		} else {
 			if (clipboardData?.items) {
 				for (const item of clipboardData?.items) {
-					console.log(item)
 					if (item.kind == 'file') {
 						event.preventDefault()
 						const file = item.getAsFile();
 						if (file) {
-							console.log(file.type)
-							let previewUrl = URL.createObjectURL(file)
-							this.insertMarkdownImage(previewUrl);
+							// let previewUrl = URL.createObjectURL(file)
+							// this.insertMarkdownImage("/loadingImage.webp");
+							document.execCommand("insertText", false, `![Uploading image](...)`)
 							await this.handleFileUpload(file);
 						}
 					}
@@ -81,14 +77,13 @@ export class CreateBlog {
 
 	}
 
-	onDrop(event: DragEvent) {
+	async onDrop(event: DragEvent) {
 		event.preventDefault();
 		const files = event.dataTransfer?.files;
-		console.log(files)
 		if (files) {
 			for (const file of files) {
-				let previewUrl = URL.createObjectURL(file)
-				this.insertMarkdownImage(previewUrl)
+				document.execCommand("insertText", false, `![Uploading image](...)`)
+				await this.handleFileUpload(file);
 			}
 		}
 
@@ -102,9 +97,20 @@ export class CreateBlog {
 
 		try {
 			const uploadedUrl = await this.blogService.uploadFile(file).toPromise();
+
+
 			if (uploadedUrl) {
 				if (file.type.startsWith('image/')) {
-					this.insertMarkdownImage(uploadedUrl.url);
+					// this.insertMarkdownImage(uploadedUrl.url);
+					let description = this.formBlog.value?.description
+					this.formBlog.patchValue({
+						description: description
+							.includes("![Uploading image](...)")
+							? description.replace("![Uploading image](...)", this.MarkdownImage(uploadedUrl.url))
+							: description + this.MarkdownImage(uploadedUrl.url)
+					}) // ![Uploading image](...)
+
+
 				} else if (file.type.startsWith('video/')) {
 					this.insertMarkdownVideo(uploadedUrl.url);
 				}
@@ -114,11 +120,11 @@ export class CreateBlog {
 
 		} catch (error) {
 			console.error('Upload failed:', error);
-			alert('File upload failed. Please try again.');
 		} finally {
 			this.isUploading = false;
 		}
 	}
+
 
 	getExtension(filename: string): string {
 		return filename.split('.').pop()?.toLowerCase() || '';
@@ -135,12 +141,19 @@ export class CreateBlog {
 	insertMarkdownImage(url: string): void {
 		const markdown = `![image](${url})`;
 		this.insertText(markdown);
-		console.log(markdown)
 	}
 
 	insertMarkdownVideo(url: string): void {
 		const markdown = `<video controls><source src="${url}" ></video>`;
 		this.insertText(markdown);
+	}
+
+	MarkdownVideo(url: string): string {
+		return `<video controls><source src="${url}" ></video>`;
+	}
+
+	MarkdownImage(url: string): string {
+		return `![image](${url})`;
 	}
 
 	insertText(pastedText: string) {
@@ -151,3 +164,10 @@ export class CreateBlog {
 
 const imageExtensions = new Set(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp', 'svg']);
 const videoExtensions = new Set(['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'm4v']);
+
+
+/*
+let uploadedUrl = {
+				url: "http://localhost:4200/kill.jpg"
+			}
+				*/

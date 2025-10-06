@@ -4,12 +4,11 @@ import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 
 import sanitizeHtml from 'sanitize-html';
-import { MarkdownComponent } from "ngx-markdown";
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-blogs',
-	imports: [DatePipe, MarkdownComponent, RouterLink],
+	imports: [DatePipe],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css'
 })

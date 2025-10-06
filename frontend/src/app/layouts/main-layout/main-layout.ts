@@ -10,7 +10,7 @@ declare var Prism: any;
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink, MatToolbarModule, Navbar],
+  imports: [RouterOutlet, MatToolbarModule, Navbar],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.css'
 })
