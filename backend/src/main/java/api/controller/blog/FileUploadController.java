@@ -18,7 +18,8 @@ import api.service.CloudinaryService;
 public class FileUploadController {
 
     private CloudinaryService cloudinaryService;
-    private List<String> ALLOWED_TYPES = List.of("jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp", "svg");
+    private List<String> ALLOWED_TYPES_IMAGES = List.of("jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp", "svg");
+    private List<String> ALLOWED_TYPES_VEDIOS = List.of("mp4", "avi", "mov", "wmv", "flv", "webm", "mkv", "m4v");
 
     public FileUploadController(CloudinaryService cloudinaryService) {
         this.cloudinaryService = cloudinaryService;
@@ -26,14 +27,18 @@ public class FileUploadController {
 
     @PostMapping
     public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
-        System.out.println("###########################################");
         String fileName = file.getOriginalFilename();
+        String resourceType = "";
         if (fileName != null) {
             String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-            if (!ALLOWED_TYPES.contains(ext)) {
+            if (ALLOWED_TYPES_IMAGES.contains(ext)) {
+                resourceType = "image";
+            } else if (ALLOWED_TYPES_VEDIOS.contains(ext)) {
+                resourceType = "video";
+            } else {
                 throw new IllegalArgumentException("type not allowed");
             }
         }
-        return ResponseEntity.ok(Map.of("url", cloudinaryService.uploadFile(file, "files")));
+        return ResponseEntity.ok(Map.of("url", cloudinaryService.uploadFile(file, "files", resourceType)));
     }
 }

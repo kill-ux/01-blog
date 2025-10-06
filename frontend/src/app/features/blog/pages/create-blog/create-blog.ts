@@ -65,8 +65,6 @@ export class CreateBlog {
 						event.preventDefault()
 						const file = item.getAsFile();
 						if (file) {
-							// let previewUrl = URL.createObjectURL(file)
-							// this.insertMarkdownImage("/loadingImage.webp");
 							document.execCommand("insertText", false, `![Uploading image](...)`)
 							await this.handleFileUpload(file);
 						}
@@ -100,19 +98,32 @@ export class CreateBlog {
 
 
 			if (uploadedUrl) {
+				let description = this.formBlog.value?.description
 				if (file.type.startsWith('image/')) {
 					// this.insertMarkdownImage(uploadedUrl.url);
-					let description = this.formBlog.value?.description
-					this.formBlog.patchValue({
-						description: description
-							.includes("![Uploading image](...)")
-							? description.replace("![Uploading image](...)", this.MarkdownImage(uploadedUrl.url))
-							: description + this.MarkdownImage(uploadedUrl.url)
-					}) // ![Uploading image](...)
-
-
+					if (description
+						.includes("![Uploading image](...)")) {
+						this.formBlog.patchValue({
+							description: description.replace("![Uploading image](...)", this.MarkdownImage(uploadedUrl.url))
+						})
+					} else {
+						this.insertMarkdownImage(uploadedUrl.url)
+					}
 				} else if (file.type.startsWith('video/')) {
-					this.insertMarkdownVideo(uploadedUrl.url);
+					if (description.includes("![Uploading video](...)")) {
+						this.formBlog.patchValue({
+							description: description.replace("![Uploading video](...)", this.MarkdownVideo(uploadedUrl.url))
+						})
+					} else {
+						this.insertMarkdownVideo(uploadedUrl.url)
+					}
+					// let description = this.formBlog.value?.description
+					// this.formBlog.patchValue({
+					// 	description: description
+					// 		.includes("![Uploading video](...)")
+					// 		? description.replace("![Uploading video](...)", this.MarkdownVideo(uploadedUrl.url))
+					// 		: description + this.MarkdownVideo(uploadedUrl.url)
+					// })
 				}
 			}
 

@@ -15,15 +15,15 @@ public class CloudinaryService {
     @Resource
     private Cloudinary cloudinary;
 
-    public String uploadFile(MultipartFile file, String folderName) {
+    public String uploadFile(MultipartFile file, String folderName, String resourceType) {
         try {
             HashMap<Object, Object> options = new HashMap<>();
             options.put("folder", folderName);
-            Map<String, Object> uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
+            options.put("resource_type", resourceType);
+            Map<String,Object> uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
             String publicId = (String) uploadedFile.get("public_id");
-            return cloudinary.url().secure(true).generate(publicId);
+            return cloudinary.url().secure(true).resourcType(resourceType).generate(publicId);
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e);
             throw new IllegalArgumentException("Faild: to upload this filed");
         }
