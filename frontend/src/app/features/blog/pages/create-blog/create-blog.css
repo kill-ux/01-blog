@@ -1,4 +1,3 @@
-
 .markdown-editor-container {
 	max-width: 100%;
 	margin: 0 auto;
@@ -38,7 +37,7 @@
 	border-radius: 8px;
 	overflow: hidden;
 	height: 700px;
-	/* width: 90%; */
+	width: 100%;
 
 	--size: 10px;
 	clip-path: polygon(var(--size)0, calc(100% - var(--size))0, calc(100% - var(--size))var(--size), 100% var(--size), 100% calc(100% - var(--size)), calc(100% - var(--size))calc(100% - var(--size)), calc(100% - var(--size))100%, var(--size)100%, var(--size)calc(100% - var(--size)), 0 calc(100% - var(--size)), 0 var(--size), var(--size)var(--size));
@@ -69,12 +68,18 @@
 
 textarea:focus {
 	outline: none;
+	resize: none;
+	size: 100%;
+}
+
+.form-blog {
+	width: 100%;
 }
 
 
 .NgxEditor__Wrapper {
 	border: none;
-	width: 89%;
+	/* width: 89%; */
 	/* height: 100%; */
 	padding: 40px;
 }
@@ -169,28 +174,30 @@ textarea:focus {
 
 .form-blog {
 	display: grid;
-	grid-template-rows: 1fr 1fr 10fr 1fr;
+	grid-template-rows: 2fr 1fr 20fr 2fr;
 	height: 100%;
 }
 
 
 
 .title-input {
-	width: 100%;
 	height: 100%;
 	border: none;
 	padding: 6px;
-	font-size: xx-large;
+	padding-left: 30px;
+	font-size: 50px;
 	font-weight: 900;
-
 }
 
 .preview-panel h1 {
 	text-align: start;
-	padding: 10px;
+	padding-inline: 10px;
 	padding-inline: 50px;
-
+	font-size: 50px;
 	line-height: 1.3;
+	font-weight: 900;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+	margin: 10px;
 }
 
 .preview-panel * {
@@ -209,4 +216,30 @@ code {
 ::ng-deep video {
 	width: 100%;
 	height: auto;
+}
+
+.toolbar {
+	background-color: red;
+	padding: 5px;
+	margin-top: 5px;
+	/* margin: 5px; */
+}
+
+.editor-toolbar {
+	background-color:#f9f9f9;
+	padding: 10px;
+	margin-top: 10px;
+	text-align: start;
+}
+
+.toolbar-btn {
+	background: none;
+	border: none;
+	padding: 6px 8px;
+	border-radius: 3px;
+	margin-inline: 5px;
+}
+
+.toolbar-btn:hover {
+	background-color: #d5dfff46;
 }

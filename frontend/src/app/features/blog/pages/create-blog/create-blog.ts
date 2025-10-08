@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MarkdownModule } from 'ngx-markdown';
@@ -23,9 +23,11 @@ export class CreateBlog {
 	}
 
 	onSubmit() {
+		console.log("submit")
 		this.formBlog.markAllAsTouched();
 
 		if (this.formBlog.valid) {
+			console.log("hh")
 			this.blogService.saveBlog(this.formBlog.value).subscribe({
 				next: (res) => {
 					console.log("ok")
@@ -100,7 +102,6 @@ export class CreateBlog {
 			if (uploadedUrl) {
 				let description = this.formBlog.value?.description
 				if (file.type.startsWith('image/')) {
-					// this.insertMarkdownImage(uploadedUrl.url);
 					if (description
 						.includes("![Uploading image](...)")) {
 						this.formBlog.patchValue({
@@ -117,13 +118,6 @@ export class CreateBlog {
 					} else {
 						this.insertMarkdownVideo(uploadedUrl.url)
 					}
-					// let description = this.formBlog.value?.description
-					// this.formBlog.patchValue({
-					// 	description: description
-					// 		.includes("![Uploading video](...)")
-					// 		? description.replace("![Uploading video](...)", this.MarkdownVideo(uploadedUrl.url))
-					// 		: description + this.MarkdownVideo(uploadedUrl.url)
-					// })
 				}
 			}
 
@@ -133,6 +127,26 @@ export class CreateBlog {
 			console.error('Upload failed:', error);
 		} finally {
 			this.isUploading = false;
+		}
+	}
+
+	toolBarClick(textarea: HTMLTextAreaElement, start: string, end: string) {
+
+		console.log(start)
+		textarea.focus()
+		// this.insertText(`${start}${window}${end}`)
+		document.execCommand('insertText', false, `${start}${window.getSelection()?.toString()}${end}`);
+		this.formBlog.get('description')?.setValue(textarea.value);
+	}
+
+	async onImageUpload(event: Event,textarea: HTMLTextAreaElement) {
+		let files = (event.target as HTMLInputElement).files
+		if (files) {
+			for (const file of files) {
+				textarea.focus()
+				document.execCommand("insertText", false, `![Uploading image](...)`)
+				await this.handleFileUpload(file);
+			}
 		}
 	}
 
@@ -175,10 +189,3 @@ export class CreateBlog {
 
 const imageExtensions = new Set(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp', 'svg']);
 const videoExtensions = new Set(['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'm4v']);
-
-
-/*
-let uploadedUrl = {
-				url: "http://localhost:4200/kill.jpg"
-			}
-				*/
