@@ -376,3 +376,7 @@ a {
     width: 100px;
     margin: 10px;
 }
+
+.blog-card-back {
+    background-color: #1a202c11;
+}

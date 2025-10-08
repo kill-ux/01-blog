@@ -32,12 +32,18 @@
             </div>
 
             <footer class="blog-footer">
-                <h1 class="text-start"><span _ngcontent-ng-c2640124345="" class="logo-text">Co<span _ngcontent-ng-c2640124345="">mm</span>ents</span></h1>
-                
+                <h1 class="text-start"><span _ngcontent-ng-c2640124345="" class="logo-text">Co<span
+                            _ngcontent-ng-c2640124345="">mm</span>ents</span></h1>
+
                 <div class="comments">
-                    <textarea class="comment-textarea" name="" id="" placeholder="Add a comment to the discussion" rows="5"></textarea>
+                    <textarea class="comment-textarea" name="" id="" placeholder="Add a comment to the discussion"
+                        rows="5"></textarea>
                     <button class="btn btn-primary">Publish</button>
                 </div>
+                @for (item of this.blog?.children; track $index) {
+
+                }
+
             </footer>
         </article>
     </article>
