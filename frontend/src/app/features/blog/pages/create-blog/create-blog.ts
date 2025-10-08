@@ -82,7 +82,6 @@ export class CreateBlog {
 		const files = event.dataTransfer?.files;
 		if (files) {
 			for (const file of files) {
-				document.execCommand("insertText", false, `![Uploading image](...)`)
 				await this.handleFileUpload(file);
 			}
 		}
@@ -149,7 +148,6 @@ export class CreateBlog {
 		if (files) {
 			for (const file of files) {
 				textarea.focus()
-				document.execCommand("insertText", false, `![Uploading image](...)`)
 				await this.handleFileUpload(file);
 			}
 		}

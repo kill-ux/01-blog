@@ -33,4 +33,16 @@ export class SingleBlog implements OnInit {
 			}
 		})
 	}
+
+	getBlogChildren() {
+		this.blogService.getBlogChildren(this.blog?.id, 0).subscribe({
+			next: (res) => {
+				console.log("res", res)
+				this.blog?.children = res
+			},
+			error: (err) => {
+				console.log(err)
+			}
+		})
+	}
 }

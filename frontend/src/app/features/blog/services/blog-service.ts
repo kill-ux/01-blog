@@ -22,6 +22,10 @@ export class BlogService {
 		return this.http.get<BlogResponce>(`${this.API_URL}/blogs/${blogId}`)
 	}
 
+	getBlogChildren(blogId: any, cursor: number) {
+		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs/${blogId}/children?cursor=${cursor}`)
+	}
+
 	toggleLike(blogResponce: BlogResponce) {
 		return this.http.post<{ like: number }>(`${this.API_URL}/blogs/${blogResponce.id}/like`, {})
 	}

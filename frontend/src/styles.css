@@ -152,3 +152,8 @@ img {
     background-color: var(--primary);
     color: var(--primary-foreground);
 }
+
+.btn-primary:hover {
+    background: var(--color-black);
+    transform: translateY(-2px);
+}
