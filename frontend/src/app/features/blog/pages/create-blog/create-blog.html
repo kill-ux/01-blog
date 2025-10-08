@@ -3,6 +3,7 @@
         <div class="editor-layout">
             <div class="editor-panel">
                 <form [formGroup]="formBlog" (submit)="onSubmit()" class="form-blog">
+                    <button #submit style="display: none;" type="submit" class="btn btn-primary with-100">save</button>
 
                     <!-- <label class="panel-label"> -->
                     <input class="title-input" formControlName="title" placeholder="New post title here" type="text" />
@@ -70,7 +71,7 @@
             <!-- </div> -->
         </div>
         <label class="panel-label">
-            <button type="submit" class="btn btn-primary with-100">save</button>
+            <button (click)="submit.click()" type="submit" class="btn btn-primary with-100">save</button>
         </label>
     </div>
 </div>
