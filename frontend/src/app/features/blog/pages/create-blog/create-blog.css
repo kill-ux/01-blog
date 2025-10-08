@@ -57,13 +57,10 @@
 	height: 50px;
 }
 
-.markdown-textarea {
-	/* padding: 16px;
-	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-	background: white;
-	color: #1f2937; */
-	/* width: 500px; */
-	/* height: 544px; */
+textarea {
+	width: 100%;
+	box-sizing: border-box;
+	resize: none;
 }
 
 textarea:focus {
@@ -77,17 +74,13 @@ textarea:focus {
 }
 
 
-.NgxEditor__Wrapper {
+::ng-deep .NgxEditor__Wrapper {
 	border: none;
-	/* width: 89%; */
-	/* height: 100%; */
 	padding: 40px;
+	width: 100%;
+	height: 100%;
+	word-break: break-all;
 }
-
-textarea:focus {
-	/* background-color: red; */
-}
-
 
 .preview-content {
 	flex: 1;
@@ -167,26 +160,35 @@ textarea:focus {
 
 .error {
 	/* background-color: rgba(255, 0, 0, 0.048); */
-	color: red;
+	color: rgba(255, 0, 0, 0.678);
 	padding: 2px;
-	/* border: #3741510a solid 1px; */
+	padding-left: 30px;
+	border: #3741510a solid 1px;
 }
 
 .form-blog {
 	display: grid;
 	grid-template-rows: 2fr 1fr 20fr 2fr;
+	grid-template-columns: 1fr;
 	height: 100%;
+	width: 100%;
+	position: relative;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
 }
 
 
 
 .title-input {
-	height: 100%;
+	height: 70px;
 	border: none;
 	padding: 6px;
 	padding-left: 30px;
 	font-size: 50px;
 	font-weight: 900;
+	margin-top: 10px;
+	/* width: 100%; */
 }
 
 .preview-panel h1 {
@@ -205,13 +207,9 @@ textarea:focus {
 }
 
 .preview-panel {
-
 	overflow: scroll;
 }
 
-code {
-	background-color: red;
-}
 
 ::ng-deep video {
 	width: 100%;
@@ -219,17 +217,17 @@ code {
 }
 
 .toolbar {
-	background-color: red;
 	padding: 5px;
 	margin-top: 5px;
 	/* margin: 5px; */
 }
 
 .editor-toolbar {
-	background-color:#f9f9f9;
-	padding: 10px;
+	background-color: #f9f9f9;
+	padding: 5px;
 	margin-top: 10px;
 	text-align: start;
+	/* width: 100%; */
 }
 
 .toolbar-btn {
