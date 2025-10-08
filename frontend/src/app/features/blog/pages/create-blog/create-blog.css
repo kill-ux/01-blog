@@ -15,15 +15,15 @@
 .editor-layout {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 24px;
-	padding-inline: 100px;
+	/* padding-inline: 300px; */
 	/* height: 600px; */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
 	.editor-layout {
 		grid-template-columns: 1fr;
 		height: auto;
+		/* padding: 5px; */
 	}
 }
 
@@ -37,12 +37,14 @@
 	border-radius: 8px;
 	overflow: hidden;
 	height: 700px;
-	/* width: 90%; */
+	width: 100%;
 
 	--size: 10px;
 	clip-path: polygon(var(--size)0, calc(100% - var(--size))0, calc(100% - var(--size))var(--size), 100% var(--size), 100% calc(100% - var(--size)), calc(100% - var(--size))calc(100% - var(--size)), calc(100% - var(--size))100%, var(--size)100%, var(--size)calc(100% - var(--size)), 0 calc(100% - var(--size)), 0 var(--size), var(--size)var(--size));
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+
 
 .panel-label {
 	padding: 12px 16px;
@@ -55,33 +57,29 @@
 	height: 50px;
 }
 
-.markdown-textarea {
-	flex: 1;
-	border: none;
-	outline: none;
-	padding: 16px;
-	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-	font-size: 14px;
-	line-height: 1.5;
+textarea {
+	width: 100%;
+	box-sizing: border-box;
 	resize: none;
-	background: white;
-	color: #1f2937;
-
-	overflow: auto;
-	background-color: red;
-	text-align: start;
 }
 
-.NgxEditor__Wrapper {
+textarea:focus {
+	outline: none;
+	resize: none;
+	size: 100%;
+}
+
+.form-blog {
+	width: 100%;
+}
+
+
+::ng-deep .NgxEditor__Wrapper {
 	border: none;
-}
-
-.markdown-textarea:focus {
-	background: #fafafa;
-}
-
-.markdown-textarea::placeholder {
-	color: #9ca3af;
+	padding: 40px;
+	width: 100%;
+	height: 100%;
+	word-break: break-all;
 }
 
 .preview-content {
@@ -93,85 +91,13 @@
 }
 
 .markdown-preview {
-	min-height: 100%;
+	/* min-height: 100%; */
 	text-align: start;
+	padding-inline: 50px;
+	padding-block: 10;
+	word-break: break-all;
 }
 
-
-/* Toolbar Styles */
-/* .toolbar {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.toolbar-group {
-  display: flex;
-  gap: 4px;
-  padding-right: 12px;
-  border-right: 1px solid #e5e7eb;
-}
-
-.toolbar-group:last-child {
-  border-right: none;
-  padding-right: 0;
-}
-
-.toolbar-btn {
-  padding: 6px 10px;
-  border: 1px solid #d1d5db;
-  background: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  color: #374151;
-}
-
-.toolbar-btn:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-  transform: translateY(-1px);
-}
-
-.toolbar-btn:active {
-  transform: translateY(0);
-}
-
-.toolbar-btn strong {
-  font-weight: 700;
-}
-
-.toolbar-btn em {
-  font-style: italic;
-}
-
-.toolbar-btn s {
-  text-decoration: line-through;
-}
-
-@media (max-width: 768px) {
-  .toolbar {
-    gap: 6px;
-    padding: 8px 12px;
-  }
-  
-  .toolbar-group {
-    padding-right: 8px;
-  }
-  
-  .toolbar-btn {
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-} */
 
 
 .shadow {
@@ -214,4 +140,104 @@
 	border: 1px solid #e5e7eb;
 	;
 
+}
+
+
+/* Ngx-Editor Custom Styles */
+::ng-deep .NgxEditor {
+	/* min-height: 100% !important; */
+	height: auto !important;
+	border: none !important;
+	line-height: 1.6 !important;
+	overflow: auto !important;
+	height: 600px !important;
+}
+
+::ng-deep .NgxEditor__Content {
+	min-height: 95% !important;
+	text-align: start;
+}
+
+.error {
+	/* background-color: rgba(255, 0, 0, 0.048); */
+	color: rgba(255, 0, 0, 0.678);
+	padding: 2px;
+	padding-left: 30px;
+	border: #3741510a solid 1px;
+}
+
+.form-blog {
+	display: grid;
+	grid-template-rows: 2fr 1fr 20fr 2fr;
+	grid-template-columns: 1fr;
+	height: 100%;
+	width: 100%;
+	position: relative;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+}
+
+
+
+.title-input {
+	height: 70px;
+	border: none;
+	padding: 6px;
+	padding-left: 30px;
+	font-size: 50px;
+	font-weight: 900;
+	margin-top: 10px;
+	/* width: 100%; */
+}
+
+.preview-panel h1 {
+	text-align: start;
+	padding-inline: 10px;
+	padding-inline: 50px;
+	font-size: 50px;
+	line-height: 1.3;
+	font-weight: 900;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+	margin: 10px;
+}
+
+.preview-panel * {
+	line-height: 1.3;
+}
+
+.preview-panel {
+	overflow: scroll;
+}
+
+
+::ng-deep video {
+	width: 100%;
+	height: auto;
+}
+
+.toolbar {
+	padding: 5px;
+	margin-top: 5px;
+	/* margin: 5px; */
+}
+
+.editor-toolbar {
+	background-color: #f9f9f9;
+	padding: 5px;
+	margin-top: 10px;
+	text-align: start;
+	/* width: 100%; */
+}
+
+.toolbar-btn {
+	background: none;
+	border: none;
+	padding: 6px 8px;
+	border-radius: 3px;
+	margin-inline: 5px;
+}
+
+.toolbar-btn:hover {
+	background-color: #d5dfff46;
 }

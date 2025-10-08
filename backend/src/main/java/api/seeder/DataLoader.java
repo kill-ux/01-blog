@@ -19,7 +19,7 @@ public class DataLoader implements CommandLineRunner {
     private UserRepository userRepository;
     private BlogRepository blogRepository;
 
-    public DataLoader(UserRepository userRepository,BlogRepository blogRepository) {
+    public DataLoader(UserRepository userRepository, BlogRepository blogRepository) {
         this.userRepository = userRepository;
         this.blogRepository = blogRepository;
     }
@@ -35,18 +35,17 @@ public class DataLoader implements CommandLineRunner {
         userAdmin.setEmail("admin@gmail.com");
         // password is "admin"
         userAdmin.setPassword("$2a$10$ooAXC7h9lFD0Gf7DHliYWekayBZ0KMVLWBX6EjmA2NHvZ8Q18LtyO");
-        userAdmin.setRole("ROLE_ADMIN"); 
+        userAdmin.setRole("ROLE_ADMIN");
         userAdmin.setCreatedAt(LocalDateTime.now());
 
         this.userRepository.save(userAdmin);
-
 
         User userTest = new User();
         userTest.setNickname("test");
         userTest.setEmail("test@gmail.com");
         // password is "test"
         userTest.setPassword("$2a$10$U6RSphWBDit1fvQ1BLSfz.vDf8MrW0Bjj55.7nqMOmrwE9UMtrABm");
-        userTest.setRole("ROLE_USER"); 
+        userTest.setRole("ROLE_USER");
         userTest.setCreatedAt(LocalDateTime.now());
 
         this.userRepository.save(userTest);
@@ -72,11 +71,12 @@ public class DataLoader implements CommandLineRunner {
             this.userRepository.save(user);
             String description = faker.joke().pun();
             Blog blog = new Blog();
+            blog.setTitle(faker.joke().pun());
             blog.setDescription(description);
             blog.setUser(userTest);
             blog.setCreatedAt(LocalDateTime.now());
             this.blogRepository.save(blog);
-            
+
         });
         this.userRepository.save(userTest);
 

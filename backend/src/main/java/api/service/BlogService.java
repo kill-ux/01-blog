@@ -41,6 +41,7 @@ public class BlogService {
     }
 
     public List<BlogResponse> getBlogs(long cursor) {
+        User user = getAuthenticatedUser();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -48,7 +49,7 @@ public class BlogService {
         return this.blogRepository
                 .findByParentIsNullAndIdLessThan(cursor, pageable)
                 .stream()
-                .map(BlogResponse::new)
+                .map(b -> new BlogResponse(b, user.getId()))
                 .toList();
     }
 
@@ -61,11 +62,12 @@ public class BlogService {
         return this.blogRepository
                 .findSubscribedUsersBlogs(user.getId(), cursor, pageable)
                 .stream()
-                .map(BlogResponse::new)
+                .map(b -> new BlogResponse(b, user.getId()))
                 .toList();
     }
 
     public List<BlogResponse> getBlogsByUser(long userId, long cursor) {
+        User user = getAuthenticatedUser();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -73,13 +75,13 @@ public class BlogService {
         return this.blogRepository
                 .findByUserIdAndParentIsNullAndIdLessThan(userId, cursor, pageable)
                 .stream()
-                .map(BlogResponse::new)
+                .map(b -> new BlogResponse(b, user.getId()))
                 .toList();
     }
 
     public BlogResponse saveBlog(BlogRequest blogRequest) {
         User user = getAuthenticatedUser();
-        validateMediaType(blogRequest.mediaType());
+        // validateMediaType(blogRequest.mediaType());
         Blog blog = convertToEntity(blogRequest);
         blog.setUser(user);
         blog.setCreatedAt(LocalDateTime.now());
@@ -88,7 +90,7 @@ public class BlogService {
         if (blogRequest.parent() == null) {
             this.notificationService.saveNotification(savedBlog);
         }
-        return new BlogResponse(savedBlog);
+        return new BlogResponse(savedBlog, user.getId());
     }
 
     public User getAuthenticatedUser() {
@@ -99,7 +101,11 @@ public class BlogService {
     }
 
     public BlogResponse getBlog(long blogId) {
-        return this.blogRepository.findById(blogId).map(BlogResponse::new).get();
+        User user = getAuthenticatedUser();
+        return this.blogRepository
+                .findById(blogId)
+                .map(b -> new BlogResponse(b, user.getId()))
+                .get();
     }
 
     public void deleteBlog(long blogId) {
@@ -108,6 +114,7 @@ public class BlogService {
     }
 
     public ChildrenResponse getBlogChildren(long blogId, long cursor) {
+        User user = getAuthenticatedUser();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt", "id").descending());
         Page<Blog> page;
         if (cursor == 0) {
@@ -116,7 +123,7 @@ public class BlogService {
         page = this.blogRepository.findByParentIdAndIdLessThan(blogId, cursor, pageable);
 
         ChildrenResponse children = new ChildrenResponse();
-        children.setChildren(page.stream().map(blog -> new BlogResponse(blog, false)).toList());
+        children.setChildren(page.stream().map(blog -> new BlogResponse(blog, false, user.getId())).toList());
         children.setCount(this.blogRepository.countByParentId(blogId));
         return children;
     }
@@ -125,7 +132,7 @@ public class BlogService {
         Blog blog = this.blogRepository.findById(blogId).get();
         validateMediaType(blogRequest.mediaType());
         updateBlogEntity(blog, blogRequest);
-        return new BlogResponse(this.blogRepository.save(blog));
+        return new BlogResponse(this.blogRepository.save(blog), blog.getUser().getId());
     }
 
     public boolean hideBlog(long blogId) {
@@ -141,11 +148,14 @@ public class BlogService {
             Blog parent = this.blogRepository.findById(blogRequest.parent())
                     .orElseThrow(() -> new IllegalArgumentException("FAILED: there is no post with this ID"));
             blog.setParent(parent);
+        } else {
+            if (blogRequest.title() == null) {
+                throw new IllegalArgumentException("must be to set the title");
+            }
+            blog.setTitle(blogRequest.title());
         }
         blog.setCreatedAt(LocalDateTime.now());
         blog.setDescription(blogRequest.description());
-        blog.setMediaType(blogRequest.mediaType());
-        blog.setMediaUrl(blogRequest.mediaUrl());
         return blog;
     }
 
@@ -157,8 +167,7 @@ public class BlogService {
 
     private void updateBlogEntity(Blog blog, BlogRequest blogRequest) {
         blog.setDescription(blogRequest.description());
-        blog.setMediaType(blogRequest.mediaType());
-        blog.setMediaUrl(blogRequest.mediaUrl());
+        blog.setTitle(blogRequest.title());
         blog.setUpdatedAt(LocalDateTime.now());
     }
 

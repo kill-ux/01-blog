@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { BlogService } from '../../services/blog-service';
 
 @Component({
     selector: 'app-blog-home',
@@ -7,15 +8,6 @@ import { RouterOutlet } from '@angular/router';
     templateUrl: './blog-home.html',
     styleUrl: './blog-home.css'
 })
-export class BlogHome implements OnInit {
-    // private 
-    constructor(){}
-
-    ngOnInit(): void {
-        this.loadBlogs()
-    }
-
-    loadBlogs() {
-        
-    }
+export class BlogHome {
+    
 }

@@ -1,16 +1,18 @@
 <div class="container-blogs">
-    <article class="blog-card-back">
+    @for (item of this.blogs; track item.id) {
+
+    <article class="blog-card-back" (click)="clickOnnArcticle(item.id)">
         <article class="blog-card">
             <!-- Header with user info -->
             <header class="blog-header">
                 <div class="user-info">
                     <div class="avatar">
-                        <img [src]="this.blog" alt="{{ this.blog?.user?.nickname }}'s avatar"
+                        <img [src]="item.user.avatar" alt="{{ item.user.nickname }}'s avatar"
                             onerror="this.src='/default-avatar.jpg'">
                     </div>
                     <div class="user-details">
-                        <span class="author-name">{{ this.blog?.user?.nickname }}</span>
-                        <span class="post-date">{{ this.blog?.createdAt | date:'mediumDate' }}</span>
+                        <span class="author-name">{{ item.user.nickname }}</span>
+                        <span class="post-date">{{ item.createdAt | date:'mediumDate' }}</span>
                     </div>
                 </div>
             </header>
@@ -19,24 +21,25 @@
             <!-- Blog content -->
             <div class="blog-content">
                 <div class="blog-title">
-                    <h3>{{ this.blog?.title }}</h3>
+                    <h3>{{ item.title.substring(0,255) }}</h3>
                 </div>
             </div>
 
-
-
-            <div class="blog-content">
-                <div class="blog-description">
-                    <markdown class="markdown-preview" [data]="this.blog?.description"></markdown>
-                </div>
-            </div>
-
-            <footer class="blog-footer">
-                comments
-            </footer>
+            <!-- Load more when last item is in viewport -->
+            @if (lastBlog == item.id) {
+            <div #loadTrigger></div>
+            @defer (on viewport(loadTrigger)) {
+            <div>{{ loadMoreBlogs() }}</div>
+            }
+            }
+            <!-- <div class="blog-content">
+                    <div class="blog-description">
+                        <markdown class="markdown-preview" [data]="item.description.substring(0,255)"></markdown>
+                    </div>
+                </div> -->
 
             <!-- Footer with stats -->
-            <!-- <footer class="blog-footer">
+            <footer class="blog-footer">
                 <div class="blog-stats">
                     <span class="stat">
                         <svg (click)="toggleLike(item); $event.stopPropagation()" width="20" height="20"
@@ -72,7 +75,44 @@
                     </span>
 
                 </div>
-            </footer> -->
+                <div class="blog-stats">
+                    <span class="stat">
+                        <!-- Copied confirmation icon (shown after copy) -->
+                        <!-- <span class="btn copied-icon">Copied!</span> -->
+                        @if (item.isCopied) {
+                        <span class="btn copied-icon">Copied!</span>
+                        <svg width="30" viewBox="0 0 16 13" >
+                            <rect x="0.25" y="6.2002" width="3.1" height="3.1"></rect>
+                            <rect x="3.34961" y="9.2998" width="3.1" height="3.1"></rect>
+                            <rect x="6.4502" y="6.2002" width="3.1" height="3.1"></rect>
+                            <rect x="9.5498" y="3.09961" width="3.1" height="3.1"></rect>
+                            <rect x="12.6504" width="3.1" height="3.1"></rect>
+                        </svg>
+                        } @else {
+                        <svg (click)="copyLink(item); $event.stopPropagation()" role="button" tabindex="0" width="20"
+                            viewBox="0 0 20 20">
+                            <g class="fill-icon">
+                                <path d="M17 1H3V3H17V1Z"></path>
+                                <path d="M19 3H17V17H19V3Z"></path>
+                                <path d="M17 17H3V19H17V17Z"></path>
+                                <path d="M3 3H1V17H3V3Z"></path>
+                                <path d="M8 3H6V17H8V3Z"></path>
+                            </g>
+                        </svg>
+                        }
+
+                        <!-- Original share/link icon (shown by default) -->
+
+                    </span>
+                </div>
+            </footer>
         </article>
     </article>
+    } @empty {
+    <div class="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>No blogs yet</h3>
+        <p>Be the first to share your thoughts!</p>
+    </div>
+    }
 </div>

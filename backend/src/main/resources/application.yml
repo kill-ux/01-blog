@@ -15,7 +15,13 @@ spring:
       enabled: true
       poll-interval: 1000
       quiet-period: 400
+  servlet:
+    multipart:
+      max-file-size: 50MB
 security:
   jwt:
     secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
     expiration-time: 8640000000
+app:
+  cloudinary:
+    cloud-url: cloudinary://642694169257984:rfJHdHX8xcB3gLsKDpYFDI6qLv4@dbwhdxois

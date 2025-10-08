@@ -5,9 +5,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { M } from '@angular/cdk/keycodes';
 import { Navbar } from "../navbar/navbar";
 
+
+declare var Prism: any;
+
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink, MatToolbarModule, Navbar],
+  imports: [RouterOutlet, MatToolbarModule, Navbar],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.css'
 })
@@ -21,6 +24,13 @@ export class MainLayout {
   ) { }
 
   ngOnInit() {
+    setTimeout(() => {
+      console.log("p=>",Prism.plugins.autoloader)
+      if (Prism && Prism.plugins.autoloader) {
+        Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/';
+        Prism.highlightAll(); // Re-highlight all code blocks
+      }
+    }, 0);
     this.userService.getProfile().subscribe({
       next: (user) => {
         this.isLoggedIn = true;

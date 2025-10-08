@@ -1,75 +1,191 @@
-import { Component, OnDestroy, OnInit, VERSION } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { Editor, NgxEditorComponent, NgxEditorMenuComponent } from 'ngx-editor'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MarkdownModule } from 'ngx-markdown';
 
-import { MarkdownComponent } from 'ngx-markdown'
-import { MatInput } from "@angular/material/input";
+import { BlogService } from '../../services/blog-service';
 
 @Component({
 	selector: 'app-create-blog',
-	imports: [FormsModule, MarkdownComponent, ReactiveFormsModule, MatFormFieldModule, MatInput, NgxEditorComponent, NgxEditorMenuComponent],
+	imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MarkdownModule],
 	templateUrl: './create-blog.html',
 	styleUrl: './create-blog.css'
 })
-export class CreateBlog implements OnInit, OnDestroy {
-	markdown = ``;
+export class CreateBlog {
 	formBlog: FormGroup;
-	constructor(private fb: FormBuilder) {
+	isUploading = false;
+
+	constructor(private fb: FormBuilder, private blogService: BlogService) {
 		this.formBlog = this.fb.group({
-			content: ['Hello', Validators.required]
+			description: ['', Validators.required],
+			title: ['', Validators.required]
 		})
 	}
 
 	onSubmit() {
+		console.log("submit")
+		this.formBlog.markAllAsTouched();
+
 		if (this.formBlog.valid) {
-			console.log('data', this.formBlog.value)
+			console.log("hh")
+			this.blogService.saveBlog(this.formBlog.value).subscribe({
+				next: (res) => {
+					console.log("ok")
+				},
+				error: (err) => {
+					console.log(err)
+				}
+			})
+
 		}
 	}
-	editor: Editor = new Editor();
-	html = '';
-	ngOnInit(): void {
-		this.editor = new Editor();
-		this.editor.commands
-			.textColor('red')
-			.insertText(`
-	sd
 
-	sdf
-	sd
-	fs
-	df
-	sdf
-	sd
-	f
-	sdf
-	sd
-	f
-	sd
-	fsd
-	f
-	sdf
 
-		sdf
-	sd
-	f
-	sdf
-	sd
-	f
-	sd
-	fsd
-	f
-	sd
-	fsd
-	f
-	sdf
-	sd
-	f`)
-			.focus()
-			.scrollIntoView()
-			.exec();
+	async onPaste(event: ClipboardEvent) {
+		const clipboardData = event.clipboardData;
+
+
+		const pastedText = clipboardData?.getData('text/plain');
+		if (pastedText) {
+			try {
+				const url = new URL(pastedText)
+				if (this.isImage(url.pathname)) {
+					event.preventDefault()
+					this.insertMarkdownImage(pastedText);
+				} else if (this.isVideo(url.pathname)) {
+					event.preventDefault()
+					this.insertMarkdownVideo(pastedText);
+				}
+			} catch {
+				return
+			}
+
+		} else {
+			if (clipboardData?.items) {
+				for (const item of clipboardData?.items) {
+					if (item.kind == 'file') {
+						event.preventDefault()
+						const file = item.getAsFile();
+						if (file) {
+							document.execCommand("insertText", false, `![Uploading image](...)`)
+							await this.handleFileUpload(file);
+						}
+					}
+				}
+			}
+		}
+
 	}
-	ngOnDestroy(): void {
-		this.editor?.destroy();
+
+	async onDrop(event: DragEvent) {
+		event.preventDefault();
+		const files = event.dataTransfer?.files;
+		if (files) {
+			for (const file of files) {
+				document.execCommand("insertText", false, `![Uploading image](...)`)
+				await this.handleFileUpload(file);
+			}
+		}
+
 	}
+
+
+
+
+	async handleFileUpload(file: File): Promise<void> {
+		this.isUploading = true;
+
+		try {
+			const uploadedUrl = await this.blogService.uploadFile(file).toPromise();
+
+
+			if (uploadedUrl) {
+				let description = this.formBlog.value?.description
+				if (file.type.startsWith('image/')) {
+					if (description
+						.includes("![Uploading image](...)")) {
+						this.formBlog.patchValue({
+							description: description.replace("![Uploading image](...)", this.MarkdownImage(uploadedUrl.url))
+						})
+					} else {
+						this.insertMarkdownImage(uploadedUrl.url)
+					}
+				} else if (file.type.startsWith('video/')) {
+					if (description.includes("![Uploading video](...)")) {
+						this.formBlog.patchValue({
+							description: description.replace("![Uploading video](...)", this.MarkdownVideo(uploadedUrl.url))
+						})
+					} else {
+						this.insertMarkdownVideo(uploadedUrl.url)
+					}
+				}
+			}
+
+
+
+		} catch (error) {
+			console.error('Upload failed:', error);
+		} finally {
+			this.isUploading = false;
+		}
+	}
+
+	toolBarClick(textarea: HTMLTextAreaElement, start: string, end: string) {
+
+		console.log(start)
+		textarea.focus()
+		// this.insertText(`${start}${window}${end}`)
+		document.execCommand('insertText', false, `${start}${window.getSelection()?.toString()}${end}`);
+		this.formBlog.get('description')?.setValue(textarea.value);
+	}
+
+	async onImageUpload(event: Event,textarea: HTMLTextAreaElement) {
+		let files = (event.target as HTMLInputElement).files
+		if (files) {
+			for (const file of files) {
+				textarea.focus()
+				document.execCommand("insertText", false, `![Uploading image](...)`)
+				await this.handleFileUpload(file);
+			}
+		}
+	}
+
+
+	getExtension(filename: string): string {
+		return filename.split('.').pop()?.toLowerCase() || '';
+	}
+
+	isImage(filename: string): boolean {
+		return imageExtensions.has(this.getExtension(filename));
+	}
+
+	isVideo(filename: string): boolean {
+		return videoExtensions.has(this.getExtension(filename));
+	}
+
+	insertMarkdownImage(url: string): void {
+		const markdown = `![image](${url})`;
+		this.insertText(markdown);
+	}
+
+	insertMarkdownVideo(url: string): void {
+		const markdown = `<video controls><source src="${url}" ></video>`;
+		this.insertText(markdown);
+	}
+
+	MarkdownVideo(url: string): string {
+		return `<video controls><source src="${url}" ></video>`;
+	}
+
+	MarkdownImage(url: string): string {
+		return `![image](${url})`;
+	}
+
+	insertText(pastedText: string) {
+		document.execCommand('insertText', false, pastedText);
+	}
+
 }
+
+const imageExtensions = new Set(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp', 'svg']);
+const videoExtensions = new Set(['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'm4v']);
