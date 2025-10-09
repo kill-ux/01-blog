@@ -1,4 +1,6 @@
 <div class="container-blogs">
+
+
     @for (item of this.blogs; track item.id) {
 
     <article class="blog-card-back" (click)="clickOnnArcticle(item.id)">
@@ -14,7 +16,28 @@
                         <span class="author-name">{{ item.user.nickname }}</span>
                         <span class="post-date">{{ item.createdAt | date:'mediumDate' }}</span>
                     </div>
+
                 </div>
+                <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
+                    aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>trash</mat-icon>
+                        <span>Redial</span>
+                    </button>
+                    <button mat-menu-item disabled>
+                        <mat-icon>voicemail</mat-icon>
+                        <span>Check voice mail</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>notifications_off</mat-icon>
+                        <span>Disable alerts</span>
+                    </button>
+                </mat-menu>
+
+
             </header>
 
 
@@ -26,12 +49,7 @@
             </div>
 
             <!-- Load more when last item is in viewport -->
-            @if (lastBlog == item.id) {
-            <div #loadTrigger></div>
-            @defer (on viewport(loadTrigger)) {
-            <div>{{ loadMoreBlogs() }}</div>
-            }
-            }
+
             <!-- <div class="blog-content">
                     <div class="blog-description">
                         <markdown class="markdown-preview" [data]="item.description.substring(0,255)"></markdown>
@@ -81,7 +99,7 @@
                         <!-- <span class="btn copied-icon">Copied!</span> -->
                         @if (item.isCopied) {
                         <span class="btn copied-icon">Copied!</span>
-                        <svg width="30" viewBox="0 0 16 13" >
+                        <svg width="30" viewBox="0 0 16 13">
                             <rect x="0.25" y="6.2002" width="3.1" height="3.1"></rect>
                             <rect x="3.34961" y="9.2998" width="3.1" height="3.1"></rect>
                             <rect x="6.4502" y="6.2002" width="3.1" height="3.1"></rect>
@@ -89,15 +107,15 @@
                             <rect x="12.6504" width="3.1" height="3.1"></rect>
                         </svg>
                         } @else {
-                        <svg (click)="copyLink(item); $event.stopPropagation()" role="button" tabindex="0" width="20"
-                            viewBox="0 0 20 20">
-                            <g class="fill-icon">
-                                <path d="M17 1H3V3H17V1Z"></path>
-                                <path d="M19 3H17V17H19V3Z"></path>
-                                <path d="M17 17H3V19H17V17Z"></path>
-                                <path d="M3 3H1V17H3V3Z"></path>
-                                <path d="M8 3H6V17H8V3Z"></path>
-                            </g>
+                        <svg (click)="copyLink(item); $event.stopPropagation()" width="20" viewBox="0 0 20 20" class="text-icon-btn fill-current">
+                            <path d="M15 1H5V3H15V1Z"></path>
+                            <path d="M17 3H15V17H17V3Z"></path>
+                            <path d="M5 3H3V17H5V3Z"></path>
+                            <path d="M9 15H7V17H9V15Z"></path>
+                            <path d="M7 17H5V19H7V17Z"></path>
+                            <path d="M11 12H9V15H11V12Z"></path>
+                            <path d="M13 15H11V17H13V15Z"></path>
+                            <path d="M15 17H13V19H15V17Z"></path>
                         </svg>
                         }
 
@@ -106,8 +124,19 @@
                     </span>
                 </div>
             </footer>
+
         </article>
     </article>
+    <div class="w-100">
+        @if (lastBlog == item.id) {
+        <div #loadTrigger></div>
+        @defer (on viewport(loadTrigger),) {
+        <div>{{ loadMoreBlogs() }}</div>
+        } @placeholder {
+        <mat-spinner diameter="32"></mat-spinner>
+        }
+        }
+    </div>
     } @empty {
     <div class="empty-state">
         <div class="empty-icon">📝</div>

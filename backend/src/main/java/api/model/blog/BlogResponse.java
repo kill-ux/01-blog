@@ -53,7 +53,8 @@ public class BlogResponse {
         this.hidden = blog.isHidden();
         this.createdAt = blog.getCreatedAt();
         this.updatedAt = blog.getUpdatedAt();
-        // this.childrenCount = blog.getBlogs().size();
+        this.likes = blog.getLikedBy().size();
+        this.childrenCount = blog.getBlogs().size();
         for (User user : blog.getLikedBy()) {
             if (user.getId() == idd) {
                 this.isLike = true;

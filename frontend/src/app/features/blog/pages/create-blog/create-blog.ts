@@ -67,7 +67,7 @@ export class CreateBlog {
 						event.preventDefault()
 						const file = item.getAsFile();
 						if (file) {
-							document.execCommand("insertText", false, `![Uploading image](...)`)
+							// document.execCommand("insertText", false, `![Uploading image](...)`)
 							await this.handleFileUpload(file);
 						}
 					}
@@ -82,7 +82,6 @@ export class CreateBlog {
 		const files = event.dataTransfer?.files;
 		if (files) {
 			for (const file of files) {
-				document.execCommand("insertText", false, `![Uploading image](...)`)
 				await this.handleFileUpload(file);
 			}
 		}
@@ -96,6 +95,11 @@ export class CreateBlog {
 		this.isUploading = true;
 
 		try {
+			if (file.type.startsWith("image")) {
+				document.execCommand("insertText", false, `![Uploading image](...)`)
+			} else {
+				document.execCommand("insertText", false, `![Uploading video](...)`)
+			}
 			const uploadedUrl = await this.blogService.uploadFile(file).toPromise();
 
 
@@ -144,7 +148,6 @@ export class CreateBlog {
 		if (files) {
 			for (const file of files) {
 				textarea.focus()
-				document.execCommand("insertText", false, `![Uploading image](...)`)
 				await this.handleFileUpload(file);
 			}
 		}

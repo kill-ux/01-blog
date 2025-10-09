@@ -18,4 +18,5 @@ export interface BlogResponce {
     like: boolean
     childrenCount : number
     isCopied: boolean
+    children: BlogResponce[]
 }
