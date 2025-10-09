@@ -23,7 +23,7 @@ export class BlogService {
 	}
 
 	getBlogChildren(blogId: any, cursor: number) {
-		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs/${blogId}/children?cursor=${cursor}`)
+		return this.http.get<{ children: BlogResponce[], count: number }>(`${this.API_URL}/blogs/${blogId}/children?cursor=${cursor}`)
 	}
 
 	toggleLike(blogResponce: BlogResponce) {
@@ -33,7 +33,7 @@ export class BlogService {
 	uploadFile(file: File) {
 		const formData = new FormData();
 		formData.append('file', file)
-		return this.http.post<{url: string}>(`${this.API_URL}/upload`, formData)
+		return this.http.post<{ url: string }>(`${this.API_URL}/upload`, formData)
 	}
 
 	// getLikes(blogResponce: BlogResponce) {

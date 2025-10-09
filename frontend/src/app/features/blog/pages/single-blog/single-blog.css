@@ -362,7 +362,7 @@ a {
 
 .comment-textarea {
     width: 100%;
-	resize: none;
+    resize: none;
     border: 1px solid #e5e5e5;
     padding: 10px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
@@ -379,4 +379,42 @@ a {
 
 .blog-card-back {
     background-color: #1a202c11;
+}
+
+
+.comment {
+    /* background-color: red; */
+    width: 100%;
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+}
+
+.flex-row {
+    flex-direction: row;
+    justify-content: space-between;
+    /* width: 150px; */
+    margin-inline: 10px;
+    background-color: #1a202c07;
+    padding: 3px;
+    border-radius: 2px;
+}
+
+.comment-description {
+    /* background-color: #5a6fd8; */
+    /* width: 100%; */
+    margin: 10px;
+    margin-bottom: 0;
+}
+
+.comment-content {
+    width: 100%;
+    border: 1px solid #5a6fd821;
+    padding-block: 10px;
+    margin: 5px;
+    border-radius: 4px;
+
+    margin-bottom: 1.5rem;
+    text-align: start;
+    line-height: 1.3;
 }

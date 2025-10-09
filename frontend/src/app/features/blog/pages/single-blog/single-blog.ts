@@ -12,7 +12,7 @@ import { MarkdownComponent } from 'ngx-markdown';
 	styleUrl: './single-blog.css'
 })
 export class SingleBlog implements OnInit {
-	public blog: BlogResponce | null = null;
+	public blog: any;
 
 	constructor(private blogService: BlogService, private route: ActivatedRoute) {
 	}
@@ -27,6 +27,7 @@ export class SingleBlog implements OnInit {
 			next: (res) => {
 				console.log("res", res)
 				this.blog = res
+				this.blog.children = []
 				this.getBlogChildren(0)
 			},
 			error: (err) => {
@@ -38,9 +39,9 @@ export class SingleBlog implements OnInit {
 	getBlogChildren(cursor: number) {
 		this.blogService.getBlogChildren(this.blog?.id, cursor).subscribe({
 			next: (res) => {
-				console.log("res", res)
+				console.log("res", res.children)
 				if (this.blog) {
-					this.blog.children = res
+					this.blog.children = res.children
 				}
 			},
 			error: (err) => {

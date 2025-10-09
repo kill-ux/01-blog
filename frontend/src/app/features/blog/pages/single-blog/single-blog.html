@@ -40,9 +40,35 @@
                         rows="5"></textarea>
                     <button class="btn btn-primary">Publish</button>
                 </div>
-                @for (item of this.blog?.children; track $index) {
+                @for (item of (this.blog?.children); track item.id) {
+                <div class="comment">
+                    <!-- Your item content here -->
+                    <header class="blog-header">
+                        <div class="user-info">
+                            <div class="avatar">
+                                <img [src]="item.user.avatar" alt="{{ item.user.nickname }}'s avatar"
+                                    onerror="this.src='/default-avatar.jpg'">
+                            </div>
 
+                        </div>
+                    </header>
+
+                    <div class="comment-content">
+                        <div class="user-details flex-row">
+                            <span class="author-name">{{ item.user.nickname }}</span>
+                            <span class="post-date">{{ item.createdAt | date:'mediumDate' }}</span>
+                        </div>
+                        <div class="comment-description">
+                            <div class="">{{item.description}}</div>
+                        </div>
+                    </div>
+
+
+
+                </div>
                 }
+
+
 
             </footer>
         </article>
