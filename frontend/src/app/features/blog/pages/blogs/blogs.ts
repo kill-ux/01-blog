@@ -5,10 +5,11 @@ import { DatePipe } from '@angular/common';
 
 import sanitizeHtml from 'sanitize-html';
 import { Router } from '@angular/router';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 
 @Component({
 	selector: 'app-blogs',
-	imports: [DatePipe],
+	imports: [DatePipe, MatProgressSpinnerModule],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css'
 })

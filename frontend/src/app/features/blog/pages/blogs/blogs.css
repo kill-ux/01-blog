@@ -271,6 +271,17 @@
     background-color: #1a202c11;
 }
 
+mat-spinner {
+    text-align: center;
+}
+
+.w-100 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 
 .liked {
