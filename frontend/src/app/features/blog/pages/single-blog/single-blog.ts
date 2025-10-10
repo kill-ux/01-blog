@@ -12,10 +12,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../auth/services/auth-api';
+import { ChildBlog } from "../child-blog/child-blog";
 
 @Component({
 	selector: 'app-single-blog',
-	imports: [DatePipe, MarkdownComponent, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon],
+	imports: [DatePipe, MarkdownComponent, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, ChildBlog],
 	templateUrl: './single-blog.html',
 	styleUrl: './single-blog.css'
 })

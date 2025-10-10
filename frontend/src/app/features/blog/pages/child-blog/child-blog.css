@@ -463,6 +463,11 @@ a {
     width: 90%;
 }
 
-app-child-blog {
-    width: 100%;
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info svg {
+    fill: #b9b9b9;
 }

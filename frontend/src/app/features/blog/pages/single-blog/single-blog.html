@@ -67,8 +67,11 @@
                 </form>
 
                 @for (item of (this.blog?.children); track item.id) {
+                <app-child-blog [child]="item"></app-child-blog>
+                }
+
+                <!-- @for (item of (this.blog?.children); track item.id) {
                 <div class="comment">
-                    <!-- Your item content here -->
                     <header class="blog-header">
                         <div class="user-info">
                             <div class="avatar">
@@ -128,7 +131,7 @@
                         </div>
                     </footer>
                 </div>
-                
+
                 <div class="w-100">
                     <form [formGroup]="formCommend" class="comments" (submit)="(submitComment())">
                         <div class="comment-back cap">
@@ -151,7 +154,7 @@
                 <mat-spinner diameter="32"></mat-spinner>
                 }
                 }
-                }
+                } -->
 
 
 
