@@ -71,7 +71,7 @@
             <!-- </div> -->
         </div>
         <label class="panel-label">
-            <button (click)="submit.click()" type="submit" class="btn btn-primary with-100">save</button>
+            <button (click)="submit.click()" type="submit" class="btn btn-primary with-100">@if (this.id) {update} @else {save} </button>
         </label>
     </div>
 </div>

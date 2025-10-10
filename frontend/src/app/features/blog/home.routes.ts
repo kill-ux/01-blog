@@ -6,14 +6,18 @@ import { SingleBlog } from "./pages/single-blog/single-blog";
 export const BlogsRoutes: Routes = [
     {
         path: '',
-        component : Blogs
+        component: Blogs
     },
     {
         path: 'create',
-        component : CreateBlog
+        component: CreateBlog
+    },
+    {
+        path: 'edit/:id',
+        component: CreateBlog
     },
     {
         path: 'blog/:id',
-        component : SingleBlog,
+        component: SingleBlog,
     }
 ]

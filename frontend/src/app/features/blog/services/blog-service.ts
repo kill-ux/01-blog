@@ -14,6 +14,11 @@ export class BlogService {
 		return this.http.post<BlogResponce>(`${this.API_URL}/blogs/store`, blogRequest)
 	}
 
+	updateBlog(blogRequest: BlogRequest, blogId: string) {
+		return this.http.put<BlogResponce>(`${this.API_URL}/blogs/${blogId}/update`, blogRequest)
+	}
+
+
 	getBlogsNetworks(cursor: number) {
 		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs/networks?cursor=${cursor}`)
 	}

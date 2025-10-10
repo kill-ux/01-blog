@@ -97,7 +97,7 @@ export class AuthService {
         try {
             const decoded: any = jwtDecode(token);
             const user: User = {
-                id: decoded.userId || decoded.sub,
+                id: decoded.id || decoded.sub,
                 email: decoded.email,
                 nickname: decoded.sub,
                 avatar: decoded.avatar,

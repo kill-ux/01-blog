@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { AuthService } from '../../../auth/services/auth-api';
 
 @Component({
 	selector: 'app-blogs',
@@ -21,6 +22,9 @@ export class Blogs implements OnInit {
 	public blogs: BlogResponce[];
 	public lastBlog = 0;
 	private isLoading = false;
+	public authService = inject(AuthService)
+
+
 	constructor(private blogService: BlogService, private router: Router) {
 		this.blogs = [];
 	}
@@ -109,6 +113,10 @@ export class Blogs implements OnInit {
 				console.log(err)
 			}
 		})
+	}
+
+	EditBlog(id: number) {
+		this.router.navigate(["edit", id])
 	}
 
 }

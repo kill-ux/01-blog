@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
@@ -8,10 +8,14 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../../auth/services/auth-api';
 
 @Component({
 	selector: 'app-single-blog',
-	imports: [DatePipe, MarkdownComponent, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule],
+	imports: [DatePipe, MarkdownComponent, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon],
 	templateUrl: './single-blog.html',
 	styleUrl: './single-blog.css'
 })
@@ -20,8 +24,9 @@ export class SingleBlog implements OnInit {
 	formCommend: FormGroup
 	lastChild = 0
 	isLoading = false
+	public authService = inject(AuthService)
 
-	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder) {
+	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder,private router: Router) {
 		this.formCommend = fb.group({
 			description: ['', Validators.required],
 			parent: [0]
@@ -111,5 +116,21 @@ export class SingleBlog implements OnInit {
 		if (!e.shiftKey && e.key == "Enter") {
 			btn.click()
 		}
+	}
+
+	DeleteBlog(id: number) {
+		console.log("delete this id =>", id)
+		this.blogService.DeleteBlog(id).subscribe({
+			next: res => {
+				console.log(res)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
+	}
+
+	EditBlog(id: number) {
+		this.router.navigate(["edit", id])
 	}
 }

@@ -16,7 +16,7 @@ else
     pkill -f rootlesskit || true
     
     # Install with force flag
-    curl -fsSL https://get.docker.com/rootless | FORCE=1 sh
+    curl -fsSL https://get.docker.com/rootless | FORCE=1 sh 
     echo "✅ Docker rootless installed."
 fi
 

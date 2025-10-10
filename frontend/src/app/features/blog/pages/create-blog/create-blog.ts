@@ -1,9 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MarkdownModule } from 'ngx-markdown';
 
 import { BlogService } from '../../services/blog-service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'app-create-blog',
@@ -11,14 +12,37 @@ import { BlogService } from '../../services/blog-service';
 	templateUrl: './create-blog.html',
 	styleUrl: './create-blog.css'
 })
-export class CreateBlog {
+export class CreateBlog implements OnInit {
 	formBlog: FormGroup;
 	isUploading = false;
+	id: string | null = null
+	// 
 
-	constructor(private fb: FormBuilder, private blogService: BlogService) {
+	constructor(private fb: FormBuilder, private blogService: BlogService, private route: ActivatedRoute, private router: Router) {
 		this.formBlog = this.fb.group({
 			description: ['', Validators.required],
 			title: ['', Validators.required]
+		})
+	}
+
+	ngOnInit(): void {
+		this.id = this.route.snapshot.paramMap.get("id")
+		if (this.id) {
+			this.getBlog(this.id)
+		}
+	}
+
+	getBlog(id: string) {
+		this.blogService.getBlog(id).subscribe({
+			next: (res) => {
+				this.formBlog.setValue({
+					description: res.description,
+					title: res.title
+				})
+			},
+			error: (err) => {
+				console.log(err)
+			}
 		})
 	}
 
@@ -28,9 +52,16 @@ export class CreateBlog {
 
 		if (this.formBlog.valid) {
 			console.log("hh")
-			this.blogService.saveBlog(this.formBlog.value).subscribe({
+			let obs;
+			if (this.id) {
+				obs = this.blogService.updateBlog(this.formBlog.value, this.id)
+			} else {
+				obs = this.blogService.saveBlog(this.formBlog.value)
+			}
+			obs.subscribe({
 				next: (res) => {
 					console.log("ok")
+					this.router.navigate(['blog', res.id])
 				},
 				error: (err) => {
 					console.log(err)
@@ -143,7 +174,7 @@ export class CreateBlog {
 		this.formBlog.get('description')?.setValue(textarea.value);
 	}
 
-	async onImageUpload(event: Event,textarea: HTMLTextAreaElement) {
+	async onImageUpload(event: Event, textarea: HTMLTextAreaElement) {
 		let files = (event.target as HTMLInputElement).files
 		if (files) {
 			for (const file of files) {

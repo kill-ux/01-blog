@@ -23,15 +23,22 @@
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
+                    @if (authService.currentUser?.id == item.user.id) {
                     <button mat-menu-item (click)="DeleteBlog(item.id)">
-                       <mat-icon>delete</mat-icon>
+                        <mat-icon>delete</mat-icon>
                         <span>Delete</span>
                     </button>
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="EditBlog(item.id)">
                         <mat-icon>edit</mat-icon>
                         <span>Edit</span>
                     </button>
+                    }
+                    <button mat-menu-item (click)="DeleteBlog(item.id)">
+                        <mat-icon>report</mat-icon>
+                        <span>Report</span>
+                    </button>
                 </mat-menu>
+
 
 
             </header>
@@ -103,7 +110,8 @@
                             <rect x="12.6504" width="3.1" height="3.1"></rect>
                         </svg>
                         } @else {
-                        <svg (click)="copyLink(item); $event.stopPropagation()" width="20" viewBox="0 0 20 20" class="text-icon-btn fill-current">
+                        <svg (click)="copyLink(item); $event.stopPropagation()" width="20" viewBox="0 0 20 20"
+                            class="text-icon-btn fill-current">
                             <path d="M15 1H5V3H15V1Z"></path>
                             <path d="M17 3H15V17H17V3Z"></path>
                             <path d="M5 3H3V17H5V3Z"></path>
