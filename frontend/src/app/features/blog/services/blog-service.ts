@@ -26,6 +26,10 @@ export class BlogService {
 		return this.http.get<{ children: BlogResponce[], count: number }>(`${this.API_URL}/blogs/${blogId}/children?cursor=${cursor}`)
 	}
 
+	DeleteBlog(blogId: any) {
+		return this.http.delete<void>(`${this.API_URL}/blogs/${blogId}/delete`, { responseType: 'text' as 'json' })
+	}
+
 	toggleLike(blogResponce: BlogResponce) {
 		return this.http.post<{ like: number }>(`${this.API_URL}/blogs/${blogResponce.id}/like`, {})
 	}

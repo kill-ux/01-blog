@@ -237,7 +237,7 @@
     }
 
     .blog-header {
-        flex-direction: column;
+        /* flex-direction: column; */
         align-items: stretch;
         gap: 1rem;
     }
@@ -247,7 +247,6 @@
     }
 
     .blog-footer {
-        flex-direction: column;
         gap: 1rem;
         align-items: stretch;
     }

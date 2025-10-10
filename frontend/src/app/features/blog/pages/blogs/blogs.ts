@@ -12,7 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
 	selector: 'app-blogs',
-	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule,MatIcon],
+	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css'
 })
@@ -98,22 +98,20 @@ export class Blogs implements OnInit {
 		});
 	}
 
+	DeleteBlog(id: number) {
+		console.log("delete this id =>", id)
+		this.blogService.DeleteBlog(id).subscribe({
+			next: res => {
+				this.blogs = this.blogs.filter(blog => blog.id != id)
+				console.log(res)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
+	}
 
-	// getLikes(blogResponce: BlogResponce) {
-	// 	return this.blogService.getLikes(blogResponce).subscribe({
-	// 		next: res => {
-	// 			console.log(res)
-	// 			return res.count
-	// 		},
-	// 		error: err => {
-	// 			console.log(err)
-	// 			return 0
-	// 		}
-	// 	})
-	// }
 }
-
-
 
 const ALLOWED_TAGS = [
 	'h1', 'h2', 'h3', 'b', 'i', 'em', 'strong', 'u',
