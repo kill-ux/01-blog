@@ -34,8 +34,8 @@
     <footer class="blog-footer likes-comment">
         <div class="blog-stats flex">
             <span class="stat">
-                <svg (click)="toggleLike(this.child); $event.stopPropagation()" width="20" height="20" viewBox="0 0 20 20"
-                    [class.liked]="this.child.like" [class.not-liked]="!this.child.like">
+                <svg (click)="toggleLike(this.child); $event.stopPropagation()" width="20" height="20"
+                    viewBox="0 0 20 20" [class.liked]="this.child.like" [class.not-liked]="!this.child.like">
                     <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
                     <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
                     <path d="M14.3043 1.59375H11.4492V4.48449H14.3043V1.59375Z"></path>
@@ -69,9 +69,11 @@
     </footer>
 </div>
 
-<!-- @if (item) {
-<app-child-blog [children]="item.children"></app-child-blog>
-} -->
+@for (item of (this.child.children); track item.id) {
+    sdfsmdfs
+<app-child-blog [child]="item"></app-child-blog>
+}
+
 
 
 <!-- <div class="w-100">
