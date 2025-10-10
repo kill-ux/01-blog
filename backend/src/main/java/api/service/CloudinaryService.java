@@ -20,7 +20,6 @@ public class CloudinaryService {
             HashMap<Object, Object> options = new HashMap<>();
             options.put("folder", folderName);
             options.put("resource_type", resourceType);
-            options.put("chunk_size", 50000000); // 50MB
             Map<String, Object> uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
             String publicId = (String) uploadedFile.get("public_id");
             return cloudinary.url().secure(true).resourcType(resourceType).generate(publicId);

@@ -106,4 +106,10 @@ export class SingleBlog implements OnInit {
 
 		}
 	}
+
+	onKeyDown(e: KeyboardEvent, btn: HTMLButtonElement) {
+		if (!e.shiftKey && e.key == "Enter") {
+			btn.click()
+		}
+	}
 }

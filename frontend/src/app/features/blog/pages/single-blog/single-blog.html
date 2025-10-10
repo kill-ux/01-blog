@@ -38,9 +38,9 @@
                 <form [formGroup]="formCommend" class="comments" (submit)="(submitComment())">
                     <div class="comment-back cap">
                         <textarea formControlName="description" class="comment-textarea" name="" id=""
-                            placeholder="Add a comment to the discussion" rows="5"></textarea>
+                            placeholder="Add a comment to the discussion" rows="5" (keydown)="onKeyDown($event,btn)"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Publish</button>
+                    <button #btn type="submit" class="btn btn-primary">Publish</button>
                 </form>
 
                 @for (item of (this.blog?.children); track item.id) {
