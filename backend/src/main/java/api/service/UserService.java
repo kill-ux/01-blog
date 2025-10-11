@@ -36,7 +36,7 @@ public class UserService {
     private final AuthUtils authUtils;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager, JwtService jwtService,AuthUtils authUtils) {
+            AuthenticationManager authenticationManager, JwtService jwtService, AuthUtils authUtils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -49,11 +49,13 @@ public class UserService {
     }
 
     public List<UserResponse> getAllUsers(int pageNumber) {
+        long id = this.authUtils.getAuthenticatedUser().getId();
         Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.userRepository
                 .findAll(pageable)
                 .stream()
-                .map(UserResponse::new)
+                .map(u -> new UserResponse(u, id))
+                .filter(u -> u.getId() != id)
                 .toList();
     }
 
@@ -200,7 +202,7 @@ public class UserService {
             cursor = Long.MAX_VALUE;
         }
         return this.userRepository
-                .findSubscribersBySubscribedToId(userId,cursor, pageable)
+                .findSubscribersBySubscribedToId(userId, cursor, pageable)
                 .stream()
                 .map(this::convertToDTO2)
                 .toList();
@@ -212,7 +214,7 @@ public class UserService {
             cursor = Long.MAX_VALUE;
         }
         return this.userRepository
-                .findSubscriptionsBySubscribedId(userId,cursor, pageable)
+                .findSubscriptionsBySubscribedId(userId, cursor, pageable)
                 .stream()
                 .map(this::convertToDTO2)
                 .toList();

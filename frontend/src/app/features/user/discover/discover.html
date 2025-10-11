@@ -12,10 +12,20 @@
                     <span class="post-date">Joind at : {{ user.createdAt | date:'mediumDate' }}</span>
                 </div>
                 <div>
-                    <button (click)="subscribe(user.id)" class="btn btn-primary"> @if (user.sub) {subscribe} @else {unsubscribe} </button>
+                    <button (click)="subscribe(user.id)" class="btn btn-primary"> @if (user.sub) {unsubscribe} @else
+                        {subscribe} </button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div>
+        @if (lastUser == user.id) {
+        <div #loadTrigger></div>
+        @defer (on viewport(loadTrigger)) {
+        <div>{{ loadMoreBlogs() }}</div>
+        }
+        }
     </div>
     }
 

@@ -10,19 +10,36 @@ import { DatePipe } from '@angular/common';
 	styleUrl: './discover.css'
 })
 export class Discover implements OnInit {
-	users: User[] | null = null
+	users: User[] | [] = []
+	lastUser = 0
+	pageNumber = 0;
+
+	private isLoading = false;
+
 	constructor(private userService: UserService) {
 
 	}
 	ngOnInit(): void {
-		this.userService.getUsers().subscribe({
+		this.getUsers(this.pageNumber)
+	}
+
+
+
+	getUsers(pageNumber: number) {
+		if (this.isLoading) return;
+		this.isLoading = true;
+		this.userService.getUsers(pageNumber).subscribe({
 			next: users => {
 				console.log(users)
-				this.users = users
+				if (users) {
+					this.lastUser = users[users.length - 1].id
+					this.users = [...this.users, ...users]
+				}
+				this.isLoading = false
 			},
 			error: err => {
 				console.log(err);
-
+				this.isLoading = false
 			}
 		})
 	}
@@ -30,21 +47,26 @@ export class Discover implements OnInit {
 	subscribe(id: number) {
 		this.userService.subscribe(id).subscribe({
 			next: res => {
-				this.users?.map((user) => {
-					if (user.id == id) {
-						user.sub = res.operation == "subscribed" ? true : false
-					}
-				})
-				let user = this.users?.find(u => u.id = id)
-				console.log(user?.sub)
-				// if (user) {
-				// 	user.sub = res.operation == "subscribed" ? true : false
-				// }
 				console.log(res)
+				if (this.users) {
+					this.users = this.users?.map((user) => {
+						if (user.id == id) {
+							user.sub = res.operation == "subscribed" ? true : false
+						}
+						return user
+					})
+				}
+
 			},
 			error: err => {
 				console.log(err)
 			}
 		})
+	}
+
+	loadMoreBlogs() {
+		if (!this.isLoading) {
+			this.getUsers(++this.pageNumber)
+		}
 	}
 }

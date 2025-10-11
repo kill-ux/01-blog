@@ -105,7 +105,8 @@ export class AuthService {
                 bannedUntil: null,
                 birthDate: null,
                 createdAt: null,
-                updatedAt: null
+                updatedAt: null, 
+                sub: false
             };
             this.currentUserSubject.next(user);
         } catch (error) {

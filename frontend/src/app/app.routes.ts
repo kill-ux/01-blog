@@ -5,6 +5,7 @@ import { MainLayout } from './layouts/main-layout/main-layout';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { homeRoutes } from './features/home/home.routes';
 import { authGuard } from './core/guards/auth-guard';
+import { noAuthGuard } from './core/guards/no-auth-guard';
 
 export const routes: Routes = [
     {
@@ -16,7 +17,9 @@ export const routes: Routes = [
     {
         path: 'auth',
         component: AuthLayout,
-        children: authRoutes
+        children: authRoutes,
+        canActivate: [noAuthGuard]
+
     },
     // {
     //     path: 'users',

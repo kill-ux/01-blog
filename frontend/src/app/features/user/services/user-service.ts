@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthState } from '../../auth/models/model';
+import { AuthState, User } from '../../auth/models/model';
 
 @Injectable({
     providedIn: 'root'
@@ -8,8 +8,8 @@ import { AuthState } from '../../auth/models/model';
 export class UserService {
 
     constructor(private http: HttpClient) { }
-    getUsers() {
-        return this.http.get<[]>("http://localhost:8080/api/users")
+    getUsers(pageNumber: number) {
+        return this.http.get<User[]>(`http://localhost:8080/api/users?pageNumber=${pageNumber}`)
     }
 
     getProfile() {

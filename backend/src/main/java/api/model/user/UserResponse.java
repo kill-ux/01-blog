@@ -15,6 +15,7 @@ public class UserResponse {
     private LocalDateTime birthDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean sub;
 
     // Constructor, getters, and setters
     public UserResponse(User user) {
@@ -27,5 +28,18 @@ public class UserResponse {
         this.birthDate = user.getBirthDate();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
+    }
+
+    public UserResponse(User user, long id) {
+        this.id = user.getId();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+        this.role = user.getRole();
+        this.avatar = user.getAvatar();
+        this.bannedUntil = user.getBannedUntil();
+        this.birthDate = user.getBirthDate();
+        this.createdAt = user.getCreatedAt();
+        this.updatedAt = user.getUpdatedAt();
+        this.sub = user.getSubscribers().stream().anyMatch(u -> u.getId() == id);
     }
 }

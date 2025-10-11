@@ -2,10 +2,10 @@
     <div class="navbar-container">
         <div class="navbar-content">
             <!-- Logo -->
-            <div class="logo">
+            <a routerLink="" class="logo">
                 <div class="logo-icon btn">01</div>
                 <span class="logo-text"><span>B</span>log</span>
-            </div>
+            </a>
 
             <!-- Desktop Navigation -->
             <div class="nav-links">
@@ -68,13 +68,54 @@
                     <path d="M14 16H16V14H14V16Z"></path>
                 </svg>
                 <a routerLink="create" class="btn btn-primary">Create</a>
-                 
+
                 <!-- <a href="#" ></a> -->
                 <!-- <button class="btn btn-primary">Profile</button> -->
-                <div id="profile" class="profile" (click)="openDialog()">
-                    <div></div>
-                    <img src="kill.jpg" class="pixel-corners img-profile" alt="">
+                <div id="profile" class="profile" matIconButton [matMenuTriggerFor]="menu">
+                    <img [src]="'images/'+this.authService.currentUser?.avatar" class="pixel-corners img-profile"
+                        alt="{{ this.authService.currentUser?.nickname }}'s avatar"
+                        onerror="this.src='/default-avatar.jpg'">
                 </div>
+
+                <mat-menu #menu="matMenu">
+                     <div class="user-info" >
+                        {{ this.authService.currentUser?.nickname }}
+                     </div>
+                    <div mat-menu-item >
+                        <svg width="20" viewBox="0 0 16 16" class="text-text-primary fill-current">
+                            <path d="M11.2008 11.2H4.80078V12.8H11.2008V11.2Z"></path>
+                            <path d="M11.2008 12.8H4.80078V14.4H11.2008V12.8Z"></path>
+                            <path d="M4.79922 12.8H3.19922V14.4H4.79922V12.8Z"></path>
+                            <path d="M12.7992 12.8H11.1992V14.4H12.7992V12.8Z"></path>
+                            <path d="M10.4016 1.59998H5.60156V3.19998H10.4016V1.59998Z"></path>
+                            <path d="M10.4016 8H5.60156V9.6H10.4016V8Z"></path>
+                            <path d="M11.9984 3.19995H10.3984V7.99995H11.9984V3.19995Z"></path>
+                            <path d="M5.6 3.19995H4V7.99995H5.6V3.19995Z"></path>
+                            <path d="M10.4016 3.19995H5.60156V7.99995H10.4016V3.19995Z"></path>
+                        </svg>
+                        <span>Profile</span>
+                    </div>
+
+                    <div (click)="logout()" mat-menu-item>
+                        <svg width="20" viewBox="0 0 20 20"
+                            class="hover:text-blue transition-colors duration-500 hover:scale-98">
+                            <g class="fill-icon">
+                                <path d="M17 1H3V3H17V1Z"></path>
+                                <path d="M19 3H17V17H19V3Z"></path>
+                                <path d="M17 17H3V19H17V17Z"></path>
+                                <path d="M3 3H1V17H3V3Z"></path>
+                                <path d="M8 3H6V17H8V3Z"></path>
+                            </g>
+                            <g class="fill-icon-secondary">
+                                <path d="M10 9H12V11H10V9Z"></path>
+                                <path d="M12 11H14V13H12V11Z"></path>
+                                <path d="M12 7H14V9H12V7Z"></path>
+                            </g>
+                        </svg>
+                        <span>Log out</span>
+                    </div>
+
+                </mat-menu>
             </div>
 
             <!-- Mobile Menu Button -->

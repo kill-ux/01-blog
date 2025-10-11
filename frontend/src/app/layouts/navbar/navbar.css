@@ -17,6 +17,10 @@
     --color-current-taxonomy: #459ffb;
 }
 
+a {
+    text-decoration: none;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -254,3 +258,19 @@ body {
     margin-left: 10px;
 }
 
+::ng-deep .mat-mdc-menu-panel {
+    padding: 10px;
+}
+
+::ng-deep .mat-mdc-menu-item-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.user-info {
+    font-size: 20px;
+    text-align: center;
+}

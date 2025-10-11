@@ -1,39 +1,20 @@
-import { Component, inject, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
-import { DialogProfile } from './dialog-profile/dialog-profile';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth-api';
 import { RouterLink } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
 
 @Component({
 	selector: 'app-navbar',
-	imports: [MatDialogModule, RouterLink],
+	imports: [RouterLink, MatIcon, MatMenu, MatMenuModule],
 	templateUrl: './navbar.html',
 	styleUrl: './navbar.css'
 })
 export class Navbar {
-	private authService = inject(AuthService)
-	constructor(public dialog: MatDialog) { }
+	public authService = inject(AuthService)
 
-	openDialog() {
-		const dialogRef = this.dialog.open(DialogProfile, {
-			// height: '300px', // Set height (optional)
-			maxWidth: '90vw', // Limit max width (responsive)
-			minWidth: '120px', // Minimum width
-			position: { top: '100px', right: '50px' }, // Position dialog
-			panelClass: 'custom-dialog-class', // Custom CSS class for styling
-			// backdropClass: 'custom-backdrop', // Custom backdrop styling
-			// disableClose: false, // Allow/disable closing on backdrop click or ESC
-			// autoFocus: true, // Auto-focus first focusable element
-			// data: { key: 'value' }, // Pass data to dialog component
-			// hasBackdrop: true, // Show/hide backdrop
-			// enterAnimationDuration: '300ms', // Animation duration for opening
-			// exitAnimationDuration: '200ms', // Animation duration for closing
-			data: this.authService.currentUser
-		})
-
-		dialogRef.afterClosed().subscribe((res) => {
-			console.log('The dialog was closed', res);
-		})
+	logout() {
+		this.authService.logout()
 	}
 
 }
