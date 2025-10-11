@@ -225,7 +225,7 @@
     }
 
     .blog-card {
-        padding: 1.5rem;
+        padding: 1rem;
     }
 
     .blog-header {
@@ -241,7 +241,6 @@
     .blog-footer {
         flex-direction: column;
         gap: 1rem;
-        align-items: stretch;
     }
 
     .blog-stats {

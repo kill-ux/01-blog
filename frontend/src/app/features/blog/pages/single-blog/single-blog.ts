@@ -27,7 +27,7 @@ export class SingleBlog implements OnInit {
 	isLoading = false
 	public authService = inject(AuthService)
 
-	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder,private router: Router) {
+	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
 		this.formCommend = fb.group({
 			description: ['', Validators.required],
 			parent: [0]
@@ -124,6 +124,7 @@ export class SingleBlog implements OnInit {
 		this.blogService.DeleteBlog(id).subscribe({
 			next: res => {
 				console.log(res)
+				this.router.navigate([""])
 			},
 			error: err => {
 				console.log(err)

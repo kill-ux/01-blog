@@ -66,8 +66,8 @@
                     <button #btn type="submit" class="btn btn-primary">Publish</button>
                 </form>
 
-                @for (item of (this.blog?.children); track item.id) {
-                <app-child-blog [child]="item"></app-child-blog>
+                @for (item of (this.blog?.children || []); track item.id) {
+                <app-child-blog [thread]="2" [child]="item" [parent]="this.blog" ></app-child-blog>
                 }
 
                 <!-- @for (item of (this.blog?.children); track item.id) {

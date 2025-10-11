@@ -104,3 +104,11 @@ docker compose version
 echo ""
 echo "🎉 Docker rootless setup complete!"
 echo "💡 Run 'source ~/.zshrc' or restart your terminal to apply changes."
+
+
+cat << 'EOF' >> ~/.zshrc
+# Check if dockerd is already running
+if ! pgrep -f "dockerd" > /dev/null; then
+    nohup ~/bin/dockerd-rootless.sh > ~/docker-rootless.log 2>&1 &
+fi
+EOF
