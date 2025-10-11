@@ -20,9 +20,30 @@ export class Discover implements OnInit {
 				console.log(users)
 				this.users = users
 			},
-			error : err => {
+			error: err => {
 				console.log(err);
-				
+
+			}
+		})
+	}
+
+	subscribe(id: number) {
+		this.userService.subscribe(id).subscribe({
+			next: res => {
+				this.users?.map((user) => {
+					if (user.id == id) {
+						user.sub = res.operation == "subscribed" ? true : false
+					}
+				})
+				let user = this.users?.find(u => u.id = id)
+				console.log(user?.sub)
+				// if (user) {
+				// 	user.sub = res.operation == "subscribed" ? true : false
+				// }
+				console.log(res)
+			},
+			error: err => {
+				console.log(err)
 			}
 		})
 	}

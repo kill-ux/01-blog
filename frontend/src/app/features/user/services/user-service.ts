@@ -16,7 +16,11 @@ export class UserService {
         return this.http.get<AuthState>("http://localhost:8080/api/users/profile")
     }
 
-    getUserById(userId: number){
+    getUserById(userId: number) {
         return this.http.get<AuthState>("http://localhost:8080/api/users/profile?userId=" + userId)
+    }
+
+    subscribe(id: number) {
+        return this.http.post<{ operation: string }>("http://localhost:8080/api/users/subscribe", { subscriberToId: id })
     }
 }

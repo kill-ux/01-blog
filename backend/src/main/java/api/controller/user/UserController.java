@@ -47,9 +47,9 @@ public class UserController {
     }
 
     @PostMapping("/subscribe")
-    public ResponseEntity<String> subscribe(@Valid @RequestBody SubscribeRequest subscribeRequest) {
+    public ResponseEntity<Map<String, String>> subscribe(@Valid @RequestBody SubscribeRequest subscribeRequest) {
         String operation = this.userService.subscribe(subscribeRequest);
-        return ResponseEntity.ok("successful operation: " + operation);
+        return ResponseEntity.ok(Map.of("operation", operation));
     }
 
     @GetMapping("/profile")

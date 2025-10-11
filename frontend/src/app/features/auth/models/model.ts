@@ -8,6 +8,7 @@ export interface User {
     birthDate: string | null;
     createdAt: string | null;
     updatedAt: string | null;
+    sub: boolean
 }
 
 export interface AuthState {
