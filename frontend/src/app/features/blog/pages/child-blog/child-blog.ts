@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 import { BlogService } from '../../services/blog-service';
@@ -19,8 +19,9 @@ export class ChildBlog implements OnInit {
 	formCommend: FormGroup
 	@Input() child: BlogResponce | null = null;
 	@Input() thread: number | null = null
-	@Input() parent: BlogResponce | null = null;
+
 	hidden = false
+	reply = false
 	edit = false
 	isLoading = false
 	lastChild = 0;
@@ -72,7 +73,7 @@ export class ChildBlog implements OnInit {
 						this.edit = false
 					} else if (this.child) {
 						this.child.children = [res, ...this.child.children]
-						if (this.parent) this.parent.childrenCount++
+						this.child.childrenCount++
 						this.formCommend.reset()
 					}
 				},
@@ -105,6 +106,13 @@ export class ChildBlog implements OnInit {
 		}
 	}
 
+	updateParent(p: { childrenCount: number }) {
+		if (this.child) {
+			console.log("hhhhhhhhh", p)
+			this.child.childrenCount = p.childrenCount
+		}
+	}
+
 	showReply() {
 		if (this.child?.children.length == 0) {
 			this.hidden = true
@@ -126,7 +134,6 @@ export class ChildBlog implements OnInit {
 			this.isLoading = true;
 			this.blogService.getBlogChildren(this.child.id, cursor).subscribe({
 				next: (res) => {
-					console.log(this.child)
 					if (this.child && res.children.length > 0) {
 						this.child.children = [...this.child.children, ...res.children]
 						this.lastChild = res.children[res.children.length - 1].id
@@ -160,5 +167,9 @@ export class ChildBlog implements OnInit {
 	EditBlog(id: number) {
 		this.edit = true
 		this.formCommend.patchValue({ description: this.child?.description })
+	}
+
+	changeReply(){
+		this.reply = !this.reply
 	}
 }

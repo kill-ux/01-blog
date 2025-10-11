@@ -149,6 +149,7 @@
     border-top: #eaecfa 1px solid;
     gap: 0.5rem;
     margin-left: 5px;
+    padding-top: 5px;
 }
 
 
@@ -156,6 +157,7 @@
 .stat {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     /* color: #718096; */
     font-size: 0.875rem;
@@ -166,10 +168,14 @@
 .stat svg {
     fill: #2d3748;
     padding: 8px;
-    border-radius: 3px
+    border-radius: 3px;
 }
 
-.stat svg:hover {
+/* .stat svg:hover {
+    background-color: rgba(0, 0, 0, 0.034);
+} */
+
+.stat:hover {
     background-color: rgba(0, 0, 0, 0.034);
 }
 

@@ -67,7 +67,7 @@
                 </form>
 
                 @for (item of (this.blog?.children || []); track item.id) {
-                <app-child-blog [thread]="2" [child]="item" [parent]="this.blog" ></app-child-blog>
+                <app-child-blog [thread]="2" [child]="item" ></app-child-blog>
                 }
 
                 <!-- @for (item of (this.blog?.children); track item.id) {

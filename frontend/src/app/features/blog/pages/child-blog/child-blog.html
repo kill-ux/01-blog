@@ -111,6 +111,25 @@
                     </svg>
                     {{ this.child.childrenCount || 0 }}
                 </span>
+
+                <span (click)="showReply(); changeReply();" class="stat">
+                    <svg width="20" viewBox="0 0 20 20"
+                        class="hover:text-blue transition-colors duration-500 hover:scale-98 rotate-180">
+                        <g class="fill-icon">
+                            <path d="M17 1H3V3H17V1Z"></path>
+                            <path d="M19 3H17V17H19V3Z"></path>
+                            <path d="M17 17H3V19H17V17Z"></path>
+                            <path d="M3 3H1V17H3V3Z"></path>
+                            <path d="M8 3H6V17H8V3Z"></path>
+                        </g>
+                        <g class="fill-icon-secondary">
+                            <path d="M10 9H12V11H10V9Z"></path>
+                            <path d="M12 11H14V13H12V11Z"></path>
+                            <path d="M12 7H14V9H12V7Z"></path>
+                        </g>
+                    </svg>
+                    @if (this.reply) {No Reply} @else {Reply}
+                </span>
             </div>
         </footer>
 
@@ -166,8 +185,13 @@
         <button #btn type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>
-} @else {
-@if (this.hidden) {
+}
+
+
+
+@if (this.hidden && !this.edit) {
+
+@if (reply) {
 <div class="form-child">
     <form [formGroup]="formCommend" class="comments" (submit)="(submitComment(this.child.id))">
         <div class="comment-back cap">
@@ -177,12 +201,13 @@
         <button #btn type="submit" class="btn btn-primary">Publish</button>
     </form>
 </div>
+}
+
 <div [className]="this.thread != null && this.thread != 0 ? 'replays' : ''">
     @for (item of (this.child.children); track item.id) {
     <app-child-blog [thread]="this.thread != null && this.thread != 0 ? this.thread-1 : null"
-        [child]="item" [parent]="this.child"></app-child-blog>
+        [child]="item"></app-child-blog>
     }
 </div>
-}
 }
 }
