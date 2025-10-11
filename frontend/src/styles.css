@@ -157,3 +157,21 @@ img {
     background: var(--color-black);
     transform: translateY(-2px);
 }
+
+
+.cap {
+    height: 100%;
+    --size: 8px;
+    clip-path: polygon(var(--size) 0,
+            calc(100% - var(--size)) 0,
+            calc(100% - var(--size)) var(--size),
+            100% var(--size),
+            100% calc(100% - var(--size)),
+            calc(100% - var(--size)) calc(100% - var(--size)),
+            calc(100% - var(--size)) 100%,
+            var(--size) 100%,
+            var(--size) calc(100% - var(--size)),
+            0 calc(100% - var(--size)),
+            0 var(--size),
+            var(--size) var(--size));
+}

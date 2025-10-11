@@ -5,7 +5,7 @@
             <header class="blog-header">
                 <div class="user-info">
                     <div class="avatar">
-                        <img [src]="this.blog" alt="{{ this.blog?.user?.nickname }}'s avatar"
+                        <img [src]="'images/'+this.blog.user.avatar" alt="{{ this.blog?.user?.nickname }}'s avatar"
                             onerror="this.src='/default-avatar.jpg'">
                     </div>
                     <div class="user-details">

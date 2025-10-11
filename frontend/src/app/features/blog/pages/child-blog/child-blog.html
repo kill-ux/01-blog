@@ -100,15 +100,19 @@
                 </span>
 
                 <span class="stat">
-                    <svg (click)="showReply()" width="23" height="23" viewBox="0 0 16 16" fill="none"
-                        class="text-text-primary fill-current comment-svg">
-                        <path d="M12.7992 2.40002H3.19922V4.00002H12.7992V2.40002Z"></path>
-                        <path d="M12.8008 10.4H4.80078V12H12.8008V10.4Z"></path>
-                        <path d="M4.79922 12H3.19922V13.6H4.79922V12Z"></path>
-                        <path d="M3.20156 10.4H1.60156V12H3.20156V10.4Z"></path>
-                        <path d="M14.4008 4H12.8008V10.4H14.4008V4Z"></path>
-                        <path d="M3.20156 4H1.60156V10.4H3.20156V4Z"></path>
-                    </svg>
+                     <svg (click)="showReply()" width="20" viewBox="0 0 20 20">
+                            <path d="M15 2H5V4H15V2Z" class="fill-icon-btn"></path>
+                            <path d="M17 4H15V6H17V4Z" class="fill-icon-btn"></path>
+                            <path d="M5 4H3V6H5V4Z" class="fill-icon-btn"></path>
+                            <path d="M5 13H3V15H5V13Z" class="fill-icon-btn"></path>
+                            <path d="M9 15H7V17H9V15Z" class="fill-icon-btn"></path>
+                            <path d="M17 13H9V15H17V13Z" class="fill-icon-btn"></path>
+                            <path d="M7 15H5V19H7V15Z" class="fill-icon-btn"></path>
+                            <path d="M19 6H17V13H19V6Z" class="fill-icon-btn"></path>
+                            <path d="M3 6H1V13H3V6Z" class="fill-icon-btn"></path>
+                            <path d="M14 7H6V9H14V7Z" class="fill-icon-btn-secondary"></path>
+                            <path d="M11 10H6V12H11V10Z" class="fill-icon-btn-secondary"></path>
+                        </svg>
                     {{ this.child.childrenCount || 0 }}
                 </span>
 

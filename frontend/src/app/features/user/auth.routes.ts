@@ -1,5 +1,4 @@
 import { Routes } from "@angular/router";
-import { Users } from "./users/users";
 import { Profile } from "./profile/profile";
 
 export const UsersRoutes: Routes = [
@@ -11,6 +10,5 @@ export const UsersRoutes: Routes = [
     },
     {
         path: '',
-        component: Users
     },
 ]

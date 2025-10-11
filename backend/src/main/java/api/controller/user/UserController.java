@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserRecord>> users(@RequestParam(defaultValue = "0") int pageNumber) {
-        List<UserRecord> users = this.userService.getAllUsers(pageNumber);
+    public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(defaultValue = "0") int pageNumber) {
+        List<UserResponse> users = this.userService.getAllUsers(pageNumber);
         return ResponseEntity.ok(users);
     }
 

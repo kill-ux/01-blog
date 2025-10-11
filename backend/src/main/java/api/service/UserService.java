@@ -48,12 +48,12 @@ public class UserService {
         return this.userRepository;
     }
 
-    public List<UserRecord> getAllUsers(int pageNumber) {
+    public List<UserResponse> getAllUsers(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
         return this.userRepository
                 .findAll(pageable)
                 .stream()
-                .map(this::convertToDTO)
+                .map(UserResponse::new)
                 .toList();
     }
 

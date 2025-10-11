@@ -1,0 +1,22 @@
+<div class="container">
+
+    @for (user of this.users; track user.id) {
+    <div class="user">
+        <div class="user-info cap">
+            <div class="image">
+                <img [src]="'/images/'+user.avatar" alt="" onerror="this.src='/default-avatar.jpg'">
+            </div>
+            <div class="content">
+                <div class="user-details">
+                    <span class="author-name">{{ user.nickname }}</span>
+                    <span class="post-date">Joind at : {{ user.createdAt | date:'mediumDate' }}</span>
+                </div>
+                <div>
+                    <button class="btn btn-primary">subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+</div>
