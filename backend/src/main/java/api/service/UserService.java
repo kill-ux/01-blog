@@ -181,6 +181,10 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Target user not found"));
 
         boolean isSubscribed = target.getSubscribers().contains(user);
+        System.out.println("##############################");
+        System.out.println(isSubscribed);
+        System.out.println("##############################");
+
         String operation = "subscribed";
         if (isSubscribed) {
             target.getSubscribers().remove(user);

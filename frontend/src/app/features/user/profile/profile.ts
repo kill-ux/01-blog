@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 export class Profile implements OnInit {
 	userProfile = signal<User | null>(null);
 	userService = inject(UserService);
+	isLoading = false
 	constructor(private router: ActivatedRoute) { }
 
 	public authService = inject(AuthService)
@@ -29,7 +30,7 @@ export class Profile implements OnInit {
 		this.userService.getUserById(id).subscribe({
 			next: (profile) => {
 				this.userProfile.set(profile.user);
-				console.log('User profile loaded', this.userProfile);
+				console.log('User profile loaded', this.userProfile());
 			},
 			error: (error) => {
 				console.error('Failed to load profile', error);
@@ -38,6 +39,8 @@ export class Profile implements OnInit {
 	}
 
 	subscribe(id: any) {
+		if (this.isLoading) return
+		this.isLoading = true
 		console.log(id)
 		this.userService.subscribe(id).subscribe({
 			next: res => {
@@ -49,11 +52,13 @@ export class Profile implements OnInit {
 					return user
 				})
 				console.log(this.userProfile())
+				this.isLoading = false
 
 
 			},
 			error: err => {
 				console.log(err)
+				this.isLoading = false
 			}
 		})
 	}

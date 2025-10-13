@@ -14,10 +14,13 @@
                 <button class="btn btn-primary">subscribtions | <span
                         class="number">{{userProfile()?.subscribtions}}</span> | </button>
                 @if (userProfile()) {
-                <button (click)="subscribe(userProfile()?.id)" class="btn btn-red"> @if (userProfile()?.sub)
-                    {unsubscribe} @else
-                    {subscribe} </button>
+                @if (userProfile()?.sub) {
+                <button (click)="subscribe(userProfile()?.id)" class="btn btn-red">unsubscribe</button>
+                }@else {
+                <button (click)="subscribe(userProfile()?.id)" class="btn btn-primary">subscribe</button>
                 }
+                }
+
 
             </div>
         </div>
