@@ -27,7 +27,7 @@ export class Blogs implements OnInit {
 	public lastBlog = 0;
 	private isLoading = false;
 	public authService = inject(AuthService)
-	@Input() args: { user: User } | null = null
+	@Input() args: { user: User | null } | null = null
 
 
 	constructor(private blogService: BlogService, private router: Router) {
@@ -43,7 +43,7 @@ export class Blogs implements OnInit {
 		if (this.isLoading) return;
 		this.isLoading = true;
 		let obs;
-		if (this.args) {
+		if (this.args && this.args.user) {
 			obs = this.blogService.getBlogsByUserId(this.args.user.id, cursor)
 		} else {
 			obs = this.blogService.getBlogsNetworks(cursor)

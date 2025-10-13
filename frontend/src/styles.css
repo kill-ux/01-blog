@@ -24,6 +24,7 @@ body {
     --color-current-taxonomy: #459ffb;
     --color-current-taxonomy: #030213;
     --primary: #030213;
+    --red: #dc143c;
     --color-bg: #f8fafc;
     --color-text-primary: #1a202c;
     --color-text-secondary: #4a5568;
@@ -150,6 +151,11 @@ img {
 
 .btn-primary {
     background-color: var(--primary);
+    color: var(--primary-foreground);
+}
+
+.btn-red {
+    background-color: var(--red);
     color: var(--primary-foreground);
 }
 

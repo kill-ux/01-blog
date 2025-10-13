@@ -1,4 +1,4 @@
-import { Component, inject, Inject, Injector, OnInit } from '@angular/core';
+import { Component, inject, Inject, Injector, OnInit, signal } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { AuthState, User } from '../../auth/models/model';
 import { AuthService } from '../../auth/services/auth-api';
@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 	styleUrl: './profile.css'
 })
 export class Profile implements OnInit {
-	userProfile: User | null = null;
+	userProfile = signal<User | null>(null);
 	userService = inject(UserService);
 	constructor(private router: ActivatedRoute) { }
 
@@ -28,7 +28,7 @@ export class Profile implements OnInit {
 		let id = this.router.snapshot.paramMap.get("id")
 		this.userService.getUserById(id).subscribe({
 			next: (profile) => {
-				this.userProfile = profile.user;
+				this.userProfile.set(profile.user);
 				console.log('User profile loaded', this.userProfile);
 			},
 			error: (error) => {
@@ -37,20 +37,19 @@ export class Profile implements OnInit {
 		});
 	}
 
-	subscribe(id: number) {
+	subscribe(id: any) {
+		console.log(id)
 		this.userService.subscribe(id).subscribe({
 			next: res => {
 				console.log(res)
-				if (this.users) {
-					this.users.update(us => {
-						return us?.map((user) => {
-							if (user.id == id) {
-								user.sub = res.operation == "subscribed" ? true : false
-							}
-							return user
-						})
-					})
-				}
+				this.userProfile.update(user => {
+					if (user && user.id == id) {
+						user.sub = res.operation == "subscribed" ? true : false
+					}
+					return user
+				})
+				console.log(this.userProfile())
+
 
 			},
 			error: err => {
