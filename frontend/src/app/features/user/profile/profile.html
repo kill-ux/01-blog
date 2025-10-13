@@ -9,10 +9,10 @@
             <div class="">{{ userProfile()?.email }}</div>
             <div class=""> Joind At : {{ userProfile()?.createdAt | date:'mediumDate' }}</div>
             <div class="flex-row">
-                <button class="btn btn-primary">subscribers | <span class="number">{{userProfile()?.subscribers}}</span>
-                    | </button>
-                <button class="btn btn-primary">subscribtions | <span
-                        class="number">{{userProfile()?.subscribtions}}</span> | </button>
+                <button class="btn btn-primary">subscribers<span class="number">{{userProfile()?.subscribers}}</span>
+                    </button>
+                <button class="btn btn-primary">subscribtions <span
+                        class="number">{{userProfile()?.subscribtions}}</span> </button>
                 @if (userProfile()) {
                 @if (userProfile()?.sub) {
                 <button (click)="subscribe(userProfile()?.id)" class="btn btn-red">unsubscribe</button>

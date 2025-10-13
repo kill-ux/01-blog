@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, Signal, signal } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, Signal, signal, SimpleChanges } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
@@ -21,7 +21,7 @@ import { User } from '../../../auth/models/model';
 		'[class.my-custom-class]': 'true' // Static class
 	}
 })
-export class Blogs implements OnInit {
+export class Blogs implements OnInit, OnChanges {
 	// private 
 	public blogs = signal<BlogResponce[]>([]);
 	public lastBlog = 0;
@@ -31,13 +31,21 @@ export class Blogs implements OnInit {
 
 
 	constructor(private blogService: BlogService, private router: Router) {
-		// this.blogs = [];
 	}
 
 	ngOnInit(): void {
 		console.log("feeds")
 		this.loadBlogs(0)
 	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['args'] && changes['args'].currentValue !== changes['args'].previousValue) {
+			this.blogs.set([]);
+			this.lastBlog = 0;
+			this.loadBlogs(0);
+		}
+	}
+
 
 	loadBlogs(cursor: number) {
 		if (this.isLoading) return;

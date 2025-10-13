@@ -60,9 +60,11 @@ public class UserService {
     }
 
     public UserResponse getUserById(long id) {
+        long userId = this.authUtils.getAuthenticatedUser().getId();
+
         return this.userRepository
                 .findById(id)
-                .map(user -> new UserResponse(user, id)).get();
+                .map(user -> new UserResponse(user, userId)).get();
     }
 
     public UserRecord saveUser(@Valid UserRecord userRecord) {
@@ -179,12 +181,7 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         User target = userRepository.findById(subscribeRequest.subscriberToId())
                 .orElseThrow(() -> new IllegalArgumentException("Target user not found"));
-
         boolean isSubscribed = target.getSubscribers().contains(user);
-        System.out.println("##############################");
-        System.out.println(isSubscribed);
-        System.out.println("##############################");
-
         String operation = "subscribed";
         if (isSubscribed) {
             target.getSubscribers().remove(user);

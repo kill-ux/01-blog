@@ -1,7 +1,7 @@
 <div class="container">
 
     @for (user of this.users(); track user.id) {
-    <div class="user">
+    <div class="user" (click)="navigateUser(user.id)">
         <div class="user-info cap">
             <div class="image">
                 <img class="cap" [src]="'/images/'+user.avatar" alt="" onerror="this.src='/default-avatar.jpg'">

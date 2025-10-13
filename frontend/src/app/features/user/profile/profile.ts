@@ -21,12 +21,14 @@ export class Profile implements OnInit {
 	public authService = inject(AuthService)
 
 	ngOnInit() {
-		console.log(this.authService.currentUser)
-		this.loadProfile();
+		this.router.params.subscribe(params => {
+			const id = params["id"]
+			this.loadProfile(id);
+
+		})
 	}
 
-	loadProfile() {
-		let id = this.router.snapshot.paramMap.get("id")
+	loadProfile(id: number) {
 		this.userService.getUserById(id).subscribe({
 			next: (profile) => {
 				this.userProfile.set(profile.user);

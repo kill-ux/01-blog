@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { User } from '../../auth/models/model';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-discover',
@@ -16,7 +17,7 @@ export class Discover implements OnInit {
 
 	private isLoading = false;
 
-	constructor(private userService: UserService) {
+	constructor(private userService: UserService, private router: Router) {
 
 	}
 	ngOnInit(): void {
@@ -71,5 +72,9 @@ export class Discover implements OnInit {
 		if (!this.isLoading) {
 			this.getUsers(++this.pageNumber)
 		}
+	}
+
+	navigateUser(id: number) {
+		this.router.navigate(['profile', id])
 	}
 }
