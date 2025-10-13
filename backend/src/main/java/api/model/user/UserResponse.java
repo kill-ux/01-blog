@@ -16,6 +16,8 @@ public class UserResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean sub;
+    private long subscribers;
+    private long subscribtions;
 
     // Constructor, getters, and setters
     public UserResponse(User user) {
@@ -41,5 +43,7 @@ public class UserResponse {
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
         this.sub = user.getSubscribers().stream().anyMatch(u -> u.getId() == id);
+        this.subscribers = user.getSubscribers().size();
+        this.subscribtions = user.getSubscribed_to().size();
     }
 }

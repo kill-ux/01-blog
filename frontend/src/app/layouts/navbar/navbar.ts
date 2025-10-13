@@ -6,7 +6,7 @@ import { MatMenu, MatMenuModule } from '@angular/material/menu';
 
 @Component({
 	selector: 'app-navbar',
-	imports: [RouterLink, MatIcon, MatMenu, MatMenuModule],
+	imports: [RouterLink, MatMenu, MatMenuModule],
 	templateUrl: './navbar.html',
 	styleUrl: './navbar.css'
 })

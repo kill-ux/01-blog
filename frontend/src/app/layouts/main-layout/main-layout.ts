@@ -31,17 +31,17 @@ export class MainLayout {
         Prism.highlightAll(); // Re-highlight all code blocks
       }
     }, 0);
-    this.userService.getProfile().subscribe({
-      next: (user) => {
-        this.isLoggedIn = true;
-        this.currentUser = user;
-        console.log(user);
-      },
-      error: (err) => {
-        this.isLoggedIn = false;
-        this.currentUser = null;
-      }
-    })
+    // this.userService.getProfile().subscribe({
+    //   next: (user) => {
+    //     this.isLoggedIn = true;
+    //     this.currentUser = user;
+    //     console.log(user);
+    //   },
+    //   error: (err) => {
+    //     this.isLoggedIn = false;
+    //     this.currentUser = null;
+    //   }
+    // })
   }
 
   // logout() {

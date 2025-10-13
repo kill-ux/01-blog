@@ -60,12 +60,9 @@ public class UserService {
     }
 
     public UserResponse getUserById(long id) {
-        if (id == 0) {
-            id = this.authUtils.getAuthenticatedUser().getId();
-        }
         return this.userRepository
                 .findById(id)
-                .map(UserResponse::new).get();
+                .map(user -> new UserResponse(user, id)).get();
     }
 
     public UserRecord saveUser(@Valid UserRecord userRecord) {
@@ -196,7 +193,7 @@ public class UserService {
         return operation;
     }
 
-    public List<UserDto> getSubscribers(long userId, long cursor) {
+    public List<UserResponse> getSubscribers(long userId, long cursor) {
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -204,7 +201,7 @@ public class UserService {
         return this.userRepository
                 .findSubscribersBySubscribedToId(userId, cursor, pageable)
                 .stream()
-                .map(this::convertToDTO2)
+                .map(UserResponse::new)
                 .toList();
     }
 

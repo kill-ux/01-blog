@@ -20,6 +20,10 @@ export const homeRoutes: Routes = [
         component: Discover,
     },
     {
+        path: 'discover/:sub/:id',
+        component: Discover,
+    },
+    {
         path: 'profile/:id',
         component: Profile,
         pathMatch: 'full'

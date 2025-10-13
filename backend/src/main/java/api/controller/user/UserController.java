@@ -54,12 +54,12 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<Map<String, UserResponse>> getSubscribers(
-            @RequestParam(defaultValue = "0") long userId) {
+            @RequestParam long userId) {
         return ResponseEntity.ok(Map.of("user", this.userService.getUserById(userId)));
     }
 
     @GetMapping("{userId}/subscribers")
-    public ResponseEntity<List<UserDto>> getSubscribers(
+    public ResponseEntity<List<UserResponse>> getSubscribers(
             @PathVariable long userId,
             @RequestParam(defaultValue = "0") long cursor) {
         return ResponseEntity.ok(this.userService.getSubscribers(userId, cursor));

@@ -37,4 +37,26 @@ export class Profile implements OnInit {
 		});
 	}
 
+	subscribe(id: number) {
+		this.userService.subscribe(id).subscribe({
+			next: res => {
+				console.log(res)
+				if (this.users) {
+					this.users.update(us => {
+						return us?.map((user) => {
+							if (user.id == id) {
+								user.sub = res.operation == "subscribed" ? true : false
+							}
+							return user
+						})
+					})
+				}
+
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
+	}
+
 }

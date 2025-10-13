@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { User } from '../../auth/models/model';
 import { DatePipe } from '@angular/common';
@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 	styleUrl: './discover.css'
 })
 export class Discover implements OnInit {
-	users: User[] | [] = []
+	users = signal<User[]>([])
 	lastUser = 0
 	pageNumber = 0;
 
@@ -33,7 +33,8 @@ export class Discover implements OnInit {
 				console.log(users)
 				if (users) {
 					this.lastUser = users[users.length - 1].id
-					this.users = [...this.users, ...users]
+					this.users.update(us => [...us, ...users])
+					// this.users = [...this.users, ...users]
 				}
 				this.isLoading = false
 			},
@@ -49,11 +50,13 @@ export class Discover implements OnInit {
 			next: res => {
 				console.log(res)
 				if (this.users) {
-					this.users = this.users?.map((user) => {
-						if (user.id == id) {
-							user.sub = res.operation == "subscribed" ? true : false
-						}
-						return user
+					this.users.update(us => {
+						return us?.map((user) => {
+							if (user.id == id) {
+								user.sub = res.operation == "subscribed" ? true : false
+							}
+							return user
+						})
 					})
 				}
 

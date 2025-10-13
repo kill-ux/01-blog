@@ -1,22 +1,30 @@
 <div class="container">
     <div class="info">
         <div class="avatar cap">
-            <img [src]="'images/'+userProfile?.avatar" alt="{{ userProfile?.nickname }}'s avatar"
+            <img [src]="'images/'+userProfile()?.avatar" alt="{{ userProfile()?.nickname }}'s avatar"
                 onerror="this.src='/default-avatar.jpg'">
         </div>
         <div class="content">
-            <div class="nickname">{{ userProfile?.nickname }}</div>
-            <div class="">{{ userProfile?.email }}</div>
-            <div class=""> Joind At : {{ userProfile?.createdAt | date:'mediumDate' }}</div>
+            <div class="nickname">{{ userProfile()?.nickname }}</div>
+            <div class="">{{ userProfile()?.email }}</div>
+            <div class=""> Joind At : {{ userProfile()?.createdAt | date:'mediumDate' }}</div>
             <div class="flex-row">
-                <button class="btn btn-primary">subscribers</button>
-                <button class="btn btn-primary">subscribtions</button>
+                <button class="btn btn-primary">subscribers | <span class="number">{{userProfile()?.subscribers}}</span>
+                    | </button>
+                <button class="btn btn-primary">subscribtions | <span
+                        class="number">{{userProfile()?.subscribtions}}</span> | </button>
+                @if (userProfile()) {
+                <button (click)="subscribe(userProfile()?.id)" class="btn btn-primary"> @if (userProfile()?.sub)
+                    {unsubscribe} @else
+                    {subscribe} </button>
+                }
+
             </div>
         </div>
     </div>
     <div class="line">
     </div>
-    @if (userProfile) {
-    <app-blogs [args]="{ user : userProfile }" class="app-blogs"></app-blogs>
+    @if (userProfile()) {
+    <app-blogs [args]="{ user : userProfile() }" class="app-blogs"></app-blogs>
     }
 </div>

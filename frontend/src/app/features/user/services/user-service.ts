@@ -13,10 +13,6 @@ export class UserService {
         return this.http.get<User[]>(`http://localhost:8080/api/users?pageNumber=${pageNumber}`)
     }
 
-    getProfile() {
-        return this.http.get<AuthState>("http://localhost:8080/api/users/profile")
-    }
-
     getUserById(userId: any) {
         return this.http.get<AuthState>("http://localhost:8080/api/users/profile?userId=" + userId)
     }

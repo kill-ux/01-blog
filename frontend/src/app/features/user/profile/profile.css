@@ -14,7 +14,7 @@
 }
 
 .avatar {
-    width: 200px;
+    width: 220px;
 }
 
 .info {
@@ -55,4 +55,10 @@
 
 .cap {
      --size: 15px;
+}
+
+.number {
+    background-color: rgba(255, 255, 255, 0.212);
+    padding: 5px;
+    border-radius: 3px;
 }
