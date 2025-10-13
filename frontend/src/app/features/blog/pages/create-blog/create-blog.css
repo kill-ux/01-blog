@@ -15,6 +15,7 @@
 .editor-layout {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
+	margin-top: 35px;
 	/* padding-inline: 300px; */
 	/* height: 600px; */
 }
@@ -36,7 +37,7 @@
 	border: 1px solid #e5e7eb;
 	border-radius: 8px;
 	overflow: hidden;
-	height: 700px;
+	height: 600px;
 	width: 100%;
 
 	--size: 10px;

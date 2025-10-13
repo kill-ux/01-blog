@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
@@ -10,12 +10,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../../auth/services/auth-api';
+import { Observable } from 'rxjs';
+import { User } from '../../../auth/models/model';
 
 @Component({
 	selector: 'app-blogs',
 	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon],
 	templateUrl: './blogs.html',
-	styleUrl: './blogs.css'
+	styleUrl: './blogs.css',
+	host: {
+		'[class.my-custom-class]': 'true' // Static class
+	}
 })
 export class Blogs implements OnInit {
 	// private 
@@ -23,6 +28,7 @@ export class Blogs implements OnInit {
 	public lastBlog = 0;
 	private isLoading = false;
 	public authService = inject(AuthService)
+	@Input() args: { user: User  } | null = null
 
 
 	constructor(private blogService: BlogService, private router: Router) {
@@ -37,7 +43,13 @@ export class Blogs implements OnInit {
 	loadBlogs(cursor: number) {
 		if (this.isLoading) return;
 		this.isLoading = true;
-		this.blogService.getBlogsNetworks(cursor).subscribe({
+		let obs;
+		if (this.args) {
+			obs = this.blogService.getBlogsByUserId(this.args.user.id, cursor)
+		} else {
+			obs = this.blogService.getBlogsNetworks(cursor)
+		}
+		obs.subscribe({
 			next: (res) => {
 				console.log("res", res)
 				this.blogs = [...this.blogs, ...res];

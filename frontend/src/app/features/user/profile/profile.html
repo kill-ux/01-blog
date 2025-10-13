@@ -1,1 +1,22 @@
-<p>profile works!</p>
+<div class="container">
+    <div class="info">
+        <div class="avatar cap">
+            <img [src]="'images/'+userProfile?.avatar" alt="{{ userProfile?.nickname }}'s avatar"
+                onerror="this.src='/default-avatar.jpg'">
+        </div>
+        <div class="content">
+            <div class="nickname">{{ userProfile?.nickname }}</div>
+            <div class="">{{ userProfile?.email }}</div>
+            <div class=""> Joind At : {{ userProfile?.createdAt | date:'mediumDate' }}</div>
+            <div class="flex-row">
+                <button class="btn btn-primary">subscribers</button>
+                <button class="btn btn-primary">subscribtions</button>
+            </div>
+        </div>
+    </div>
+    <div class="line">
+    </div>
+    @if (userProfile) {
+    <app-blogs [args]="{ user : userProfile }" class="app-blogs"></app-blogs>
+    }
+</div>

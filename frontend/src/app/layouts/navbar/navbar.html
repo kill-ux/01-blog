@@ -78,10 +78,10 @@
                 </div>
 
                 <mat-menu #menu="matMenu">
-                     <div class="user-info" >
-                        {{ this.authService.currentUser?.nickname }}
-                     </div>
-                    <div mat-menu-item >
+                    <div class="user-info mat-mdc-menu-item mat-focus-indicator mat-mdc-menu-item-text">
+                        @{{ this.authService.currentUser?.nickname }}
+                    </div>
+                    <div routerLink="/profile/{{this.authService.currentUser?.id}}" mat-menu-item>
                         <svg width="20" viewBox="0 0 16 16" class="text-text-primary fill-current">
                             <path d="M11.2008 11.2H4.80078V12.8H11.2008V11.2Z"></path>
                             <path d="M11.2008 12.8H4.80078V14.4H11.2008V12.8Z"></path>
@@ -96,7 +96,37 @@
                         <span>Profile</span>
                     </div>
 
-                    <div (click)="logout()" mat-menu-item>
+                    <!-- ////////////////// -->
+
+                    <div mat-menu-item>
+                        <svg width="20" viewBox="0 0 20 20" class="text-icon-btn fill-current"
+                            shape-rendering="crispEdges" style="image-rendering: pixelated;">
+                            <path d="M16 9V11L18 11V9L16 9Z"></path>
+                            <path d="M13 7V9L16 9V7L13 7Z"></path>
+                            <path d="M13 13V11L16 11V13L13 13Z"></path>
+                            <path d="M10 5V7L13 7V5L10 5Z"></path>
+                            <path d="M10 15V13L13 13V15L10 15Z"></path>
+                            <path d="M7 3V5L10 5V3L7 3Z"></path>
+                            <path d="M7 17V15L10 15V17L7 17Z"></path>
+                            <path d="M4 1V3L7 3V1L4 1Z"></path>
+                            <path d="M4 19V17L7 17V19L4 19Z"></path>
+                            <path d="M2 3L2 17L4 17L4 3L2 3Z"></path>
+                        </svg>
+                        <span>Create Blog</span>
+                    </div>
+                    <div mat-menu-item>
+                        <svg width="20" height="20" viewBox="0 0 20 20" class="fill-current">
+                            <path d="M10.5 14H8V16.5H10.5V14Z"></path>
+                            <path d="M4.5 14H2V16.5H4.5V14Z"></path>
+                            <path d="M4.5 8H2V10.5H4.5V8Z"></path>
+                            <path d="M10.5 8H8V10.5H10.5V8Z" class="fill-icon-secondary"></path>
+                            <path d="M4.5 2H2V4.5H4.5V2Z"></path>
+                            <path d="M16.5 14H14V16.5H16.5V14Z" class="fill-icon-secondary"></path>
+                        </svg>
+                        <span>Settings</span>
+                    </div>
+                    <!-- ////////////////////// -->
+                    <div class="logout" (click)="logout()" mat-menu-item>
                         <svg width="20" viewBox="0 0 20 20"
                             class="hover:text-blue transition-colors duration-500 hover:scale-98">
                             <g class="fill-icon">

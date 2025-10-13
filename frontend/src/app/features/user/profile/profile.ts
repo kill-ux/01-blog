@@ -1,26 +1,34 @@
 import { Component, inject, Inject, Injector, OnInit } from '@angular/core';
 import { UserService } from '../services/user-service';
-import { AuthState } from '../../auth/models/model';
+import { AuthState, User } from '../../auth/models/model';
+import { AuthService } from '../../auth/services/auth-api';
+import { ActivatedRoute } from '@angular/router';
+import { Blogs } from "../../blog/pages/blogs/blogs";
+import { DatePipe } from '@angular/common';
 
 @Component({
 	selector: 'app-profile',
-	imports: [],
+	imports: [Blogs, DatePipe],
 	templateUrl: './profile.html',
 	styleUrl: './profile.css'
 })
 export class Profile implements OnInit {
-	userProfile: AuthState | null = null;
+	userProfile: User | null = null;
 	userService = inject(UserService);
+	constructor(private router: ActivatedRoute) { }
+
+	public authService = inject(AuthService)
 
 	ngOnInit() {
+		console.log(this.authService.currentUser)
 		this.loadProfile();
 	}
 
 	loadProfile() {
-		// console.log(typeof window == 'undefined');
-		this.userService.getProfile().subscribe({
+		let id = this.router.snapshot.paramMap.get("id")
+		this.userService.getUserById(id).subscribe({
 			next: (profile) => {
-				this.userProfile = profile;
+				this.userProfile = profile.user;
 				console.log('User profile loaded', this.userProfile);
 			},
 			error: (error) => {

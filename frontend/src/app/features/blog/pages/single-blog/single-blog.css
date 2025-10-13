@@ -1,12 +1,3 @@
-.container-blogs {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 2rem;
-    max-width: 1000px;
-    margin: 0 auto;
-    /* width: 100%; */
-}
 
 /* Blog Card */
 .blog-card {

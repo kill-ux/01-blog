@@ -1,11 +1,11 @@
-.container-blogs {
+/* .container-blogs {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     padding: 2rem;
     max-width: 800px;
     margin: 0 auto;
-}
+} */
 
 /* Blog Card */
 .blog-card {

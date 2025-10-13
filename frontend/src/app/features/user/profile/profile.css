@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.app-blogs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.avatar {
+    width: 200px;
+}
+
+.info {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+}
+
+.nickname {
+    font-family: "BoldPixels", sans-serif;
+    font-size: 50px;
+    padding-block: 20px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+    width: 100%;
+}
+
+.content div {
+    background-color: #f4f4f4b4;
+    padding: 5px;
+    margin-top: 3px;
+    width: 100%;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.cap {
+     --size: 15px;
+}

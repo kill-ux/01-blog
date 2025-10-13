@@ -12,13 +12,7 @@ export interface User {
 }
 
 export interface AuthState {
-    isAuthenticated: boolean;
     user: User | null;
-}
-
-export const initialAuthState: AuthState = {
-    isAuthenticated: false,
-    user: null
 }
 
 export interface SigninCredentials {

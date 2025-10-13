@@ -175,3 +175,12 @@ img {
             0 var(--size),
             var(--size) var(--size));
 }
+
+.line {
+    background-color: #e8ebeb;
+    height: 2px;
+}
+
+.info {
+    font-family:Roboto, "Helvetica Neue", sans-serif;
+}
