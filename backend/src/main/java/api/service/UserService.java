@@ -3,9 +3,6 @@ package api.service;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -23,7 +20,6 @@ import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
 import api.model.user.LoginResponse;
 import api.model.user.User;
-import api.model.user.UserDto;
 import api.model.user.UserRecord;
 import api.model.user.UserResponse;
 import api.repository.UserRepository;
@@ -102,7 +98,7 @@ public class UserService {
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
         User user = this.userRepository.findById(userId).get();
-        String newPath = "images/" + UUID.randomUUID() + "." + ext;
+        String newPath = "images/" + this.authUtils.getAuthenticatedUser().getId() + "." + ext;
         try (FileOutputStream fos = new FileOutputStream(newPath)) {
             byte[] bytes = file.getBytes();
             fos.write(bytes);
