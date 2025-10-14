@@ -9,9 +9,10 @@
             <div class="">{{ userProfile()?.email }}</div>
             <div class=""> Joind At : {{ userProfile()?.createdAt | date:'mediumDate' }}</div>
             <div class="flex-row">
-                <button class="btn btn-primary">subscribers<span class="number">{{userProfile()?.subscribers}}</span>
-                    </button>
-                <button class="btn btn-primary">subscribtions <span
+                <button (click)="getSubscribers()" class="btn btn-primary">subscribers<span
+                        class="number">{{userProfile()?.subscribers}}</span>
+                </button>
+                <button (click)="getSubscribtions()" class="btn btn-primary">subscribtions <span
                         class="number">{{userProfile()?.subscribtions}}</span> </button>
                 @if (userProfile()) {
                 @if (userProfile()?.sub) {
@@ -27,7 +28,35 @@
     </div>
     <div class="line">
     </div>
-    @if (userProfile()) {
+
+    @if (currentComponent() == "blogs") {
     <app-blogs [args]="{ user : userProfile() }" class="app-blogs"></app-blogs>
+    }@else {
+    <div class="btn-return cap">
+        <svg width="20" viewBox="0 0 20 20"
+            class="hover:text-blue transition-colors duration-500 hover:scale-98 rotate-180">
+            <g class="fill-icon">
+                <path d="M17 1H3V3H17V1Z"></path>
+                <path d="M19 3H17V17H19V3Z"></path>
+                <path d="M17 17H3V19H17V17Z"></path>
+                <path d="M3 3H1V17H3V3Z"></path>
+                <path d="M8 3H6V17H8V3Z"></path>
+            </g>
+            <g class="fill-icon-secondary">
+                <path d="M10 9H12V11H10V9Z"></path>
+                <path d="M12 11H14V13H12V11Z"></path>
+                <path d="M12 7H14V9H12V7Z"></path>
+            </g>
+        </svg>
+        All Blogs
+    </div>
+    @if (currentComponent() == "subscribers") {
+    <app-discover [user]="userProfile()" sub="subscribers"></app-discover>
+    } @else if (currentComponent() == "subscribtions") {
+    <app-discover [user]="userProfile()" sub="subscribtions"></app-discover>
     }
+    }
+
+
+
 </div>

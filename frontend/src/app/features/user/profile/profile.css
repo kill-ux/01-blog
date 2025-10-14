@@ -62,3 +62,24 @@
     padding: 5px;
     border-radius: 3px;
 }
+
+.btn-return {
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.068);
+    border: 1px solid rgba(0, 0, 0, 0.062);
+    padding: 8px;
+    gap: 2px;
+    font-size: 18px;
+}
+
+
+.btn-return:hover {
+    background-color: rgba(0, 0, 0, 0.144);
+    cursor: pointer
+}
+
+.cap {
+    --size: 4px;
+}
