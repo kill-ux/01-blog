@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import api.model.user.User;
+
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,5 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findSubscribersBySubscribedToId(@Param("userId") Long userId,long cursor, Pageable pageable); // AndIdLessThan
 
     @Query("SELECT u FROM User u JOIN u.subscribers sub WHERE sub.id = :userId AND u.id < :cursor")
-    Page<User> findSubscriptionsBySubscribedId(@Param("userId") Long userId,long cursor, Pageable pageable);
+    Page<User> findSubscriptionsBySubscribedId(@Param("userId") Long userId,long cursor, Pageable pageable); //IdLessThan
+
+    Page<User> findByIdLessThan(long cursor, Pageable pageable);
 }

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, Signal, signal, SimpleChanges } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
@@ -7,10 +7,9 @@ import sanitizeHtml from 'sanitize-html';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../../auth/services/auth-api';
-import { Observable } from 'rxjs';
 import { User } from '../../../auth/models/model';
 
 @Component({
@@ -22,17 +21,16 @@ import { User } from '../../../auth/models/model';
 		'[class.my-custom-class]': 'true' // Static class
 	}
 })
-export class Blogs implements OnInit {
+export class Blogs implements OnInit, OnChanges {
 	// private 
-	public blogs: BlogResponce[];
+	public blogs = signal<BlogResponce[]>([]);
 	public lastBlog = 0;
 	private isLoading = false;
 	public authService = inject(AuthService)
-	@Input() args: { user: User  } | null = null
+	@Input() args: { user: User | null } | null = null
 
 
 	constructor(private blogService: BlogService, private router: Router) {
-		this.blogs = [];
 	}
 
 	ngOnInit(): void {
@@ -40,11 +38,20 @@ export class Blogs implements OnInit {
 		this.loadBlogs(0)
 	}
 
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['args'] && changes['args'].currentValue !== changes['args'].previousValue) {
+			this.blogs.set([]);
+			this.lastBlog = 0;
+			this.loadBlogs(0);
+		}
+	}
+
+
 	loadBlogs(cursor: number) {
 		if (this.isLoading) return;
 		this.isLoading = true;
 		let obs;
-		if (this.args) {
+		if (this.args && this.args.user) {
 			obs = this.blogService.getBlogsByUserId(this.args.user.id, cursor)
 		} else {
 			obs = this.blogService.getBlogsNetworks(cursor)
@@ -52,7 +59,8 @@ export class Blogs implements OnInit {
 		obs.subscribe({
 			next: (res) => {
 				console.log("res", res)
-				this.blogs = [...this.blogs, ...res];
+				this.blogs.update(bs => [...bs, ...res])
+				// this.blogs = [...this.blogs, ...res];
 				if (res.length > 0) {
 					this.lastBlog = res[res.length - 1].id;
 				} else {
@@ -79,7 +87,7 @@ export class Blogs implements OnInit {
 	}
 
 	sanitizeHtml(text: string) {
-		return sanitizeHtml(this.blogs[0].description, {
+		return sanitizeHtml(this.blogs()[0].description, {
 			allowedTags: ALLOWED_TAGS,
 			allowedAttributes: { 'a': ['href'], 'img': ['src'] }
 		})
@@ -118,7 +126,7 @@ export class Blogs implements OnInit {
 		console.log("delete this id =>", id)
 		this.blogService.DeleteBlog(id).subscribe({
 			next: res => {
-				this.blogs = this.blogs.filter(blog => blog.id != id)
+				this.blogs.update(bs => bs.filter(blog => blog.id != id))
 				console.log(res)
 			},
 			error: err => {

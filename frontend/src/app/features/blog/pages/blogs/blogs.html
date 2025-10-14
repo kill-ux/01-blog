@@ -1,5 +1,5 @@
 
-    @for (item of this.blogs; track item.id) {
+    @for (item of this.blogs(); track item.id) {
 
     <article class="blog-card-back" (click)="clickOnnArcticle(item.id)">
         <article class="blog-card">

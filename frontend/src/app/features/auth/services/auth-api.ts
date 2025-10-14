@@ -23,10 +23,10 @@ export class AuthService {
         private router: Router
     ) {
         this.initializeUserFromToken();
-    
+
         // this.apiUrl = environment.apiUrl
-        console.log("environment => ",environment.API_URL);
-        
+        console.log("environment => ", environment.API_URL);
+
         this.apiUrl = 'http://localhost:8080/api'
     }
 
@@ -105,8 +105,10 @@ export class AuthService {
                 bannedUntil: null,
                 birthDate: null,
                 createdAt: null,
-                updatedAt: null, 
-                sub: false
+                updatedAt: null,
+                sub: false,
+                subscribers: 0,
+                subscribtions: 0
             };
             this.currentUserSubject.next(user);
         } catch (error) {

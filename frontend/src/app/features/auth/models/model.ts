@@ -9,6 +9,8 @@ export interface User {
     createdAt: string | null;
     updatedAt: string | null;
     sub: boolean
+    subscribers: number 
+    subscribtions: number 
 }
 
 export interface AuthState {

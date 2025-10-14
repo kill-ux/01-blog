@@ -14,7 +14,7 @@
 }
 
 .avatar {
-    width: 200px;
+    width: 220px;
 }
 
 .info {
@@ -50,9 +50,36 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 }
 
 .cap {
      --size: 15px;
+}
+
+.number {
+    background-color: rgba(255, 255, 255, 0.212);
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.btn-return {
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.068);
+    border: 1px solid rgba(0, 0, 0, 0.062);
+    padding: 8px;
+    gap: 2px;
+    font-size: 18px;
+}
+
+
+.btn-return:hover {
+    background-color: rgba(0, 0, 0, 0.144);
+    cursor: pointer
+}
+
+.cap {
+    --size: 4px;
 }

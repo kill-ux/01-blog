@@ -48,11 +48,17 @@ public class UserService {
         return this.userRepository;
     }
 
-    public List<UserResponse> getAllUsers(int pageNumber) {
+    public List<UserResponse> getAllUsers(long cursor) {
+        System.out.println("###########################");
+        System.out.println(cursor);
+        System.out.println("###########################");
         long id = this.authUtils.getAuthenticatedUser().getId();
-        Pageable pageable = PageRequest.of(pageNumber, 10, Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
+        if (cursor == 0) {
+            cursor = Long.MAX_VALUE;
+        }
         return this.userRepository
-                .findAll(pageable)
+                .findByIdLessThan(cursor, pageable)
                 .stream()
                 .map(u -> new UserResponse(u, id))
                 .filter(u -> u.getId() != id)
@@ -60,12 +66,11 @@ public class UserService {
     }
 
     public UserResponse getUserById(long id) {
-        if (id == 0) {
-            id = this.authUtils.getAuthenticatedUser().getId();
-        }
+        long userId = this.authUtils.getAuthenticatedUser().getId();
+
         return this.userRepository
                 .findById(id)
-                .map(UserResponse::new).get();
+                .map(user -> new UserResponse(user, userId)).get();
     }
 
     public UserRecord saveUser(@Valid UserRecord userRecord) {
@@ -182,7 +187,6 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         User target = userRepository.findById(subscribeRequest.subscriberToId())
                 .orElseThrow(() -> new IllegalArgumentException("Target user not found"));
-
         boolean isSubscribed = target.getSubscribers().contains(user);
         String operation = "subscribed";
         if (isSubscribed) {
@@ -196,7 +200,7 @@ public class UserService {
         return operation;
     }
 
-    public List<UserDto> getSubscribers(long userId, long cursor) {
+    public List<UserResponse> getSubscribers(long userId, long cursor) {
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -204,11 +208,11 @@ public class UserService {
         return this.userRepository
                 .findSubscribersBySubscribedToId(userId, cursor, pageable)
                 .stream()
-                .map(this::convertToDTO2)
+                .map(UserResponse::new)
                 .toList();
     }
 
-    public List<UserDto> getSubscriptions(long userId, long cursor) {
+    public List<UserResponse> getSubscriptions(long userId, long cursor) {
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -216,7 +220,7 @@ public class UserService {
         return this.userRepository
                 .findSubscriptionsBySubscribedId(userId, cursor, pageable)
                 .stream()
-                .map(this::convertToDTO2)
+                .map(UserResponse::new)
                 .toList();
     }
 

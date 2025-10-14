@@ -9,12 +9,17 @@ import { BlogResponce } from '../../blog/model/model';
 export class UserService {
 
     constructor(private http: HttpClient) { }
-    getUsers(pageNumber: number) {
-        return this.http.get<User[]>(`http://localhost:8080/api/users?pageNumber=${pageNumber}`)
+
+    getUsers(cursor: number) {
+        return this.http.get<User[]>(`http://localhost:8080/api/users?cursor=${cursor}`)
     }
 
-    getProfile() {
-        return this.http.get<AuthState>("http://localhost:8080/api/users/profile")
+    getSubscribers(userId: number, cursor: number) {
+        return this.http.get<User[]>(`http://localhost:8080/api/users/${userId}/subscribers?cursor=${cursor}`)
+    }
+
+    getSubscribtions(userId: number, cursor: number) {
+        return this.http.get<User[]>(`http://localhost:8080/api/users/${userId}/subscribtions?cursor=${cursor}`)
     }
 
     getUserById(userId: any) {

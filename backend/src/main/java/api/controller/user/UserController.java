@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(defaultValue = "0") int pageNumber) {
-        List<UserResponse> users = this.userService.getAllUsers(pageNumber);
+    public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(defaultValue = "0") long cursor) {
+        List<UserResponse> users = this.userService.getAllUsers(cursor);
         return ResponseEntity.ok(users);
     }
 
@@ -54,19 +54,19 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<Map<String, UserResponse>> getSubscribers(
-            @RequestParam(defaultValue = "0") long userId) {
+            @RequestParam long userId) {
         return ResponseEntity.ok(Map.of("user", this.userService.getUserById(userId)));
     }
 
     @GetMapping("{userId}/subscribers")
-    public ResponseEntity<List<UserDto>> getSubscribers(
+    public ResponseEntity<List<UserResponse>> getSubscribers(
             @PathVariable long userId,
             @RequestParam(defaultValue = "0") long cursor) {
         return ResponseEntity.ok(this.userService.getSubscribers(userId, cursor));
     }
 
     @GetMapping("{userId}/subscribtions")
-    public ResponseEntity<List<UserDto>> getSubscriptions(
+    public ResponseEntity<List<UserResponse>> getSubscriptions(
             @PathVariable long userId,
             @RequestParam(defaultValue = "0") long cursor) {
         return ResponseEntity.ok(this.userService.getSubscriptions(userId, cursor));

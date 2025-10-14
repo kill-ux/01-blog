@@ -1,7 +1,7 @@
 <div class="container">
 
-    @for (user of this.users; track user.id) {
-    <div class="user">
+    @for (user of this.users(); track user.id) {
+    <div class="user" (click)="navigateUser(user.id)">
         <div class="user-info cap">
             <div class="image">
                 <img class="cap" [src]="'/images/'+user.avatar" alt="" onerror="this.src='/default-avatar.jpg'">
@@ -11,22 +11,37 @@
                     <span class="author-name">{{ user.nickname }}</span>
                     <span class="post-date">Joind at : {{ user.createdAt | date:'mediumDate' }}</span>
                 </div>
-                <div>
-                    <button (click)="subscribe(user.id)" class="btn btn-primary"> @if (user.sub) {unsubscribe} @else
-                        {subscribe} </button>
+                <div class="flex-row">
+                    <button class="btn sub">subscribers<span class="number">{{user.subscribers}}</span>
+                    </button>
+                    <button class="btn sub">subscribtions <span class="number">{{user.subscribtions}}</span> </button>
                 </div>
+                <div>
+
+                    @if (user.sub) {
+                    <button (click)="subscribe(user.id); $event.stopPropagation()"
+                        class="btn btn-red">unsubscribe</button>
+                    }@else {
+                    <button (click)="subscribe(user.id); $event.stopPropagation()"
+                        class="btn btn-primary">subscribe</button>
+                    }
+
+                </div>
+
             </div>
         </div>
     </div>
 
     <div>
-        @if (lastUser == user.id) {
+        @if (cursor == user.id) {
         <div #loadTrigger></div>
         @defer (on viewport(loadTrigger)) {
         <div>{{ loadMoreBlogs() }}</div>
         }
         }
     </div>
+    } @empty {
+        <p>No items found.</p>
     }
 
 </div>
