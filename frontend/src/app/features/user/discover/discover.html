@@ -17,14 +17,18 @@
                     <button class="btn sub">subscribtions <span class="number">{{user.subscribtions}}</span> </button>
                 </div>
                 <div>
-
-                    @if (user.sub) {
-                    <button (click)="subscribe(user.id); $event.stopPropagation()"
-                        class="btn btn-red">unsubscribe</button>
-                    }@else {
-                    <button (click)="subscribe(user.id); $event.stopPropagation()"
-                        class="btn btn-primary">subscribe</button>
+                    @if (this.authService.currentUser?.id != user.id) {
+                        @if (user.sub) {
+                        <button (click)="subscribe(user.id); $event.stopPropagation()"
+                            class="btn btn-red">unsubscribe</button>
+                        }@else {
+                        <button (click)="subscribe(user.id); $event.stopPropagation()"
+                            class="btn btn-primary">subscribe</button>
+                        }
+                    } @else {
+                        <button class="btn btn-secendary">YOU</button>
                     }
+                    
 
                 </div>
 

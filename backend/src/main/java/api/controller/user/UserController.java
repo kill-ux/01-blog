@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<Map<String, UserResponse>> getSubscribers(
+    public ResponseEntity<Map<String, UserResponse>> getUserById(
             @RequestParam long userId) {
         return ResponseEntity.ok(Map.of("user", this.userService.getUserById(userId)));
     }

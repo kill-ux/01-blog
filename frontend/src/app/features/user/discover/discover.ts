@@ -1,8 +1,9 @@
-import { Component, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnChanges, OnInit, output, signal, SimpleChanges } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { User } from '../../auth/models/model';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth/services/auth-api';
 
 @Component({
 	selector: 'app-discover',
@@ -10,10 +11,13 @@ import { Router } from '@angular/router';
 	templateUrl: './discover.html',
 	styleUrl: './discover.css'
 })
-export class Discover implements OnInit {
+export class Discover implements OnInit, OnChanges {
 	users = signal<User[]>([])
 	user = input<User | null>();
+	authService = inject(AuthService);
 	sub = input();
+	setSubscribtions = output<number>()
+	setSubscribers = output<number>()
 	cursor = 0
 
 	private isLoading = false;
@@ -26,6 +30,14 @@ export class Discover implements OnInit {
 		if (this.cursor == 0) {
 			this.getUsers()
 		}
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		console.log("changeeeeeeeeeee")
+		// console.log(this.user)
+		// if (this.cursor == 0) {
+		// 	this.getUsers()
+		// }
 	}
 
 
@@ -76,6 +88,10 @@ export class Discover implements OnInit {
 							return user
 						})
 					})
+					if (this.sub() == "subscribtions" && this.user()?.id == this.authService.currentUser?.id) {
+						// this.users.update(us => us.filter(user => user.sub))
+						this.setSubscribtions.emit(res.operation == "subscribed" ? 1 : -1)
+					}
 				}
 
 			},

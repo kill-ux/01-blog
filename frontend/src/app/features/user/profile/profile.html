@@ -1,9 +1,10 @@
 <div class="container">
     <div class="info">
-        <div class="avatar cap">
-            <img [src]="'images/'+userProfile()?.avatar" alt="{{ userProfile()?.nickname }}'s avatar"
+        <div class="avatar">
+            <img class="pixel-corners img-profile" [src]="'images/'+userProfile()?.avatar" alt="{{ userProfile()?.nickname }}'s avatar"
                 onerror="this.src='/default-avatar.jpg'">
         </div>
+        <input style="display: none;" type="file" name="" id="">
         <div class="content">
             <div class="nickname">{{ userProfile()?.nickname }}</div>
             <div class="">{{ userProfile()?.email }}</div>
@@ -14,13 +15,16 @@
                 </button>
                 <button (click)="getSubscribtions()" class="btn btn-primary">subscribtions <span
                         class="number">{{userProfile()?.subscribtions}}</span> </button>
-                @if (userProfile()) {
-                @if (userProfile()?.sub) {
-                <button (click)="subscribe(userProfile()?.id)" class="btn btn-red">unsubscribe</button>
-                }@else {
-                <button (click)="subscribe(userProfile()?.id)" class="btn btn-primary">subscribe</button>
+                @if (this.authService.currentUser?.id != userProfile()?.id ) {
+                    @if (userProfile()) {
+                        @if (userProfile()?.sub) {
+                            <button (click)="subscribe(userProfile()?.id)" class="btn btn-red">unsubscribe</button>
+                        }@else {
+                            <button (click)="subscribe(userProfile()?.id)" class="btn btn-primary">subscribe</button>
+                        }
+                    }
                 }
-                }
+                
 
 
             </div>
@@ -32,7 +36,7 @@
     @if (currentComponent() == "blogs") {
     <app-blogs [args]="{ user : userProfile() }" class="app-blogs"></app-blogs>
     }@else {
-    <div class="btn-return cap">
+    <div (click)="seeBlogs()" class="btn-return cap">
         <svg width="20" viewBox="0 0 20 20"
             class="hover:text-blue transition-colors duration-500 hover:scale-98 rotate-180">
             <g class="fill-icon">
@@ -53,10 +57,11 @@
     @if (currentComponent() == "subscribers") {
     <app-discover [user]="userProfile()" sub="subscribers"></app-discover>
     } @else if (currentComponent() == "subscribtions") {
-    <app-discover [user]="userProfile()" sub="subscribtions"></app-discover>
+    <app-discover [user]="userProfile()" sub="subscribtions" (setSubscribtions)="setSubscribtions($event)" ></app-discover>
     }
     }
 
 
 
 </div>
+

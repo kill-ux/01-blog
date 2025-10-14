@@ -49,9 +49,6 @@ public class UserService {
     }
 
     public List<UserResponse> getAllUsers(long cursor) {
-        System.out.println("###########################");
-        System.out.println(cursor);
-        System.out.println("###########################");
         long id = this.authUtils.getAuthenticatedUser().getId();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
@@ -201,6 +198,7 @@ public class UserService {
     }
 
     public List<UserResponse> getSubscribers(long userId, long cursor) {
+        long id = this.authUtils.getAuthenticatedUser().getId();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -208,11 +206,12 @@ public class UserService {
         return this.userRepository
                 .findSubscribersBySubscribedToId(userId, cursor, pageable)
                 .stream()
-                .map(UserResponse::new)
+                .map(u -> new UserResponse(u, id))
                 .toList();
     }
 
     public List<UserResponse> getSubscriptions(long userId, long cursor) {
+        long id = this.authUtils.getAuthenticatedUser().getId();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -220,7 +219,7 @@ public class UserService {
         return this.userRepository
                 .findSubscriptionsBySubscribedId(userId, cursor, pageable)
                 .stream()
-                .map(UserResponse::new)
+                .map(u -> new UserResponse(u, id))
                 .toList();
     }
 
