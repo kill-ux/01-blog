@@ -98,7 +98,7 @@ public class UserService {
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
         User user = this.userRepository.findById(userId).get();
-        String newPath = "images/" + this.authUtils.getAuthenticatedUser().getId() + "." + ext;
+        String newPath = "resources/static/images/imagesfile.jpg/" + userId + "." + ext;
         try (FileOutputStream fos = new FileOutputStream(newPath)) {
             byte[] bytes = file.getBytes();
             fos.write(bytes);
@@ -108,7 +108,7 @@ public class UserService {
             System.out.println("An error occurred: " + e.getMessage());
         }
         this.userRepository.save(user);
-        return user.getAvatar();
+        return "resources/images/imagesfile.jpg/" + userId + "." + ext ;
     }
 
     // @Transactional
