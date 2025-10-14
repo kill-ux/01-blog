@@ -1,10 +1,10 @@
 <div class="container">
     <div class="info">
-        <div class="avatar">
+        <div (click)="upload.click()" class="avatar">
             <img class="pixel-corners img-profile" [src]="'images/'+userProfile()?.avatar" alt="{{ userProfile()?.nickname }}'s avatar"
                 onerror="this.src='/default-avatar.jpg'">
         </div>
-        <input style="display: none;" type="file" name="" id="">
+        <input #upload (change)="uploadImage($event)" style="display: none;" type="file" name="" id="" accept="image/*">
         <div class="content">
             <div class="nickname">{{ userProfile()?.nickname }}</div>
             <div class="">{{ userProfile()?.email }}</div>

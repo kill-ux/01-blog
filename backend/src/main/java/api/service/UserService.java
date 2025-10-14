@@ -1,8 +1,10 @@
 package api.service;
 
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
@@ -96,6 +99,22 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    public String updateProfile(MultipartFile file, String ext) {
+        long userId = this.authUtils.getAuthenticatedUser().getId();
+        User user = this.userRepository.findById(userId).get();
+        String newPath = "images/" + UUID.randomUUID() + "." + ext;
+        try (FileOutputStream fos = new FileOutputStream(newPath)) {
+            byte[] bytes = file.getBytes();
+            fos.write(bytes);
+            user.setAvatar(newPath);
+            System.out.println("Data successfully written to the file.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        this.userRepository.save(user);
+        return user.getAvatar();
+    }
+
     // @Transactional
     public void banUser(long id, LocalDateTime until) {
         User user = this.userRepository.findById(id).get();
@@ -140,11 +159,6 @@ public class UserService {
 
     private UserRecord convertToDTO(User user) {
         return new UserRecord(user.getId(), user.getNickname(), user.getEmail(), user.getPassword(), user.getRole(),
-                user.getAvatar(), user.getBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
-    }
-
-    private UserDto convertToDTO2(User user) {
-        return new UserDto(user.getId(), user.getNickname(), user.getEmail(), user.getRole(),
                 user.getAvatar(), user.getBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
     }
 

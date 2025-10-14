@@ -98,4 +98,25 @@ export class Profile implements OnInit {
 	seeBlogs() {
 		this.currentComponent.set("blogs")
 	}
+
+	uploadImage(event: Event) {
+		const input = event.target as HTMLInputElement;
+		if (input.files && input.files.length > 0) {
+			const selectedFile = input.files[0]
+			console.log(selectedFile)
+			if (selectedFile.type.startsWith('image/')) {
+				this.userService.updateProfile(selectedFile).subscribe({
+					next: res => {
+						console.log(res)
+						if (this.authService.currentUser) {
+							this.authService.currentUser.avatar = res.url
+						}
+					},
+					error: err => {
+						console.log(err)
+					}
+				})
+			}
+		}
+	}
 }

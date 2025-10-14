@@ -2,7 +2,9 @@ package api.controller.user;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import api.controller.blog.FileUploadController;
 import api.model.blog.BlogResponse;
 import api.model.notification.NotificationResponse;
 import api.model.subscription.SubscribeRequest;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -56,6 +59,20 @@ public class UserController {
     public ResponseEntity<Map<String, UserResponse>> getUserById(
             @RequestParam long userId) {
         return ResponseEntity.ok(Map.of("user", this.userService.getUserById(userId)));
+    }
+
+    @PatchMapping("/updateprofile")
+    public ResponseEntity<Map<String, String>> updateProfile(@RequestParam("file") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        String ext = "";
+        if (fileName != null) {
+            ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+            if (!FileUploadController.ALLOWED_TYPES_IMAGES.contains(ext)) {
+                throw new IllegalArgumentException("type not allowed");
+            }
+        }
+        
+        return ResponseEntity.ok(Map.of("url", this.userService.updateProfile(file,ext)));
     }
 
     @GetMapping("{userId}/subscribers")

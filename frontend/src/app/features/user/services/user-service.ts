@@ -33,4 +33,10 @@ export class UserService {
     getBlogsByUserId(userId: any) {
         return this.http.get<BlogResponce[]>(`http://localhost:8080/api/users/${userId}/blogs`)
     }
+
+    updateProfile(file: File) {
+        const formData = new FormData();
+        formData.append('file', file)
+        return this.http.patch<{ url: string }>(`http://localhost:8080/api/users/updateprofile`, formData)
+    }
 }

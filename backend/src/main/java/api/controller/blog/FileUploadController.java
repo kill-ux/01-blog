@@ -18,8 +18,8 @@ import api.service.CloudinaryService;
 public class FileUploadController {
 
     private CloudinaryService cloudinaryService;
-    private List<String> ALLOWED_TYPES_IMAGES = List.of("jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp", "svg");
-    private List<String> ALLOWED_TYPES_VEDIOS = List.of("mp4", "avi", "mov", "wmv", "flv", "webm", "mkv", "m4v");
+    public static List<String> ALLOWED_TYPES_IMAGES = List.of("jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp", "svg");
+    public static List<String> ALLOWED_TYPES_VEDIOS = List.of("mp4", "avi", "mov", "wmv", "flv", "webm", "mkv", "m4v");
 
     public FileUploadController(CloudinaryService cloudinaryService) {
         this.cloudinaryService = cloudinaryService;
