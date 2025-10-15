@@ -264,7 +264,8 @@ body {
     border-radius: 0.375rem;
     /* border: 1px solid #dbdbdb; */
     width: 220px;
-    box-shadow: var(--ouline) 0px 10px 15px -3px, var(--ouline) 0px 4px 6px -2px, var(--ouline) 0px 0px 0px 1px;
+    /* box-shadow: var(--outline) 0px 4px 4px -3px, var(--outline) 0px 4px 6px -2px, var(--outline) 0px 0px 1px !important; */
+    box-shadow: var(--outline) -1px -1px 1px , var(--outline) 1px 1px 1px !important;
     /* padding: 25px; */
 }
 

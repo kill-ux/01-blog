@@ -2,3 +2,10 @@ svg {
     /* margin-right: 0.5rem; */
     fill: var(--btn--primarey);
 }
+
+div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+}
