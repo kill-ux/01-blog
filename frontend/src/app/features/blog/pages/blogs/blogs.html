@@ -1,152 +1,156 @@
+@for (item of this.blogs(); track item.id) {
 
-    @for (item of this.blogs(); track item.id) {
-
-    <article class="blog-card-back" (click)="clickOnnArcticle(item.id)">
-        <article class="blog-card">
-            <!-- Header with user info -->
-            <header class="blog-header">
-                <div class="user-info">
-                    <div class="avatar">
-                        <img [src]="'images/'+item.user.avatar" alt="{{ item.user.nickname }}'s avatar"
-                            onerror="this.src='/default-avatar.jpg'">
-                    </div>
-                    <div class="user-details">
-                        <span class="author-name">{{ item.user.nickname }}</span>
-                        <span class="post-date">{{ item.createdAt | date:'mediumDate' }}</span>
-                    </div>
-
-                </div>
-                <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
-                    aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    @if (authService.currentUser?.id == item.user.id) {
-                    <button mat-menu-item (click)="DeleteBlog(item.id)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Delete</span>
-                    </button>
-                    <button mat-menu-item (click)="EditBlog(item.id)">
-                        <mat-icon>edit</mat-icon>
-                        <span>Edit</span>
-                    </button>
+<article class="blog-card-back" (click)="clickOnnArcticle(item.id)">
+    <article class="blog-card">
+        <!-- Header with user info -->
+        <header class="blog-header">
+            <div class="user-info">
+                <div class="avatar">
+                    @if (item.user.id == this.authService.currentUser?.id) {
+                    <img [src]="this.authService.currentUser?.avatar ? apiUrl+this.authService.currentUser?.avatar : '/default-avatar.jpg'" alt="{{ item.user.nickname }}'s avatar"
+                        onerror="this.src='/default-avatar.jpg'">
+                    } @else {
+                    <img [src]="item.user.avatar ?  apiUrl+item.user.avatar : '/default-avatar.jpg'" alt="{{ item.user.nickname }}'s avatar"
+                        onerror="this.src='/default-avatar.jpg'">
                     }
-                    <button mat-menu-item (click)="DeleteBlog(item.id)">
-                        <mat-icon>report</mat-icon>
-                        <span>Report</span>
-                    </button>
-                </mat-menu>
-
-
-
-            </header>
-
-
-            <!-- Blog content -->
-            <div class="blog-content">
-                <div class="blog-title">
-                    <h3>{{ item.title.substring(0,255) }}</h3>
                 </div>
+                <div class="user-details">
+                    <span class="author-name">{{ item.user.nickname }}</span>
+                    <span class="post-date">{{ item.createdAt | date:'mediumDate' }}</span>
+                </div>
+
             </div>
+            <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
+                aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                @if (authService.currentUser?.id == item.user.id) {
+                <button mat-menu-item (click)="DeleteBlog(item.id)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+                <button mat-menu-item (click)="EditBlog(item.id)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                }
+                <button mat-menu-item (click)="DeleteBlog(item.id)">
+                    <mat-icon>report</mat-icon>
+                    <span>Report</span>
+                </button>
+            </mat-menu>
 
-            <!-- Load more when last item is in viewport -->
 
-            <!-- <div class="blog-content">
+
+        </header>
+
+
+        <!-- Blog content -->
+        <div class="blog-content">
+            <div class="blog-title">
+                <h3>{{ item.title.substring(0,255) }}</h3>
+            </div>
+        </div>
+
+        <!-- Load more when last item is in viewport -->
+
+        <!-- <div class="blog-content">
                     <div class="blog-description">
                         <markdown class="markdown-preview" [data]="item.description.substring(0,255)"></markdown>
                     </div>
                 </div> -->
 
-            <!-- Footer with stats -->
-            <footer class="blog-footer">
-                <div class="blog-stats">
-                    <span class="stat">
-                        <svg (click)="toggleLike(item); $event.stopPropagation()" width="20" height="20"
-                            viewBox="0 0 20 20" [class.liked]="item.like" [class.not-liked]="!item.like">
-                            <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
-                            <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
-                            <path d="M14.3043 1.59375H11.4492V4.48449H14.3043V1.59375Z"></path>
-                            <path d="M17.1519 1.59375H14.2969V4.48449H17.1519V1.59375Z"></path>
-                            <path d="M11.4556 4.47681H8.60059V7.36755H11.4556V4.47681Z"></path>
-                            <path d="M2.91075 4.47681H0.0557022V7.36755H2.91075V4.47681Z"></path>
-                            <path d="M20.0006 4.47656H17.1455V7.3673H20.0006V4.47656Z"></path>
-                            <path d="M2.91075 7.36108H0.0557022V10.2518H2.91075V7.36108Z"></path>
-                            <path d="M5.75837 10.2451H2.90332V13.1359H5.75837V10.2451Z"></path>
-                            <path d="M8.60701 13.1289H5.75195V16.0197H8.60701V13.1289Z"></path>
-                            <path d="M11.4556 16.0127H8.60059V18.9034H11.4556V16.0127Z"></path>
-                            <path d="M14.3043 13.1289H11.4492V16.0196H14.3043V13.1289Z"></path>
-                            <path d="M17.1519 10.2451H14.2969V13.1359H17.1519V10.2451Z"></path>
-                            <path d="M20.0006 7.36133H17.1455V10.2521H20.0006V7.36133Z"></path>
-                        </svg>
-                        {{ item.likes }}
-                    </span>
-                    <span class="stat">
-                        <svg width="20" viewBox="0 0 20 20">
-                            <path d="M15 2H5V4H15V2Z" class="fill-icon-btn"></path>
-                            <path d="M17 4H15V6H17V4Z" class="fill-icon-btn"></path>
-                            <path d="M5 4H3V6H5V4Z" class="fill-icon-btn"></path>
-                            <path d="M5 13H3V15H5V13Z" class="fill-icon-btn"></path>
-                            <path d="M9 15H7V17H9V15Z" class="fill-icon-btn"></path>
-                            <path d="M17 13H9V15H17V13Z" class="fill-icon-btn"></path>
-                            <path d="M7 15H5V19H7V15Z" class="fill-icon-btn"></path>
-                            <path d="M19 6H17V13H19V6Z" class="fill-icon-btn"></path>
-                            <path d="M3 6H1V13H3V6Z" class="fill-icon-btn"></path>
-                            <path d="M14 7H6V9H14V7Z" class="fill-icon-btn-secondary"></path>
-                            <path d="M11 10H6V12H11V10Z" class="fill-icon-btn-secondary"></path>
-                        </svg>
-                        {{ item.childrenCount || 0 }}
-                    </span>
+        <!-- Footer with stats -->
+        <footer class="blog-footer">
+            <div class="blog-stats">
+                <span class="stat">
+                    <svg (click)="toggleLike(item); $event.stopPropagation()" width="20" height="20" viewBox="0 0 20 20"
+                        [class.liked]="item.like" [class.not-liked]="!item.like">
+                        <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
+                        <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
+                        <path d="M14.3043 1.59375H11.4492V4.48449H14.3043V1.59375Z"></path>
+                        <path d="M17.1519 1.59375H14.2969V4.48449H17.1519V1.59375Z"></path>
+                        <path d="M11.4556 4.47681H8.60059V7.36755H11.4556V4.47681Z"></path>
+                        <path d="M2.91075 4.47681H0.0557022V7.36755H2.91075V4.47681Z"></path>
+                        <path d="M20.0006 4.47656H17.1455V7.3673H20.0006V4.47656Z"></path>
+                        <path d="M2.91075 7.36108H0.0557022V10.2518H2.91075V7.36108Z"></path>
+                        <path d="M5.75837 10.2451H2.90332V13.1359H5.75837V10.2451Z"></path>
+                        <path d="M8.60701 13.1289H5.75195V16.0197H8.60701V13.1289Z"></path>
+                        <path d="M11.4556 16.0127H8.60059V18.9034H11.4556V16.0127Z"></path>
+                        <path d="M14.3043 13.1289H11.4492V16.0196H14.3043V13.1289Z"></path>
+                        <path d="M17.1519 10.2451H14.2969V13.1359H17.1519V10.2451Z"></path>
+                        <path d="M20.0006 7.36133H17.1455V10.2521H20.0006V7.36133Z"></path>
+                    </svg>
+                    {{ item.likes }}
+                </span>
+                <span class="stat">
+                    <svg width="20" viewBox="0 0 20 20">
+                        <path d="M15 2H5V4H15V2Z" class="fill-icon-btn"></path>
+                        <path d="M17 4H15V6H17V4Z" class="fill-icon-btn"></path>
+                        <path d="M5 4H3V6H5V4Z" class="fill-icon-btn"></path>
+                        <path d="M5 13H3V15H5V13Z" class="fill-icon-btn"></path>
+                        <path d="M9 15H7V17H9V15Z" class="fill-icon-btn"></path>
+                        <path d="M17 13H9V15H17V13Z" class="fill-icon-btn"></path>
+                        <path d="M7 15H5V19H7V15Z" class="fill-icon-btn"></path>
+                        <path d="M19 6H17V13H19V6Z" class="fill-icon-btn"></path>
+                        <path d="M3 6H1V13H3V6Z" class="fill-icon-btn"></path>
+                        <path d="M14 7H6V9H14V7Z" class="fill-icon-btn-secondary"></path>
+                        <path d="M11 10H6V12H11V10Z" class="fill-icon-btn-secondary"></path>
+                    </svg>
+                    {{ item.childrenCount || 0 }}
+                </span>
 
-                </div>
-                <div class="blog-stats">
-                    <span class="stat">
-                        <!-- Copied confirmation icon (shown after copy) -->
-                        <!-- <span class="btn copied-icon">Copied!</span> -->
-                        @if (item.isCopied) {
-                        <span class="btn copied-icon">Copied!</span>
-                        <svg width="30" viewBox="0 0 16 13">
-                            <rect x="0.25" y="6.2002" width="3.1" height="3.1"></rect>
-                            <rect x="3.34961" y="9.2998" width="3.1" height="3.1"></rect>
-                            <rect x="6.4502" y="6.2002" width="3.1" height="3.1"></rect>
-                            <rect x="9.5498" y="3.09961" width="3.1" height="3.1"></rect>
-                            <rect x="12.6504" width="3.1" height="3.1"></rect>
-                        </svg>
-                        } @else {
-                        <svg (click)="copyLink(item); $event.stopPropagation()" width="20" viewBox="0 0 20 20"
-                            class="text-icon-btn fill-current">
-                            <path d="M15 1H5V3H15V1Z"></path>
-                            <path d="M17 3H15V17H17V3Z"></path>
-                            <path d="M5 3H3V17H5V3Z"></path>
-                            <path d="M9 15H7V17H9V15Z"></path>
-                            <path d="M7 17H5V19H7V17Z"></path>
-                            <path d="M11 12H9V15H11V12Z"></path>
-                            <path d="M13 15H11V17H13V15Z"></path>
-                            <path d="M15 17H13V19H15V17Z"></path>
-                        </svg>
-                        }
+            </div>
+            <div class="blog-stats">
+                <span class="stat">
+                    <!-- Copied confirmation icon (shown after copy) -->
+                    <!-- <span class="btn copied-icon">Copied!</span> -->
+                    @if (item.isCopied) {
+                    <span class="btn copied-icon">Copied!</span>
+                    <svg width="30" viewBox="0 0 16 13">
+                        <rect x="0.25" y="6.2002" width="3.1" height="3.1"></rect>
+                        <rect x="3.34961" y="9.2998" width="3.1" height="3.1"></rect>
+                        <rect x="6.4502" y="6.2002" width="3.1" height="3.1"></rect>
+                        <rect x="9.5498" y="3.09961" width="3.1" height="3.1"></rect>
+                        <rect x="12.6504" width="3.1" height="3.1"></rect>
+                    </svg>
+                    } @else {
+                    <svg (click)="copyLink(item); $event.stopPropagation()" width="20" viewBox="0 0 20 20"
+                        class="text-icon-btn fill-current">
+                        <path d="M15 1H5V3H15V1Z"></path>
+                        <path d="M17 3H15V17H17V3Z"></path>
+                        <path d="M5 3H3V17H5V3Z"></path>
+                        <path d="M9 15H7V17H9V15Z"></path>
+                        <path d="M7 17H5V19H7V17Z"></path>
+                        <path d="M11 12H9V15H11V12Z"></path>
+                        <path d="M13 15H11V17H13V15Z"></path>
+                        <path d="M15 17H13V19H15V17Z"></path>
+                    </svg>
+                    }
 
-                        <!-- Original share/link icon (shown by default) -->
+                    <!-- Original share/link icon (shown by default) -->
 
-                    </span>
-                </div>
-            </footer>
+                </span>
+            </div>
+        </footer>
 
-        </article>
     </article>
-    <div class="w-100">
-        @if (lastBlog == item.id) {
-        <div #loadTrigger></div>
-        @defer (on viewport(loadTrigger),) {
-        <div>{{ loadMoreBlogs() }}</div>
-        } @placeholder {
-        <mat-spinner diameter="32"></mat-spinner>
-        }
-        }
-    </div>
-    } @empty {
-    <div class="empty-state">
-        <div class="empty-icon">📝</div>
-        <h3>No blogs yet</h3>
-        <p>Be the first to share your thoughts!</p>
-    </div>
+</article>
+<div class="w-100">
+    @if (lastBlog == item.id) {
+    <div #loadTrigger></div>
+    @defer (on viewport(loadTrigger),) {
+    <div>{{ loadMoreBlogs() }}</div>
+    } @placeholder {
+    <mat-spinner diameter="32"></mat-spinner>
     }
+    }
+</div>
+} @empty {
+<div class="empty-state">
+    <div class="empty-icon">📝</div>
+    <h3>No blogs yet</h3>
+    <p>Be the first to share your thoughts!</p>
+</div>
+}

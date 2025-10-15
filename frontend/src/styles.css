@@ -196,3 +196,8 @@ img {
     border: 1px solid #22283142;
     color: #222831;
 }
+
+@media (prefers-color-scheme: dark) {
+  @include mat.core-color(themes.$my-app-dark-theme);
+  @include mat.button-color(themes.$my-app-dark-theme);
+}

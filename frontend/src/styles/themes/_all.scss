@@ -1,0 +1,12 @@
+// src/styles/themes/_all.scss
+
+// rest remains same
+// Define a dark theme
+$my-app-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: mat.define-palette(mat.$pink-palette),
+      accent: mat.define-palette(mat.$blue-grey-palette),
+    ),
+  )
+);

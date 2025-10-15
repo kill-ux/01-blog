@@ -1,9 +1,28 @@
 <div class="container">
     <div class="info">
+        @if (userProfile()?.id == this.authService.currentUser?.id) {
         <div (click)="upload.click()" class="avatar">
-            <img class="pixel-corners img-profile" [src]="'images/'+userProfile()?.avatar" alt="{{ userProfile()?.nickname }}'s avatar"
-                onerror="this.src='/default-avatar.jpg'">
+            <img class="pixel-corners img-profile"
+                [src]="userProfile()?.avatar ? apiUrl +userProfile()?.avatar : '/default-avatar.jpg'"
+                alt="{{ userProfile()?.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
+            <div class="edit-profile pixel-corners ">
+                <svg height="85px" id="Capa_1" style="enable-background:new 0 0 100 85;" version="1.1"
+                    viewBox="0 0 100 85" width="100px" xml:space="preserve">
+                    <g>
+                        <path
+                            d="M50.001,0l-26,24.398h16.5V50h19V24.398h16.5L50.001,0z M96.698,57.711L80.78,47h-9.816l17.002,13.043H70.243   c-0.508,0-0.969,0.258-1.197,0.664L64.96,71.883H35.038l-4.086-11.176c-0.227-0.406-0.689-0.664-1.197-0.664H12.032L29.036,47   h-9.818L3.302,57.711c-2.369,1.415-3.785,4.676-3.15,7.246l2.807,15.369C3.595,82.896,6.411,85,9.216,85h81.568   c2.805,0,5.621-2.104,6.258-4.674l2.805-15.369C100.485,62.387,99.067,59.126,96.698,57.711z" />
+                    </g>
+                </svg>
+            </div>
         </div>
+        } @else {
+        <div class="avatar">
+            <img class="pixel-corners img-profile"
+                [src]="userProfile()?.avatar ? apiUrl +userProfile()?.avatar : '/default-avatar.jpg'"
+                alt="{{ userProfile()?.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
+        </div>
+        }
+
         <input #upload (change)="uploadImage($event)" style="display: none;" type="file" name="" id="" accept="image/*">
         <div class="content">
             <div class="nickname">{{ userProfile()?.nickname }}</div>
@@ -16,15 +35,15 @@
                 <button (click)="getSubscribtions()" class="btn btn-primary">subscribtions <span
                         class="number">{{userProfile()?.subscribtions}}</span> </button>
                 @if (this.authService.currentUser?.id != userProfile()?.id ) {
-                    @if (userProfile()) {
-                        @if (userProfile()?.sub) {
-                            <button (click)="subscribe(userProfile()?.id)" class="btn btn-red">unsubscribe</button>
-                        }@else {
-                            <button (click)="subscribe(userProfile()?.id)" class="btn btn-primary">subscribe</button>
-                        }
-                    }
+                @if (userProfile()) {
+                @if (userProfile()?.sub) {
+                <button (click)="subscribe(userProfile()?.id)" class="btn btn-red">unsubscribe</button>
+                }@else {
+                <button (click)="subscribe(userProfile()?.id)" class="btn btn-primary">subscribe</button>
                 }
-                
+                }
+                }
+
 
 
             </div>
@@ -34,7 +53,9 @@
     </div>
 
     @if (currentComponent() == "blogs") {
+    @if(userProfile()) {
     <app-blogs [args]="{ user : userProfile() }" class="app-blogs"></app-blogs>
+    }
     }@else {
     <div (click)="seeBlogs()" class="btn-return cap">
         <svg width="20" viewBox="0 0 20 20"
@@ -57,11 +78,11 @@
     @if (currentComponent() == "subscribers") {
     <app-discover [user]="userProfile()" sub="subscribers"></app-discover>
     } @else if (currentComponent() == "subscribtions") {
-    <app-discover [user]="userProfile()" sub="subscribtions" (setSubscribtions)="setSubscribtions($event)" ></app-discover>
+    <app-discover [user]="userProfile()" sub="subscribtions"
+        (setSubscribtions)="setSubscribtions($event)"></app-discover>
     }
     }
 
 
 
 </div>
-

@@ -72,9 +72,10 @@
                 <!-- <a href="#" ></a> -->
                 <!-- <button class="btn btn-primary">Profile</button> -->
                 <div id="profile" class="profile" matIconButton [matMenuTriggerFor]="menu">
-                    <img [src]="'images/'+this.authService.currentUser?.avatar" class="pixel-corners img-profile"
-                        alt="{{ this.authService.currentUser?.nickname }}'s avatar"
+                    <img [src]="this.authService.currentUser?.avatar ? apiUrl +this.authService.currentUser?.avatar : '/default-avatar.jpg'"
+                        class="pixel-corners img-profile" alt="{{ this.authService.currentUser?.nickname }}'s avatar"
                         onerror="this.src='/default-avatar.jpg'">
+
                 </div>
 
                 <mat-menu #menu="matMenu">

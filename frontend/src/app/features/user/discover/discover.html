@@ -4,7 +4,8 @@
     <div class="user" (click)="navigateUser(user.id)">
         <div class="user-info cap">
             <div class="image">
-                <img class="cap" [src]="'/images/'+user.avatar" alt="" onerror="this.src='/default-avatar.jpg'">
+                <img class="cap" [src]=" user.avatar ?  apiUrl+user.avatar : '/default-avatar.jpg'" alt=""
+                    onerror="this.src='/default-avatar.jpg'">
             </div>
             <div class="content">
                 <div class="user-details">
@@ -18,17 +19,17 @@
                 </div>
                 <div>
                     @if (this.authService.currentUser?.id != user.id) {
-                        @if (user.sub) {
-                        <button (click)="subscribe(user.id); $event.stopPropagation()"
-                            class="btn btn-red">unsubscribe</button>
-                        }@else {
-                        <button (click)="subscribe(user.id); $event.stopPropagation()"
-                            class="btn btn-primary">subscribe</button>
-                        }
-                    } @else {
-                        <button class="btn btn-secendary">YOU</button>
+                    @if (user.sub) {
+                    <button (click)="subscribe(user.id); $event.stopPropagation()"
+                        class="btn btn-red">unsubscribe</button>
+                    }@else {
+                    <button (click)="subscribe(user.id); $event.stopPropagation()"
+                        class="btn btn-primary">subscribe</button>
                     }
-                    
+                    } @else {
+                    <button class="btn btn-secendary">YOU</button>
+                    }
+
 
                 </div>
 
@@ -45,7 +46,7 @@
         }
     </div>
     } @empty {
-        <p>No items found.</p>
+    <p>No items found.</p>
     }
 
 </div>

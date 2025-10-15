@@ -12,9 +12,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class AuthService {
     private tokenKey: string = "token";
-    private apiUrl;
+    public apiUrl;
 
-    private currentUserSubject = new BehaviorSubject<User | null>(null);
+    public currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
 
     constructor(

@@ -11,6 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../../auth/services/auth-api';
 import { User } from '../../../auth/models/model';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
 	selector: 'app-blogs',
@@ -28,6 +29,8 @@ export class Blogs implements OnInit, OnChanges {
 	private isLoading = false;
 	public authService = inject(AuthService)
 	@Input() args: { user: User | null } | null = null
+
+	apiUrl = environment.API_URL;
 
 
 	constructor(private blogService: BlogService, private router: Router) {

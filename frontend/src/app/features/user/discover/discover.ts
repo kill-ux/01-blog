@@ -4,6 +4,7 @@ import { User } from '../../auth/models/model';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth-api';
+import { environment } from '../../../../environments/environment';
 
 @Component({
 	selector: 'app-discover',
@@ -19,6 +20,8 @@ export class Discover implements OnInit, OnChanges {
 	setSubscribtions = output<number>()
 	setSubscribers = output<number>()
 	cursor = 0
+
+	apiUrl = environment.API_URL
 
 	private isLoading = false;
 
@@ -84,6 +87,7 @@ export class Discover implements OnInit, OnChanges {
 						return us?.map((user) => {
 							if (user.id == id) {
 								user.sub = res.operation == "subscribed" ? true : false
+								user.subscribers += res.operation == "subscribed" ? 1 : -1
 							}
 							return user
 						})

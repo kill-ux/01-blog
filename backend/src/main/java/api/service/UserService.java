@@ -98,17 +98,16 @@ public class UserService {
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
         User user = this.userRepository.findById(userId).get();
-        String newPath = "resources/static/images/imagesfile.jpg/" + userId + "." + ext;
-        try (FileOutputStream fos = new FileOutputStream(newPath)) {
+        try (FileOutputStream fos = new FileOutputStream("src/main/resources/static/images/" + userId + "." + ext)) {
             byte[] bytes = file.getBytes();
             fos.write(bytes);
-            user.setAvatar(newPath);
+            user.setAvatar("/resources/images/" + userId + "." + ext);
             System.out.println("Data successfully written to the file.");
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
         this.userRepository.save(user);
-        return "resources/images/imagesfile.jpg/" + userId + "." + ext ;
+        return user.getAvatar();
     }
 
     // @Transactional

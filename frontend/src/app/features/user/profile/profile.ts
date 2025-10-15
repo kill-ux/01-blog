@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Blogs } from "../../blog/pages/blogs/blogs";
 import { DatePipe } from '@angular/common';
 import { Discover } from "../discover/discover";
+import { environment } from '../../../../environments/environment';
 
 @Component({
 	selector: 'app-profile',
@@ -20,6 +21,8 @@ export class Profile implements OnInit {
 	userService = inject(UserService);
 	isLoading = false
 	currentComponent = signal("blogs")
+
+	apiUrl = environment.API_URL;
 
 	constructor(private router: ActivatedRoute) { }
 
@@ -110,6 +113,12 @@ export class Profile implements OnInit {
 						console.log(res)
 						if (this.authService.currentUser) {
 							this.authService.currentUser.avatar = res.url
+							this.userProfile.update(user => {
+								if(user) {
+									user.avatar = res.url
+								}
+								return user
+							})
 						}
 					},
 					error: err => {
