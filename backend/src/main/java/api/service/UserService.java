@@ -102,8 +102,8 @@ public class UserService {
                 "images/" + userId + "." + ext)) {
             byte[] bytes = file.getBytes();
             fos.write(bytes);
-            fos.flush(); // Explicit flush
-            fos.getFD().sync(); // Force OS to write to disk (Linux/Unix)
+            // fos.flush(); // Explicit flush
+            // fos.getFD().sync(); // Force OS to write to disk (Linux/Unix)
             user.setAvatar("/images/" + userId + "." + ext);
             System.out.println("Data successfully written to the file.");
         } catch (Exception e) {
