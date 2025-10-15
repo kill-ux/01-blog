@@ -20,6 +20,7 @@ export class Profile implements OnInit {
 	userService = inject(UserService);
 	isLoading = false
 	currentComponent = signal("blogs")
+
 	constructor(private router: ActivatedRoute) { }
 
 	public authService = inject(AuthService)
@@ -27,8 +28,8 @@ export class Profile implements OnInit {
 	ngOnInit() {
 		this.router.params.subscribe(params => {
 			const id = params["id"]
+			this.currentComponent.set("blogs")
 			this.loadProfile(id);
-
 		})
 	}
 
@@ -54,6 +55,7 @@ export class Profile implements OnInit {
 				this.userProfile.update(user => {
 					if (user && user.id == id) {
 						user.sub = res.operation == "subscribed" ? true : false
+						user.subscribers += user.sub ? 1 : -1
 					}
 					return user
 				})
@@ -71,55 +73,50 @@ export class Profile implements OnInit {
 
 	getSubscribers() {
 		if (this.currentComponent() != "subscribers") {
-			this.subscribers.set([])
 			this.currentComponent.set("subscribers")
-			this.loadSubscribers(0)
 		}
 	}
 
 	getSubscribtions() {
 		if (this.currentComponent() != "subscribtions") {
-			this.subscribtions.set([])
 			this.currentComponent.set("subscribtions")
-			this.loadSubscribtions(0)
 		}
 	}
 
-	loadSubscribers(cursor: number) {
-		if (this.isLoading) return
-		this.isLoading = true
+	setSubscribtions(num: number) {
 		let currentUser = this.userProfile();
-		if (currentUser) {
-			this.userService.getSubscribers(currentUser.id, cursor).subscribe({
-				next: res => {
-					console.log(res)
-					this.subscribers.update(subs => [...subs, ...res])
-					this.isLoading = false
-				},
-				error: err => {
-					console.log(err)
-					this.isLoading = false
-				}
-			})
-		}
+		if (currentUser)
+			currentUser.subscribtions += num
 	}
 
-	loadSubscribtions(cursor: number) {
-		if (this.isLoading) return
-		this.isLoading = true
+	setSubscribers(num: number) {
 		let currentUser = this.userProfile();
-		if (currentUser) {
-			this.userService.getSubscribtions(currentUser.id, cursor).subscribe({
-				next: res => {
-					console.log(res)
-					this.subscribtions.update(subs => [...subs, ...res])
-					this.isLoading = false
-				},
-				error: err => {
-					console.log(err)
-					this.isLoading = false
-				}
-			})
+		if (currentUser)
+			currentUser.subscribers += num
+	}
+
+	seeBlogs() {
+		this.currentComponent.set("blogs")
+	}
+
+	uploadImage(event: Event) {
+		const input = event.target as HTMLInputElement;
+		if (input.files && input.files.length > 0) {
+			const selectedFile = input.files[0]
+			console.log(selectedFile)
+			if (selectedFile.type.startsWith('image/')) {
+				this.userService.updateProfile(selectedFile).subscribe({
+					next: res => {
+						console.log(res)
+						if (this.authService.currentUser) {
+							this.authService.currentUser.avatar = res.url
+						}
+					},
+					error: err => {
+						console.log(err)
+					}
+				})
+			}
 		}
 	}
 }
