@@ -29,11 +29,11 @@ export class ThemeService {
         this.currentThemeSubject.next(theme)
         this.applyTheme(theme);
 
-        // if (theme === 'light') {
-        //     localStorage.removeItem('theme'); // Remove to use system preference
-        // } else {
-        localStorage.setItem('theme', theme);
-        // }
+        if (theme === 'light') {
+            localStorage.removeItem('theme'); // Remove to use system preference
+        } else {
+            localStorage.setItem('theme', theme);
+        }
     }
 
     watchSystemTheme() {
