@@ -5,10 +5,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../../features/user/services/user-service';
+import { ThemeToggle } from "../../Theme/theme-toggle/theme-toggle";
 
 @Component({
 	selector: 'app-navbar',
-	imports: [RouterLink, MatMenu, MatMenuModule],
+	imports: [RouterLink, MatMenu, MatMenuModule, ThemeToggle],
 	templateUrl: './navbar.html',
 	styleUrl: './navbar.css'
 })

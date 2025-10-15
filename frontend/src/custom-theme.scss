@@ -1,35 +1,139 @@
+// // Include theming for Angular Material with `mat.theme()`.
+// // This Sass mixin will define CSS variables that are used for styling Angular Material
+// // components according to the Material 3 design spec.
+// // Learn more about theming and how to use it for your application's
+// // custom components at https://material.angular.dev/guide/theming
+// @use '@angular/material' as mat;
 
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// html {
+//   @include mat.theme((
+//     color: (
+//       primary: mat.$cyan-palette,
+//       tertiary: mat.$orange-palette,
+//     ),
+//     typography: Roboto,
+//     density: 0,
+//   ));
+// }
+
+// body {
+//   // Default the application to a light color theme. This can be changed to
+//   // `dark` to enable the dark color theme, or to `light dark` to defer to the
+//   // user's system settings.
+//   color-scheme: light dark;
+
+//   // Set a default background, font and text colors for the application using
+//   // Angular Material's system-level CSS variables. Learn more about these
+//   // variables at https://material.angular.dev/guide/system-variables
+//   background-color: var(--mat-sys-surface);
+//   color: var(--mat-sys-on-surface);
+//   font: var(--mat-sys-body-medium);
+
+//   // Reset the user agent margin.
+//   margin: 0;
+// }
+
+// custom-theme.scss
 @use '@angular/material' as mat;
 
+// Define palettes
+$primary-palette: mat.$cyan-palette;
+$tertiary-palette: mat.$orange-palette;
+
+// Light theme
+$light-theme: mat.define-theme((color: (theme-type: light,
+        primary: $primary-palette,
+        tertiary: $tertiary-palette,
+      ),
+      typography: (brand-family: 'Roboto',
+        plain-family: 'Roboto',
+      ),
+      density: (scale: 0,
+      )));
+
+// Dark theme  
+$dark-theme: mat.define-theme((color: (theme-type: dark,
+        primary: $primary-palette,
+        tertiary: $tertiary-palette,
+      ),
+      typography: (brand-family: 'Roboto',
+        plain-family: 'Roboto',
+      ),
+      density: (scale: 0,
+      )));
+
+// Apply light theme by default to Material components
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$cyan-palette,
-      tertiary: mat.$orange-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.all-component-themes($light-theme);
 }
 
+// Dark theme class - this is crucial!
+html.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+}
+
+// Define CSS custom properties for both themes
+:root,
+.light-theme {
+  // Light theme variables
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --bg-card: #ffffff;
+  --bg-hover: #f1f3f4;
+  --bg-back: #1a202c11;
+  --btn--primarey : #030213;
+
+  --text-primary: #212529;
+  --text-black: rgba(0, 0, 0, 0.034);
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --text-inverse: #ffffff;
+
+  --border-color: #dee2e6;
+  --border-light: #f1f3f4;
+  --border-focus: #007bff;
+
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.dark-theme {
+  // Dark theme variables
+  --bg-primary: #030712;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #2d2d2d;
+  --bg-card: #0c0c0c;
+  --bg-hover: #2d2d2d;
+  --bg-back: #ffffff2d;
+  
+  --btn--primarey : #e9ecef;
+
+  --text-black: rgba(255, 255, 255, 0.034);
+  --text-primary: #e9ecef;
+  --text-secondary: #adb5bd;
+  --text-muted: #6c757d;
+  --text-inverse: #030712;
+
+  --border-color: #495057;
+  --border-light: #343a40;
+  --border-focus: #4dabf7;
+
+  --primary-color: #4dabf7;
+  --primary-hover: #339af0;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+// Base body styles
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light dark;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Roboto', sans-serif;
   margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

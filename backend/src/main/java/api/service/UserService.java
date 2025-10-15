@@ -98,10 +98,13 @@ public class UserService {
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
         User user = this.userRepository.findById(userId).get();
-        try (FileOutputStream fos = new FileOutputStream("src/main/resources/static/images/" + userId + "." + ext)) {
+        try (FileOutputStream fos = new FileOutputStream(
+                "images/" + userId + "." + ext)) {
             byte[] bytes = file.getBytes();
             fos.write(bytes);
-            user.setAvatar("/resources/images/" + userId + "." + ext);
+            fos.flush(); // Explicit flush
+            fos.getFD().sync(); // Force OS to write to disk (Linux/Unix)
+            user.setAvatar("/images/" + userId + "." + ext);
             System.out.println("Data successfully written to the file.");
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());

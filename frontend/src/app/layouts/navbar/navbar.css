@@ -8,13 +8,12 @@
 
 :root,
 :host {
-    --background: #ffffff;
-    --foreground: #2d3748;
-    --primary: #030213;
-    --primary-foreground: #ffffff;
+    --background: var(--bg-primary);
+    --foreground: var(--text-primary);
+    --primary: var(--btn--primarey);
+    --primary-foreground: var(--bg-card);
     --muted-foreground: #718096;
-    --border: rgba(0, 0, 0, 0.1);
-    --color-current-taxonomy: #459ffb;
+    --border: var(--border-color);
 }
 
 a {
@@ -65,7 +64,7 @@ body {
     height: 2rem;
     background-color: var(--primary);
     color: var(--primary-foreground);
-    font-size: 1.3rem;
+    font-size: 1.7rem;
 
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
@@ -125,6 +124,7 @@ body {
 .action-buttons {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-left: 1rem;
 }
 
@@ -298,4 +298,15 @@ body {
 
 .logout {
     border-top:  1px solid #dbdbdb;
+}
+
+app-theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+svg {
+    fill: var(--btn--primarey);
 }

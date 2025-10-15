@@ -7,10 +7,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/api/resources/**")
-				.addResourceLocations("/public", "classpath:/static/");
-				// .setCacheControl(CacheControl.maxAge(Duration.ofDays(365)));
-	}
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/api/images/**")
+                .addResourceLocations("file:images/");
+    }
 }
