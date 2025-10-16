@@ -171,9 +171,7 @@
     border-radius: 3px;
 }
 
-/* .stat svg:hover {
-    background-color: rgba(0, 0, 0, 0.034);
-} */
+
 
 .stat:hover {
     background-color: rgba(0, 0, 0, 0.034);
