@@ -9,3 +9,7 @@ div {
     align-items: center;
     padding: 4px;
 }
+
+svg:hover {
+    fill: rgba(220, 20, 60, 0.705);
+}

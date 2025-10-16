@@ -1,14 +1,39 @@
 <div (click)="toggleTheme()">
-    <svg  width="20" height="20" viewBox="0 0 20 20" class="fill-current text-icon hover:text-current-taxonomy dark-icon"
-    style="">
-    <path d="M14 6H6V14H14V6Z"></path>
-    <path d="M11 2H9V6H11V2Z"></path>
-    <path d="M14 9L14 11L18 11L18 9L14 9Z"></path>
-    <path d="M2 9L2 11L6 11L6 9L2 9Z"></path>
-    <path d="M11 18H9V14H11V18Z"></path>
-    <path d="M6 4H4V6H6V4Z"></path>
-    <path d="M6 16H4V14H6V16Z"></path>
-    <path d="M14 4H16V6H14V4Z"></path>
-    <path d="M14 16H16V14H14V16Z"></path>
-</svg>
+    @if(currentTheme() == "light") {
+    <svg width="20" height="20" viewBox="0 0 20 20" class="fill-current text-icon hover:text-current-taxonomy dark-icon"
+        style="">
+        <path d="M14 6H6V14H14V6Z"></path>
+        <path d="M11 2H9V6H11V2Z"></path>
+        <path d="M14 9L14 11L18 11L18 9L14 9Z"></path>
+        <path d="M2 9L2 11L6 11L6 9L2 9Z"></path>
+        <path d="M11 18H9V14H11V18Z"></path>
+        <path d="M6 4H4V6H6V4Z"></path>
+        <path d="M6 16H4V14H6V16Z"></path>
+        <path d="M14 4H16V6H14V4Z"></path>
+        <path d="M14 16H16V14H14V16Z"></path>
+    </svg>
+    } @else {
+    <svg width="20" height="20" viewBox="0 0 20 20"
+        class="fill-current text-icon hover:text-blue text-icon hover:text-blue">
+        <path d="M13 4H16V7H13V4Z"></path>
+        <path d="M16 14H18V12H16V14Z"></path>
+        <path d="M14 16H16V14H14V16Z"></path>
+        <path d="M12 18H14V16H12V18Z"></path>
+        <path d="M10 18H12V16H10V18Z"></path>
+        <path d="M8 18H10V16H8V18Z"></path>
+        <path d="M6 18H8V16H6V18Z"></path>
+        <path d="M4 16H6V14H4V16Z"></path>
+        <path d="M2 14H4V12H2V14Z"></path>
+        <path d="M2 12H4V10H2V12Z"></path>
+        <path d="M2 10H4V8H2V10Z"></path>
+        <path d="M2 8H4V6H2V8Z"></path>
+        <path d="M4 6H6V4H4V6Z"></path>
+        <path d="M6 4H8V2H6V4Z"></path>
+        <path d="M6 8H8V6H6V8Z"></path>
+        <path d="M6 10H8V8H6V10Z"></path>
+        <path d="M8 12H10V10H8V12Z"></path>
+        <path d="M10 14H12V12H10V14Z"></path>
+        <path d="M12 14H14V12H12V14Z"></path>
+    </svg>
+    }
 </div>

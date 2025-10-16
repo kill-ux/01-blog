@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Theme, ThemeService } from '../services/theme';
 import { Subscription } from 'rxjs';
 
@@ -9,14 +9,14 @@ import { Subscription } from 'rxjs';
   styleUrl: './theme-toggle.css'
 })
 export class ThemeToggle implements OnInit, OnDestroy {
-  currentTheme: Theme = 'light';
+  currentTheme = signal<Theme>('light');
   private themeSubscription: Subscription | null = null;
   themeService = inject(ThemeService)
   
 
   ngOnInit(): void {
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
-      this.currentTheme = theme;
+      this.currentTheme.set(theme);
     });
   }
 

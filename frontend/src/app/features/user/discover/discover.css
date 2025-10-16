@@ -11,7 +11,7 @@
 }
 
 .user-info {
-    background-color: #ffffff;
+    background-color: var(--bg-primary);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,14 +34,14 @@
 
 .sub {
     background-color: rgba(0, 0, 0, 0);
-    color: black;
-    border: #2d3748 1px solid;
+    color: var(--text-primary);
+    border: var(--text-primary) 1px solid;
 }
 
 
 .post-date {
     font-size: 0.875rem;
-    color: #718096;
+    color: var(--text-muted);
     margin-top: 0.25rem;
 }
 
@@ -49,13 +49,13 @@
     margin: 0;
     font-size: 1.1rem;
     font-weight: 400;
-    color: #2d3748;
+    color: var(--text-primary);
 }
 
 .image {
     height: 100%;
     padding-inline: 5px;
-    background-color: rgba(0, 0, 0, 0.021);
+    background-color: var(--outline);
     width: 100%;
 }
 
@@ -74,9 +74,9 @@
 }
 
 .user {
-    background-color: #808a9b1c;
+    background-color: var(--bg-back);
     padding: 2px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.089);
+    box-shadow: 0 0 10px var(--bg-back);
 }
 
 @media (max-width: 768px) {

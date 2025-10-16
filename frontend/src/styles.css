@@ -14,23 +14,12 @@
 
 :root,
 :host {
-  --color-black: #222;
-  --color-white: #fff;
-  --color-blue: #459ffb;
-  --color-current-taxonomy: #459ffb;
-  --color-current-taxonomy: #030213;
-  --primary: #030213;
+  --color-black: var(--btn--primarey);
+  --primary: var(--btn--primarey);
   --red: #dc143c;
-  --color-bg: #f8fafc;
-  --color-text-primary: #1a202c;
-  --color-text-secondary: #4a5568;
-  --color-stroke: #e2e8f0;
-  --color-btn-bg: #459ffb;
   --color-btn-text: white;
   --spacing: 0.25rem;
-  --font-grotesk: 'Hanken Grotesk', sans-serif;
-
-  --primary-foreground: #ffffff;
+  --primary-foreground: var(--bg-primary);
 }
 
 
@@ -64,6 +53,7 @@
   transition: all 0.2s ease;
   width: 100%;
   padding: 0.5rem 1rem;
+  color: var(--text-primary);
 }
 
 .pixel-corners {

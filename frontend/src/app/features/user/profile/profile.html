@@ -17,7 +17,7 @@
         </div>
         } @else {
         <div class="avatar">
-            <img class="pixel-corners img-profile"
+            <img class="pixel-corners"
                 [src]="userProfile()?.avatar ? apiUrl +userProfile()?.avatar : '/default-avatar.jpg'"
                 alt="{{ userProfile()?.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
         </div>

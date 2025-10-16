@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Database",
+      "type": "shell",
+      "command": "cd db && docker-compose up",
+      "isBackground": true,
+      "presentation": {
+        "panel": "dedicated",
+        "echo": true
+      }
+    },
+    {
+      "label": "Backend1",
+      "type": "shell",
+      "command": "cd backend && ./gradlew build --continuous",
+      "isBackground": true,
+      "presentation": {
+        "panel": "dedicated",
+        "echo": true
+      }
+    },
+    {
+      "label": "Backend2",
+      "type": "shell",
+      "command": "cd backend && ./gradlew bootRun",
+      "isBackground": true,
+      "presentation": {
+        "panel": "dedicated",
+        "echo": true
+      }
+    },
+    {
+      "label": "Frontend",
+      "type": "shell",
+      "command": "cd frontend && ng s",
+      "isBackground": true,
+      "presentation": {
+        "panel": "dedicated",
+        "echo": true
+      }
+    },
+    {
+      "label": "Start All",
+      "dependsOn": [
+        "Database",
+        "Backend1",
+        "Backend2",
+        "Frontend"
+      ],
+      "dependsOrder": "parallel"
+    }
+  ]
+}

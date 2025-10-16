@@ -101,6 +101,8 @@
 }
 
 .comment-textarea {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
     width: 95%;
     resize: none;
     border: 1px solid var(--border-color);
@@ -168,7 +170,7 @@
 }
 
 .comment-back {
-    background-color: rgba(255, 0, 0, 0.055);
+    /* background-color: var(--text-muted); */
     width: 100%;
     margin-left: 5px;
 }
@@ -213,7 +215,7 @@
 }
 
 .user-info svg {
-    fill: #b9b9b9;
+    fill: var(--text-muted);
 }
 
 .replays {
@@ -224,12 +226,12 @@
 
 .thread {
     display: flex;
-    color: #b9b9b9;
+    color: var(--text-muted);
     font-style: italic;
 }
 
 .thread svg {
-    fill: #b9b9b9;
+    fill: var(--text-muted);
 }
 
 .form-child {

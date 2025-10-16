@@ -39,4 +39,8 @@ export class UserService {
         formData.append('file', file)
         return this.http.patch<{ url: string }>(`http://localhost:8080/api/users/updateprofile`, formData)
     }
+
+    getNotifications(cursor: number) {
+        return this.http.get<User[]>(`http://localhost:8080/api/users/notification?cursor=${cursor}`)
+    }
 }

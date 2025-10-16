@@ -14,9 +14,12 @@
 }
 
 .avatar {
-    width: 220px;
+    width: 260px;
+    height: 100%;
     position: relative;
     /* width: auto; */
+    border-radius: 0;
+    border: none;
 }
 
 .avatar img {
@@ -24,12 +27,17 @@
     height: 100%;
 }
 
+
 .info {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
     width: 100%;
+    
 }
+
 
 .nickname {
     font-family: "BoldPixels", sans-serif;
@@ -47,7 +55,7 @@
 }
 
 .content div {
-    background-color: #f4f4f4b4;
+    /* background-color: var(--bg-secondary); */
     padding: 5px;
     margin-top: 3px;
     width: 100%;
@@ -114,7 +122,6 @@
 }
 
 .avatar:hover .img-profile {
-    /* background-color: rgba(0, 0, 0, 0.253); */
     filter: blur(5px);
     border-radius: 50%;
     transition: all 0.5s ease;
