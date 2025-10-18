@@ -111,4 +111,11 @@ public class UserController {
         return ResponseEntity.ok(this.notificationService.readNotification(ntfId, user.getId()));
     }
 
+    @PatchMapping("/notification/markall") 
+    public ResponseEntity<Map<String,String>> readAllNotification(
+            @AuthenticationPrincipal User user) {
+                this.notificationService.readAllNotification(user.getId());
+        return ResponseEntity.ok(Map.of("markAll", "done"));
+    }
+
 }

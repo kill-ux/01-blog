@@ -47,4 +47,8 @@ export class UserService {
     markRead(id: number) {
         return this.http.patch<Notification>(`http://localhost:8080/api/users/notification/${id}/review`, {})
     }
+
+    markAll() {
+        return this.http.patch<Notification>(`http://localhost:8080/api/users/notification/markall`, {})
+    }
 }

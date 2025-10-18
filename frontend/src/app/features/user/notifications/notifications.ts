@@ -94,6 +94,20 @@ export class Notifications implements OnInit {
 		})
 	}
 
+	markAll() {
+		this.userService.markAll().subscribe({
+			next: res => {
+				this.notfs.update(notfs => {
+					if (notfs) {
+						notfs.notfs.map(not => not.read = true)
+						notfs.count = 0
+					}
+					return notfs
+				})
+			}
+		})
+	}
+
 	getBadgeText(): string {
 		let count = this.notfs()?.count;
 		if (!count) return '';

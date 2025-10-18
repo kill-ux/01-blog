@@ -53,4 +53,12 @@ public class NotificationService {
         ntf.setRead(true);
         return new NotificationResponse(this.notificationRepository.save(ntf));
     }
+
+    public void readAllNotification(long userId) {
+        List<Notification> notfs = this.notificationRepository.findByUserId(userId);
+        for (Notification not : notfs) {
+            not.setRead(false);
+            this.notificationRepository.save(not);
+        }
+    }
 }

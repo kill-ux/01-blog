@@ -22,25 +22,14 @@
     <mat-menu #menu="matMenu" xPosition="after" yPosition="below">
         <div mat-menu-item class="flex">
             <h2>Notification</h2>
-            <span class="gap">
+            <span class="gap" (click)="markAll(); $event.stopPropagation()">
                 <span>mark all</span>
-                <svg width="20" height="20" viewBox="0 0 20 20" class="fill-icon-btn">
-                    <rect x="-0.00244141" y="8.57227" width="2.85731" height="2.85731"></rect>
-                    <rect x="2.85498" y="11.4297" width="2.85731" height="2.85731"></rect>
-                    <rect x="5.7124" y="14.2871" width="2.85731" height="2.85731"></rect>
-                    <rect x="8.56934" y="17.1436" width="2.85731" height="2.85731"></rect>
-                    <rect x="11.4277" y="14.2871" width="2.85731" height="2.85731"></rect>
-                    <rect x="14.2842" y="11.4297" width="2.85731" height="2.85731"></rect>
-                    <rect x="17.1411" y="8.57227" width="2.85731" height="2.85731"></rect>
-                    <g class="fill-icon-btn-secondary">
-                        <rect x="-0.00244141" width="2.85731" height="2.85731"></rect>
-                        <rect x="2.85498" y="2.85742" width="2.85731" height="2.85731"></rect>
-                        <rect x="5.7124" y="5.71484" width="2.85731" height="2.85731"></rect>
-                        <rect x="8.56934" y="8.57227" width="2.85731" height="2.85731"></rect>
-                        <rect x="11.4277" y="5.71484" width="2.85731" height="2.85731"></rect>
-                        <rect x="14.2842" y="2.85742" width="2.85731" height="2.85731"></rect>
-                        <rect x="17.1411" width="2.85731" height="2.85731"></rect>
-                    </g>
+                <svg width="16" viewBox="0 0 16 13" class="text-icon-btn fill-current">
+                    <rect x="0.25" y="6.2002" width="3.1" height="3.1"></rect>
+                    <rect x="3.34961" y="9.2998" width="3.1" height="3.1"></rect>
+                    <rect x="6.4502" y="6.2002" width="3.1" height="3.1"></rect>
+                    <rect x="9.5498" y="3.09961" width="3.1" height="3.1"></rect>
+                    <rect x="12.6504" width="3.1" height="3.1"></rect>
                 </svg>
             </span>
         </div>
