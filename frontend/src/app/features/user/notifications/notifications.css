@@ -50,10 +50,11 @@ svg {
 
 ::ng-deep .mat-mdc-menu-item {
     padding-block: 3px !important;
-    background-color: var(--bg-secondary);
-    border-bottom: 1px solid var( --bg-hover);
+    background-color: var(--bg-secondary) !important;
+    border-bottom: 1px solid var( --bg-hover) !important;
 }
 
 #read {
-    background-color: white;
+    background-color: var(--foreground) !important;
 }
+

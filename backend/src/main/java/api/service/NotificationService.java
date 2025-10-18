@@ -1,6 +1,7 @@
 package api.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,18 +33,19 @@ public class NotificationService {
         }
     }
 
-    public List<NotificationResponse> getNotification(long userId, long cursor) {
+    public Map<String, Object> getNotification(long userId, long cursor) {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt", "id").descending());
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
         }
-        return this.notificationRepository
+        ;
+        return Map.of("notifications", this.notificationRepository
                 .findByUserIdAndIdLessThan(userId, cursor, pageable)
                 .map(NotificationResponse::new)
-                .toList();
+                .toList(), "count", this.notificationRepository.countByUserIdAndReadFalse(userId));
     }
 
-    public NotificationResponse readNotification(long ntfId,long userId){
+    public NotificationResponse readNotification(long ntfId, long userId) {
         Notification ntf = this.notificationRepository.findById(ntfId).get();
         if (ntf.getUser().getId() != userId) {
             throw new AccessDeniedException("Access Denied");

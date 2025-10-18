@@ -17,7 +17,7 @@ import { MatButtonModule } from "@angular/material/button";
 export class Notifications implements OnInit {
 	private isLoading = false;
 	private cursor = 0;
-	notfs = signal<NotificationResponce[]>([])
+	notfs = signal<NotificationResponce | null>(null)
 
 	apiUrl = environment.API_URL
 
@@ -26,7 +26,6 @@ export class Notifications implements OnInit {
 	}
 
 	ngOnInit(): void {
-		console.log("start")
 		this.getNotifications()
 	}
 
@@ -36,7 +35,12 @@ export class Notifications implements OnInit {
 		this.userService.getNotifications(this.cursor).subscribe({
 			next: notfs => {
 				console.log("nots => ", notfs)
-				this.notfs.update(ns => [...ns, ...notfs])
+				this.notfs.update(ns => {
+					if (ns) {
+						ns.notfs = [...ns.notfs, ...notfs.notfs]
+					}
+					return ns
+				})
 			},
 			error: err => {
 				console.log(err)
@@ -46,5 +50,22 @@ export class Notifications implements OnInit {
 
 	navigateToPost(id: number) {
 		this.router.navigate(["blog", id])
+	}
+
+	markRead(id: number) {
+		console.log(id)
+		this.userService.markRead(id).subscribe({
+			next: response => {
+				this.notfs.update(notfs => notfs.map(not => {
+					if (not.id == id) {
+						not = response
+					}
+					return not
+				}))
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
 	}
 }

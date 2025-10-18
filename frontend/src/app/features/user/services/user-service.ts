@@ -41,6 +41,10 @@ export class UserService {
     }
 
     getNotifications(cursor: number) {
-        return this.http.get<NotificationResponce[]>(`http://localhost:8080/api/users/notification?cursor=${cursor}`)
+        return this.http.get<NotificationResponce>(`http://localhost:8080/api/users/notification?cursor=${cursor}`)
+    }
+
+    markRead(id: number) {
+        return this.http.patch<NotificationResponce>(`http://localhost:8080/api/users/notification/${id}/review`, {})
     }
 }

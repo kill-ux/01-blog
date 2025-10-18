@@ -13,38 +13,36 @@
         Notification
     </a></li>
 
-<mat-menu #menu="matMenu" xPosition="after" yPosition="below">
-    @for (not of notfs(); track not.id) {
-
-    <div mat-menu-item [id]="not.read ? 'read' : ''" (click)="navigateToPost(not.postId)">
-        <div class="user-info">
-            <div class="avatar">
-                <img class="cap" [src]="not.sender.avatar ?  apiUrl+not.sender.avatar : '/default-avatar.jpg'"
-                    alt="{{ not.sender.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
+<div>
+    <mat-menu #menu="matMenu" xPosition="after" yPosition="below">
+        @for (not of notfs(); track not.id) {
+        {{not.read}}
+        <div mat-menu-item [id]="not.read ? 'read' : ''" (click)="navigateToPost(not.postId)">
+            <div class="user-info" class="parent">
+                <div class="avatar">
+                    <img class="cap" [src]="not.sender.avatar ?  apiUrl+not.sender.avatar : '/default-avatar.jpg'"
+                        alt="{{ not.sender.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
+                </div>
             </div>
-        </div>
-        <div>
-            <p>new post created by @{{not.sender.nickname}} </p>
-            <p class="post-date">{{ not.createdAt | timeAgo}}</p>
-        </div>
-        <div>
-            <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu1"
-                aria-label="Example icon-button with a menu">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu1="matMenu">
-                <button mat-menu-item>
-                    <mat-icon>dialpad</mat-icon>
-                    <span>Redial</span>
-                </button>
-                <button mat-menu-item>
-                    <mat-icon>notifications_off</mat-icon>
-                    <span>Disable alerts</span>
-                </button>
-            </mat-menu>
-        </div>
+            <div>
+                <p>new post created by @{{not.sender.nickname}} </p>
+                <p class="post-date">{{ not.createdAt | timeAgo}}</p>
+            </div>
+            @if (!not.read) {
+            <div (click)="markRead(not.id); $event.stopPropagation()">
+                <svg width="16" viewBox="0 0 16 13" class="text-icon-btn fill-current">
+                    <rect x="0.25" y="6.2002" width="3.1" height="3.1"></rect>
+                    <rect x="3.34961" y="9.2998" width="3.1" height="3.1"></rect>
+                    <rect x="6.4502" y="6.2002" width="3.1" height="3.1"></rect>
+                    <rect x="9.5498" y="3.09961" width="3.1" height="3.1"></rect>
+                    <rect x="12.6504" width="3.1" height="3.1"></rect>
+                </svg>
+            </div>
+            }
 
 
-    </div>
-    }
-</mat-menu>
+
+        </div>
+        }
+    </mat-menu>
+</div>

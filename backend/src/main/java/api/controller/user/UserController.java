@@ -71,8 +71,8 @@ public class UserController {
                 throw new IllegalArgumentException("type not allowed");
             }
         }
-        
-        return ResponseEntity.ok(Map.of("url", this.userService.updateProfile(file,ext)));
+
+        return ResponseEntity.ok(Map.of("url", this.userService.updateProfile(file, ext)));
     }
 
     @GetMapping("{userId}/subscribers")
@@ -98,11 +98,10 @@ public class UserController {
     }
 
     @GetMapping("/notification")
-    public ResponseEntity<List<NotificationResponse>> getnotification(
+    public ResponseEntity<Map<String, Object>> getnotification(
             @AuthenticationPrincipal User user,
             @RequestParam(defaultValue = "0") long cursor) {
-        List<NotificationResponse> savedBlog = this.notificationService.getNotification(user.getId(), cursor);
-        return ResponseEntity.ok(savedBlog);
+        return ResponseEntity.ok(this.notificationService.getNotification(user.getId(), cursor));
     }
 
     @PatchMapping("/notification/{ntfId}/review")
