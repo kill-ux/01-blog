@@ -5,8 +5,8 @@
             <header class="blog-header">
                 <div class="user-info">
                     <div class="avatar">
-                        <img [src]="'images/'+this.blog.user.avatar" alt="{{ this.blog?.user?.nickname }}'s avatar"
-                            onerror="this.src='/default-avatar.jpg'">
+                        <img [src]="this.blog?.user.avatar ?  apiUrl+this.blog?.user.avatar : '/default-avatar.jpg'"
+                            alt="{{ this.blog?.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
                     </div>
                     <div class="user-details">
                         <span class="author-name">{{ this.blog?.user?.nickname }}</span>
@@ -67,7 +67,7 @@
                 </form>
 
                 @for (item of (this.blog?.children || []); track item.id) {
-                <app-child-blog [thread]="2" [child]="item" ></app-child-blog>
+                <app-child-blog [thread]="2" [child]="item"></app-child-blog>
                 }
             </footer>
         </article>

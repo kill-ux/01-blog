@@ -3,7 +3,7 @@
         @if (userProfile()?.id == this.authService.currentUser?.id) {
         <div (click)="upload.click()" class="avatar">
             <img class="pixel-corners img-profile"
-                [src]="userProfile()?.avatar ? apiUrl +userProfile()?.avatar +  '?t=' + avatarCacheBuster() : '/default-avatar.jpg'"
+                [src]="userProfile()?.avatar ? apiUrl +userProfile()?.avatar : '/default-avatar.jpg'"
                 alt="{{ userProfile()?.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
             <div class="edit-profile pixel-corners ">
                 <svg height="85px" id="Capa_1" style="enable-background:new 0 0 100 85;" version="1.1"

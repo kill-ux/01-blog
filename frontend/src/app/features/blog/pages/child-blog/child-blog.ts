@@ -8,6 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../auth/services/auth-api';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
 	selector: 'app-child-blog',
@@ -19,6 +20,8 @@ export class ChildBlog implements OnInit {
 	formCommend: FormGroup
 	@Input() child: BlogResponce | null = null;
 	@Input() thread: number | null = null
+
+	apiUrl = environment.API_URL
 
 	hidden = false
 	reply = false

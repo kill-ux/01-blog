@@ -177,6 +177,10 @@ img {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+button {
+  font-family:  Roboto, "Helvetica Neue", sans-serif;
+}
+
 .btn-secendary {
   background-color: #C0D6E8;
   border: 1px solid #22283142;

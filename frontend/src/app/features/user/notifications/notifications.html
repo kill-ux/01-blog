@@ -1,1 +1,50 @@
-<p>notifications works!</p>
+<li><a routerLink="/notifications" class="nav-link" [matMenuTriggerFor]="menu">
+        <svg width="20" viewBox="0 0 20 20" class="fill-current">
+            <path d="M12 19H8V17H12V19Z"></path>
+            <path d="M18 15H2V13H18V15Z"></path>
+            <path d="M14 4H6V2H14V4Z"></path>
+            <path d="M8 17H6V15H8V17Z"></path>
+            <path d="M4 13H2V11H4V13Z"></path>
+            <path d="M18 13H16V11H18V13Z"></path>
+            <path d="M14 17H12V15H14V17Z"></path>
+            <path d="M6 11H4V4H6V11Z"></path>
+            <path d="M16 11H14V4H16V11Z"></path>
+        </svg>
+        Notification
+    </a></li>
+
+<mat-menu #menu="matMenu" xPosition="after" yPosition="below">
+    @for (not of notfs(); track not.id) {
+
+    <div mat-menu-item [id]="not.read ? 'read' : ''" (click)="navigateToPost(not.postId)">
+        <div class="user-info">
+            <div class="avatar">
+                <img class="cap" [src]="not.sender.avatar ?  apiUrl+not.sender.avatar : '/default-avatar.jpg'"
+                    alt="{{ not.sender.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
+            </div>
+        </div>
+        <div>
+            <p>new post created by @{{not.sender.nickname}} </p>
+            <p class="post-date">{{ not.createdAt | timeAgo}}</p>
+        </div>
+        <div>
+            <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu1"
+                aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu1="matMenu">
+                <button mat-menu-item>
+                    <mat-icon>dialpad</mat-icon>
+                    <span>Redial</span>
+                </button>
+                <button mat-menu-item>
+                    <mat-icon>notifications_off</mat-icon>
+                    <span>Disable alerts</span>
+                </button>
+            </mat-menu>
+        </div>
+
+
+    </div>
+    }
+</mat-menu>

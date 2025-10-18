@@ -24,16 +24,10 @@ export class Profile implements OnInit {
 	public authService = inject(AuthService)
 
 
-	avatarCacheBuster = signal<number>(Date.now());
 
 	apiUrl = environment.API_URL;
 
 	constructor(private router: ActivatedRoute) { }
-
-
-	updateProfileCache() {
-		this.avatarCacheBuster.set(Date.now());
-	}
 
 	ngOnInit() {
 		this.router.params.subscribe(params => {
@@ -119,15 +113,13 @@ export class Profile implements OnInit {
 					next: res => {
 						console.log(res)
 						if (this.authService.currentUser) {
-							this.authService.currentUser.avatar = res.url
+							this.authService.currentUser.avatar = res.url + `?time=${Date.now()}`
 							this.userProfile.update(user => {
 								if (user) {
-									user.avatar = res.url
+									user.avatar = res.url + `?time=${Date.now()}`
 								}
 								return user
 							})
-
-							this.updateProfileCache();
 						}
 					},
 					error: err => {

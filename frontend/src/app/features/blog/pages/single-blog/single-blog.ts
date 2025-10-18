@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../auth/services/auth-api';
 import { ChildBlog } from "../child-blog/child-blog";
+import { environment } from '../../../../../environments/environment';
 
 @Component({
 	selector: 'app-single-blog',
@@ -25,6 +26,7 @@ export class SingleBlog implements OnInit {
 	formCommend: FormGroup
 	lastChild = 0
 	isLoading = false
+	apiUrl = environment.API_URL
 	public authService = inject(AuthService)
 
 	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
@@ -35,7 +37,10 @@ export class SingleBlog implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.getBlog()
+		const id = this.route.params.subscribe(params => {
+			const id = params["id"];
+			this.getBlog(id)
+		});
 	}
 
 	toggleLike(blogResponce: BlogResponce) {
@@ -51,8 +56,7 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
-	getBlog() {
-		const id = this.route.snapshot.paramMap.get("id");
+	getBlog(id: number) {
 		this.blogService.getBlog(id).subscribe({
 			next: (res) => {
 				this.blog = res

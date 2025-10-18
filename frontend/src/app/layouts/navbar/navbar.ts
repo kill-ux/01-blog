@@ -6,10 +6,11 @@ import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../../features/user/services/user-service';
 import { ThemeToggle } from "../../Theme/theme-toggle/theme-toggle";
+import { Notifications } from "../../features/user/notifications/notifications";
 
 @Component({
 	selector: 'app-navbar',
-	imports: [RouterLink, MatMenu, MatMenuModule, ThemeToggle],
+	imports: [RouterLink, MatMenu, MatMenuModule, ThemeToggle, Notifications],
 	templateUrl: './navbar.html',
 	styleUrl: './navbar.css'
 })

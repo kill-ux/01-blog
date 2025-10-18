@@ -4,8 +4,11 @@
     <header class="blog-header">
         <div class="user-info">
             <div class="avatar">
-                <img [src]="'images/'+this.child.user.avatar" alt="{{ this.child.user.nickname }}'s avatar"
-                    onerror="this.src='/default-avatar.jpg'">
+                <!-- <img [src]="'images/'+this.child.user.avatar" alt="{{ this.child.user.nickname }}'s avatar"
+                    onerror="this.src='/default-avatar.jpg'"> -->
+
+                     <img [src]="this.child.user.avatar ?  apiUrl+this.child.user.avatar : '/default-avatar.jpg'"
+                            alt="{{ this.child.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
             </div>
             @if (this.child.childrenCount > 0) {
             @if (!this.hidden) {

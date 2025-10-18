@@ -165,7 +165,7 @@ body {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-.mobile-menu-btn svg {
+::ng-deep .mobile-menu-btn svg {
     width: 1.5rem;
     height: 1.5rem;
     stroke: currentColor;

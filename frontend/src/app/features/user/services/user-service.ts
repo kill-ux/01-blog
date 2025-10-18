@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthState, User } from '../../auth/models/model';
-import { BlogResponce } from '../../blog/model/model';
+import { BlogResponce, NotificationResponce } from '../../blog/model/model';
 
 @Injectable({
     providedIn: 'root'
@@ -41,6 +41,6 @@ export class UserService {
     }
 
     getNotifications(cursor: number) {
-        return this.http.get<User[]>(`http://localhost:8080/api/users/notification?cursor=${cursor}`)
+        return this.http.get<NotificationResponce[]>(`http://localhost:8080/api/users/notification?cursor=${cursor}`)
     }
 }

@@ -20,3 +20,12 @@ export interface BlogResponce {
     isCopied: boolean
     children: BlogResponce[]
 }
+
+export interface NotificationResponce {
+    id: number;
+    read: boolean;
+    postId: number
+    sender: User
+    createdAt: Date;
+    updatedAt: Date;
+}
