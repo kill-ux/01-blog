@@ -7,10 +7,11 @@ import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
 import { environment } from '../../../../environments/environment';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
+import { MatBadgeModule } from '@angular/material/badge'
 
 @Component({
 	selector: 'app-notifications',
-	imports: [MatMenuModule, TimeAgoPipe, MatIcon, MatButtonModule],
+	imports: [MatMenuModule, TimeAgoPipe, MatButtonModule, MatBadgeModule],
 	templateUrl: './notifications.html',
 	styleUrl: './notifications.css'
 })
@@ -34,13 +35,15 @@ export class Notifications implements OnInit {
 		this.isLoading = true
 		this.userService.getNotifications(this.cursor).subscribe({
 			next: notfs => {
-				console.log("nots => ", notfs)
 				this.notfs.update(ns => {
 					if (ns) {
 						ns.notfs = [...ns.notfs, ...notfs.notfs]
+					} else {
+						ns = notfs
 					}
 					return ns
 				})
+				console.log("nots => ", this.notfs())
 			},
 			error: err => {
 				console.log(err)
@@ -56,12 +59,18 @@ export class Notifications implements OnInit {
 		console.log(id)
 		this.userService.markRead(id).subscribe({
 			next: response => {
-				this.notfs.update(notfs => notfs.map(not => {
-					if (not.id == id) {
-						not = response
+				this.notfs.update(notfs => {
+					if (notfs) {
+						notfs.notfs.map(not => {
+							if (not.id == id) {
+								not.read = true
+							}
+							return not
+						})
 					}
-					return not
-				}))
+					return notfs
+				})
+
 			},
 			error: err => {
 				console.log(err)

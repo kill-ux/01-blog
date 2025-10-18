@@ -1,22 +1,25 @@
 <li><a routerLink="/notifications" class="nav-link" [matMenuTriggerFor]="menu">
-        <svg width="20" viewBox="0 0 20 20" class="fill-current">
-            <path d="M12 19H8V17H12V19Z"></path>
-            <path d="M18 15H2V13H18V15Z"></path>
-            <path d="M14 4H6V2H14V4Z"></path>
-            <path d="M8 17H6V15H8V17Z"></path>
-            <path d="M4 13H2V11H4V13Z"></path>
-            <path d="M18 13H16V11H18V13Z"></path>
-            <path d="M14 17H12V15H14V17Z"></path>
-            <path d="M6 11H4V4H6V11Z"></path>
-            <path d="M16 11H14V4H16V11Z"></path>
-        </svg>
+        <span
+        matb
+        >
+            <svg width="20" viewBox="0 0 20 20" class="fill-current">
+                <path d="M12 19H8V17H12V19Z"></path>
+                <path d="M18 15H2V13H18V15Z"></path>
+                <path d="M14 4H6V2H14V4Z"></path>
+                <path d="M8 17H6V15H8V17Z"></path>
+                <path d="M4 13H2V11H4V13Z"></path>
+                <path d="M18 13H16V11H18V13Z"></path>
+                <path d="M14 17H12V15H14V17Z"></path>
+                <path d="M6 11H4V4H6V11Z"></path>
+                <path d="M16 11H14V4H16V11Z"></path>
+            </svg>
+        </span>
         Notification
     </a></li>
 
 <div>
     <mat-menu #menu="matMenu" xPosition="after" yPosition="below">
-        @for (not of notfs(); track not.id) {
-        {{not.read}}
+        @for (not of notfs()?.notfs ; track not.id) {
         <div mat-menu-item [id]="not.read ? 'read' : ''" (click)="navigateToPost(not.postId)">
             <div class="user-info" class="parent">
                 <div class="avatar">
@@ -43,6 +46,8 @@
 
 
         </div>
+        } @empty {
+        no notifacations
         }
     </mat-menu>
 </div>

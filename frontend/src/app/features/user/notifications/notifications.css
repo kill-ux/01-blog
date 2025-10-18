@@ -49,6 +49,7 @@ svg {
 
 
 ::ng-deep .mat-mdc-menu-item {
+    margin-block: 2px !important;
     padding-block: 3px !important;
     background-color: var(--bg-secondary) !important;
     border-bottom: 1px solid var( --bg-hover) !important;

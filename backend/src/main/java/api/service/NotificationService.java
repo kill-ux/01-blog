@@ -39,7 +39,7 @@ public class NotificationService {
             cursor = Long.MAX_VALUE;
         }
         ;
-        return Map.of("notifications", this.notificationRepository
+        return Map.of("notfs", this.notificationRepository
                 .findByUserIdAndIdLessThan(userId, cursor, pageable)
                 .map(NotificationResponse::new)
                 .toList(), "count", this.notificationRepository.countByUserIdAndReadFalse(userId));

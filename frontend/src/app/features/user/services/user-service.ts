@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthState, User } from '../../auth/models/model';
-import { BlogResponce, NotificationResponce } from '../../blog/model/model';
+import { BlogResponce, Notification, NotificationResponce } from '../../blog/model/model';
 
 @Injectable({
     providedIn: 'root'
@@ -45,6 +45,6 @@ export class UserService {
     }
 
     markRead(id: number) {
-        return this.http.patch<NotificationResponce>(`http://localhost:8080/api/users/notification/${id}/review`, {})
+        return this.http.patch<Notification>(`http://localhost:8080/api/users/notification/${id}/review`, {})
     }
 }

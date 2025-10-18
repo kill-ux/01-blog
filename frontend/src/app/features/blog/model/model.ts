@@ -31,6 +31,6 @@ export interface Notification {
 }
 
 export interface NotificationResponce {
-    notfs: NotificationResponce[],
+    notfs: Notification[],
     count: number
 }
