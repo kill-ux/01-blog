@@ -30,7 +30,7 @@ svg {
 }
 
 ::ng-deep .mat-menu-after {
-  transform: translateX(-30%) !important;
+    transform: translateX(-30%) !important;
 }
 
 ::ng-deep .mat-mdc-menu-panel {
@@ -44,7 +44,7 @@ svg {
     justify-content: center !important;
     align-items: center !important; */
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 2fr 4fr 1fr;
 }
 
 
@@ -52,10 +52,45 @@ svg {
     margin-block: 2px !important;
     padding-block: 3px !important;
     background-color: var(--bg-secondary) !important;
-    border-bottom: 1px solid var( --bg-hover) !important;
+    border-bottom: 1px solid var(--bg-hover) !important;
 }
 
 #read {
     background-color: var(--foreground) !important;
 }
 
+.mark:hover {
+    background-color: var(--bg-hover);
+}
+
+.mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block: 8px;
+}
+
+.flex {
+    display: flex;
+    /* grid-template-columns: 1fr 1fr; */
+    justify-content: space-between;
+    background-color: red;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid var(--bg-hover);
+}
+
+
+.gap {
+    display: flex;
+    /* grid-template-columns: 1fr 1fr; */
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 3px;
+}
+
+::ng-deep .flex .mat-mdc-menu-item-text {
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+}

@@ -17,7 +17,7 @@ import { MatBadgeModule } from '@angular/material/badge'
 })
 export class Notifications implements OnInit {
 	private isLoading = false;
-	private cursor = 0;
+	cursor = 0;
 	notfs = signal<NotificationResponce | null>(null)
 
 	apiUrl = environment.API_URL
@@ -35,20 +35,35 @@ export class Notifications implements OnInit {
 		this.isLoading = true
 		this.userService.getNotifications(this.cursor).subscribe({
 			next: notfs => {
+				console.log("nots +>", notfs)
 				this.notfs.update(ns => {
-					if (ns) {
-						ns.notfs = [...ns.notfs, ...notfs.notfs]
+					if (notfs.notfs.length > 0) {
+						if (ns) {
+							ns.notfs = [...ns.notfs, ...notfs.notfs]
+						} else {
+							ns = notfs
+						}
+						this.cursor = notfs.notfs[notfs.notfs.length - 1].id
 					} else {
-						ns = notfs
+						this.cursor = 0
 					}
+
 					return ns
 				})
-				console.log("nots => ", this.notfs())
+				this.isLoading = false
 			},
 			error: err => {
 				console.log(err)
+				this.isLoading = false
 			}
 		})
+	}
+
+	loadMoreNotifications() {
+		if (this.cursor != 0) {
+			console.log("gg")
+			this.getNotifications()
+		}
 	}
 
 	navigateToPost(id: number) {
@@ -67,6 +82,7 @@ export class Notifications implements OnInit {
 							}
 							return not
 						})
+						notfs.count -= 1
 					}
 					return notfs
 				})
@@ -76,5 +92,11 @@ export class Notifications implements OnInit {
 				console.log(err)
 			}
 		})
+	}
+
+	getBadgeText(): string {
+		let count = this.notfs()?.count;
+		if (!count) return '';
+		return count < 100 ? count.toString() : '+99';
 	}
 }
