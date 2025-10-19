@@ -84,8 +84,11 @@ html.dark-theme {
   --bg-back: #1a202c11;
   --btn--primarey : #030213;
   --outline: rgba(0, 0, 0, 0.1);
+  --color-black: black;
+	--color-white: white;
+  --color-current-taxonomy: #030213;  
 
-  --text-primary: #212529;
+  --text-primary: #1a202c;
   --text-black: rgba(0, 0, 0, 0.034);
   --text-secondary: #6c757d;
   --text-muted: #adb5bd;
@@ -112,6 +115,10 @@ html.dark-theme {
   --bg-hover: #2d2d2d;
   --bg-back: #ffffff2d;
   --outline: rgba(255, 255, 255, 0.1);
+  --color-black: white;
+	--color-white: black;
+  --color-current-taxonomy: #e4e3e7;  
+
   
   --btn--primarey : #e9ecef;
 

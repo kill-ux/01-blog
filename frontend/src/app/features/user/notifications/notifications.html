@@ -34,7 +34,7 @@
             </span>
         </div>
         @for (not of notfs()?.notfs ; track not.id) {
-        <div mat-menu-item [id]="not.read ? 'read' : ''" (click)="navigateToPost(not.postId)">
+        <div mat-menu-item [id]="not.read ? 'read' : ''" (click)="navigateToPost(not.postId,not.id)">
             <div class="user-info" class="parent">
                 <div class="avatar">
                     <img class="cap" [src]="not.sender.avatar ?  apiUrl+not.sender.avatar : '/default-avatar.jpg'"

@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { M } from '@angular/cdk/keycodes';
 import { Navbar } from "../navbar/navbar";
+import { AuthService } from '../../features/auth/services/auth-api';
 
 
 declare var Prism: any;
@@ -20,32 +21,17 @@ export class MainLayout {
 
   constructor(
     private router: Router,
-    private userService: UserService
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
+    this.authService.initialize()
     setTimeout(() => {
-      console.log("p=>",Prism.plugins.autoloader)
+      console.log("p=>", Prism.plugins.autoloader)
       if (Prism && Prism.plugins.autoloader) {
         Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/';
         Prism.highlightAll(); // Re-highlight all code blocks
       }
     }, 0);
-    // this.userService.getProfile().subscribe({
-    //   next: (user) => {
-    //     this.isLoggedIn = true;
-    //     this.currentUser = user;
-    //     console.log(user);
-    //   },
-    //   error: (err) => {
-    //     this.isLoggedIn = false;
-    //     this.currentUser = null;
-    //   }
-    // })
   }
-
-  // logout() {
-  //   this.authService.logout();
-  //   this.router.navigate(['/auth/signin']);
-  // }
 }

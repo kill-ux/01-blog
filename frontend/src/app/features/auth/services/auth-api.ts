@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AuthState, SigninCredentials, SignupCredentials, User } from '../models/model';
 import { environment } from '../../../../environments/environment';
+import { UserService } from '../../user/services/user-service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,15 +20,15 @@ export class AuthService {
 
     constructor(
         private http: HttpClient,
-        @Inject(PLATFORM_ID) private platformId: any,
-        private router: Router
+        private router: Router,
+        private userService: UserService
     ) {
-        this.initializeUserFromToken();
-
-        // this.apiUrl = environment.apiUrl
+        this.apiUrl = environment.API_URL
         console.log("environment => ", environment.API_URL);
+    }
 
-        this.apiUrl = 'http://localhost:8080/api'
+    initialize(): void {
+        this.initializeUserFromToken();
     }
 
     signin(credentials: SigninCredentials): Observable<{ token: string }> {
@@ -44,6 +45,12 @@ export class AuthService {
     signup(credentials: SignupCredentials): Observable<AuthState> {
         return this.http.post<AuthState>(`${this.apiUrl}/auth/signup`, credentials);
     }
+
+    // getUserById(userId: any) {
+    //     console.log("decoded => ", userId)
+    //     return this.http.get<AuthState>("http://localhost:8080/api/users/profile?userId=" + userId)
+    // }
+
 
     setAuthToken(token: string) {
         localStorage.setItem(this.tokenKey, token);
@@ -89,7 +96,13 @@ export class AuthService {
     private initializeUserFromToken(): void {
         const token = this.getAuthToken();
         if (token && !this.isTokenExpired(token)) {
-            this.setUserFromToken(token);
+            const id = this.getUserIdFromToken(token)
+            this.userService.getUserById(id).subscribe({
+                next: data => {
+                    this.currentUserSubject.next(data.user)
+                }
+            })
+
         }
     }
 
@@ -111,6 +124,16 @@ export class AuthService {
                 subscribtions: 0
             };
             this.currentUserSubject.next(user);
+        } catch (error) {
+            console.error('Invalid token', error);
+            this.removeAuthToken();
+        }
+    }
+
+    private getUserIdFromToken(token: string) {
+        try {
+            const decoded: any = jwtDecode(token);
+            return decoded.id
         } catch (error) {
             console.error('Invalid token', error);
             this.removeAuthToken();

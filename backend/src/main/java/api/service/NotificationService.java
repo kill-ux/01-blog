@@ -57,7 +57,7 @@ public class NotificationService {
     public void readAllNotification(long userId) {
         List<Notification> notfs = this.notificationRepository.findByUserId(userId);
         for (Notification not : notfs) {
-            not.setRead(false);
+            not.setRead(true);
             this.notificationRepository.save(not);
         }
     }

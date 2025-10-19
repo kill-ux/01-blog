@@ -34,7 +34,7 @@
                                 <path d="M10.4016 3.19995H5.60156V7.99995H10.4016V3.19995Z"></path>
                             </svg>
                             Discover</a></li>
-                    <app-notifications ></app-notifications>
+                    <app-notifications></app-notifications>
                 </ul>
             </div>
 
@@ -42,7 +42,7 @@
             <div class="action-buttons">
                 <!-- <a href="#" class="btn btn-ghost">Login</a> -->
                 <app-theme-toggle></app-theme-toggle>
-                
+
                 <a routerLink="create" class="btn btn-primary">Create</a>
 
                 <!-- <a href="#" ></a> -->
@@ -102,6 +102,27 @@
                         </svg>
                         <span>Settings</span>
                     </div>
+                    @if (authService.isAdmin()) {
+                    <div mat-menu-item>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            class="text-text-primary fill-current">
+                            <rect x="6" y="9" width="2" height="9"></rect>
+                            <rect x="10" y="11" width="2" height="7"></rect>
+                            <rect x="14" y="9" width="2" height="9"></rect>
+                            <rect x="2" y="11" width="2" height="7"></rect>
+                            <rect x="2" y="7" width="2" height="2" class="text-icon-secondary"></rect>
+                            <rect x="4" y="5" width="2" height="2" class="text-icon-secondary"></rect>
+                            <rect x="6" y="3" width="2" height="2" class="text-icon-secondary"></rect>
+                            <rect x="8" y="5" width="2" height="2" class="text-icon-secondary"></rect>
+                            <rect x="10" y="7" width="2" height="2" class="text-icon-secondary"></rect>
+                            <rect x="12" y="5" width="2" height="2" class="text-icon-secondary"></rect>
+                            <rect x="14" y="3" width="2" height="2" class="text-icon-secondary"></rect>
+                            <rect x="16" y="1" width="2" height="2" class="text-icon-secondary"></rect>
+                        </svg>
+                        <span>Dashboard</span>
+                    </div>
+                    }
+
                     <!-- ////////////////////// -->
                     <div class="logout" (click)="logout()" mat-menu-item>
                         <svg width="20" viewBox="0 0 20 20"

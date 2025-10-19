@@ -66,12 +66,15 @@ export class Notifications implements OnInit {
 		}
 	}
 
-	navigateToPost(id: number) {
+	navigateToPost(id: number, idNot: number) {
+		this.markRead(idNot)
 		this.router.navigate(["blog", id])
 	}
 
 	markRead(id: number) {
 		console.log(id)
+		const ntfs = this.notfs()
+		if (!ntfs || ntfs.count < 1) return
 		this.userService.markRead(id).subscribe({
 			next: response => {
 				this.notfs.update(notfs => {
