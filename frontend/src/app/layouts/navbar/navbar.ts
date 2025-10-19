@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth-api';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { environment } from '../../../environments/environment';
 import { ThemeToggle } from "../../Theme/theme-toggle/theme-toggle";
@@ -14,6 +14,7 @@ import { Notifications } from "../../features/user/notifications/notifications";
 })
 export class Navbar implements OnInit {
 	public authService = inject(AuthService)
+	public router = inject(Router)
 	// public userService = inject(UserService)
 	//  environment.API_URL
 	apiUrl = environment.API_URL;
@@ -28,6 +29,14 @@ export class Navbar implements OnInit {
 
 	logout() {
 		this.authService.logout()
+	}
+
+	createBlog() {
+		this.router.navigate(["create"])
+	}
+
+	dashboard() {
+		this.router.navigate(["dashboard"])
 	}
 
 }

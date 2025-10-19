@@ -8,10 +8,11 @@ import { AuthService } from '../services/auth-api';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { ThemeToggle } from "../../../Theme/theme-toggle/theme-toggle";
 
 @Component({
 	selector: 'app-signin',
-	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon],
+	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon, ThemeToggle],
 	templateUrl: './signin.html',
 	styleUrl: './signin.css'
 })

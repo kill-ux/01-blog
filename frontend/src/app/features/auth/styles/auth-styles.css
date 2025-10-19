@@ -64,11 +64,10 @@ mat-card {
 	--color-white: var(--color-white); 
 	--color-current-taxonomy: var(--text-primary);  
 	--primary: varvar(--bg-primary);
-	--color-text-primary: #1a202c;
-	--color-text-secondary: #4a5568;
-	--color-stroke: #e2e8f0;
-	--color-btn-bg: #459ffb;
-	--color-btn-text: white;
+	--color-text-primary: var(--text-primary);
+	--color-text-secondary: var(--text-secondary);
+	--color-stroke: var(--bg-tertiary);
+	--color-btn-text: var(--bg-primary);
 	--spacing: 0.25rem;
 	--font-grotesk: 'Hanken Grotesk', sans-serif;
 }
@@ -86,11 +85,13 @@ body {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
+	height: 100vh;
 	padding: 20px;
 }
 
 .signin-card {
-	background: var(--color-white);
+	/* background: var(--color-white); */
+	background-color: var(--bg-primary);
 	border-radius: 16px;
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 	width: 100%;
@@ -352,4 +353,13 @@ body {
 .helper-link {
 	text-decoration: none;
 	color: var(--color-text-primary);
+}
+
+.toggle {
+	/* width: 95%; */
+	margin: 10px 20px;
+	text-align: end;
+
+	/* display: flex;
+	justify-content: end */
 }

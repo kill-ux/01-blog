@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Navbar } from './layouts/navbar/navbar';
+import { ThemeService } from './Theme/services/theme';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,6 @@ import { Navbar } from './layouts/navbar/navbar';
 
 export class App {
   protected readonly title = 'frontend';
+
+  themeService = inject(ThemeService)
 }

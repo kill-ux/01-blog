@@ -8,10 +8,11 @@ import { MatIcon } from '@angular/material/icon';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { ThemeToggle } from "../../../Theme/theme-toggle/theme-toggle";
 
 @Component({
   selector: 'app-signup',
-  imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon],
+  imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon, ThemeToggle],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })

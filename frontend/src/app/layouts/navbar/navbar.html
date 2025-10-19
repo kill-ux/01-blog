@@ -75,7 +75,7 @@
 
                     <!-- ////////////////// -->
 
-                    <div mat-menu-item>
+                    <div mat-menu-item (click)="createBlog()">
                         <svg width="20" viewBox="0 0 20 20" class="text-icon-btn fill-current"
                             shape-rendering="crispEdges" style="image-rendering: pixelated;">
                             <path d="M16 9V11L18 11V9L16 9Z"></path>
@@ -91,7 +91,7 @@
                         </svg>
                         <span>Create Blog</span>
                     </div>
-                    <div mat-menu-item>
+                    <!-- <div mat-menu-item>
                         <svg width="20" height="20" viewBox="0 0 20 20" class="fill-current">
                             <path d="M10.5 14H8V16.5H10.5V14Z"></path>
                             <path d="M4.5 14H2V16.5H4.5V14Z"></path>
@@ -101,9 +101,9 @@
                             <path d="M16.5 14H14V16.5H16.5V14Z" class="fill-icon-secondary"></path>
                         </svg>
                         <span>Settings</span>
-                    </div>
+                    </div> -->
                     @if (authService.isAdmin()) {
-                    <div mat-menu-item>
+                    <div (click)="dashboard()" mat-menu-item>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                             class="text-text-primary fill-current">
                             <rect x="6" y="9" width="2" height="9"></rect>
