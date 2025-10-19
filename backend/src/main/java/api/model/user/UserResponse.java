@@ -11,7 +11,7 @@ public class UserResponse {
     private String email;
     private String role;
     private String avatar;
-    private LocalDateTime bannedUntil;
+    private boolean bannedUntil;
     private LocalDateTime birthDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -26,7 +26,7 @@ public class UserResponse {
         this.email = user.getEmail();
         this.role = user.getRole();
         this.avatar = user.getAvatar();
-        this.bannedUntil = user.getBannedUntil();
+        this.bannedUntil = user.isBannedUntil();
         this.birthDate = user.getBirthDate();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
@@ -38,7 +38,7 @@ public class UserResponse {
         this.email = user.getEmail();
         this.role = user.getRole();
         this.avatar = user.getAvatar();
-        this.bannedUntil = user.getBannedUntil();
+        this.bannedUntil = user.isBannedUntil();
         this.birthDate = user.getBirthDate();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();

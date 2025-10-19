@@ -15,12 +15,12 @@ public record UserRecord(
 		String role,
 
 		String avatar,
-		LocalDateTime bannedUntil,
+		boolean bannedUntil,
 		LocalDateTime birthDate,
 		LocalDateTime createdAt,
 		LocalDateTime updatedAt) {
 
 	public UserRecord(String nickname, String email, String password) {
-		this(0L, nickname, email, password, null, null, null, null, null, null);
+		this(0L, nickname, email, password, null, null, false, null, null, null);
 	}
 }

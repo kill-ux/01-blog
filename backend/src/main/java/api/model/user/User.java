@@ -42,7 +42,7 @@ public class User implements UserDetails {
     private String role;
 
     private String avatar;
-    private LocalDateTime bannedUntil;
+    private boolean bannedUntil;
 
     // @Past(message = "Birth date must be in the past")
     private LocalDateTime birthDate;

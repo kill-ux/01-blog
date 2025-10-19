@@ -9,10 +9,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatMenu, MatMenuModule, MatMenuTrigger } from "@angular/material/menu";
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AdminService } from '../services/admin-service';
+import { Blogs } from "../../blog/pages/blogs/blogs";
 
 @Component({
 	selector: 'app-dashboard',
-	imports: [MatTabGroup, MatTab, MatTableModule, MatButtonModule, MatMenuModule, MatIcon],
+	imports: [MatTabGroup, MatTab, MatTableModule, MatButtonModule, MatMenuModule, MatIcon, Blogs],
 	templateUrl: './dashboard.html',
 	styleUrl: './dashboard.css'
 })
@@ -23,6 +25,7 @@ export class Dashboard implements OnInit {
 	authService = inject(AuthService)
 	router = inject(Router)
 	userService = inject(UserService)
+	admineUser = inject(AdminService)
 	displayedColumns: string[] = ['position', 'nickname', 'email', 'statue', 'actions'];
 
 	private isLoading = false;
@@ -63,6 +66,43 @@ export class Dashboard implements OnInit {
 		const bandDate = new Date(bannedUntil)
 
 		return now > bandDate
+	}
+
+	deleteUser(id: number) {
+		this.admineUser.deleteUser(id).subscribe({
+			next: data => {
+				this.users.update(users => {
+					return users.filter(user => user.id != id)
+				})
+				console.log(data)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
+	}
+
+	openUser(id: number) {
+		console.log(id)
+		this.router.navigate(["profile", id])
+	}
+
+	banUser(id: number) {
+		this.admineUser.banUser(id).subscribe({
+			next: data => {
+				this.users.update(users => {
+					const user = users.find(user => user.id == id)
+					if (user) {
+						user.bannedUntil = !user.bannedUntil;
+					}
+					return users
+				})
+				console.log(data)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
 	}
 
 }

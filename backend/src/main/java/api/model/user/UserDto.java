@@ -9,7 +9,7 @@ public record UserDto(
 		String role,
 
 		String avatar,
-		LocalDateTime bannedUntil,
+		boolean bannedUntil,
 		LocalDateTime birthDate,
 		LocalDateTime createdAt,
 		LocalDateTime updatedAt) {

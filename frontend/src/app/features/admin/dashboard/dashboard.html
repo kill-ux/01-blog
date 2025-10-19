@@ -43,17 +43,23 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item>
+                                <button mat-menu-item (click)="deleteUser(element.id)">
                                     <mat-icon>delete</mat-icon>
                                     <span>Delete</span>
                                 </button>
-                                <button mat-menu-item>
+                                <button mat-menu-item (click)="openUser(element.id)">
                                     <mat-icon>open_in_new</mat-icon>
                                     <span>Open</span>
                                 </button>
-                                <button mat-menu-item>
+                                <button mat-menu-item (click)="banUser(element.id)">
                                     <mat-icon>block</mat-icon>
-                                    <span>Ban</span>
+                                    <span>
+                                        @if (!element.bannedUntil) {
+                                            Ban
+                                        } @else {
+                                            unBan
+                                        }
+                                    </span>
                                 </button>
                             </mat-menu>
                         </td>
@@ -63,7 +69,11 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
             </mat-tab>
-            <mat-tab label="Second">Content 2</mat-tab>
+            <mat-tab label="Second">
+                <div class="blog-div">
+                    <app-blogs></app-blogs>
+                </div>
+            </mat-tab>
             <mat-tab label="Third">Content 3</mat-tab>
         </mat-tab-group>
     </div>

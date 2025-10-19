@@ -51,9 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (nickname != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(nickname);
 
-                    LocalDateTime until = ((User) userDetails).getBannedUntil();
-                    if (until != null && until.isAfter(LocalDateTime.now())) {
-                        throw new DisabledException(String.format("Account is banned until ", until.toString()));
+                    if (((User) userDetails).isBannedUntil()) {
+                        throw new DisabledException(String.format("Account is banned"));
                     }
 
                     if (jwtService.isTokenValid(jwt, userDetails)) {

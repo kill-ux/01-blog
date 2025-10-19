@@ -115,7 +115,7 @@ export class AuthService {
                 nickname: decoded.sub,
                 avatar: decoded.avatar,
                 role: decoded.role || 'ROLE_USER',
-                bannedUntil: null,
+                bannedUntil: false,
                 birthDate: null,
                 createdAt: null,
                 updatedAt: null,

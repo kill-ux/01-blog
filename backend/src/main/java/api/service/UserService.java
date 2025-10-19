@@ -114,17 +114,12 @@ public class UserService {
     }
 
     // @Transactional
-    public void banUser(long id, LocalDateTime until) {
+    public void banUser(long id) {
         User user = this.userRepository.findById(id).get();
-        user.setBannedUntil(until);
+        user.setBannedUntil(!user.isBannedUntil());
         userRepository.save(user);
     }
 
-    public void unBanUser(long id) {
-        User user = this.userRepository.findById(id).get();
-        user.setBannedUntil(null);
-        userRepository.save(user);
-    }
 
     public String adminify(long id) {
         User user = this.userRepository.findById(id).get();
@@ -157,7 +152,7 @@ public class UserService {
 
     private UserRecord convertToDTO(User user) {
         return new UserRecord(user.getId(), user.getNickname(), user.getEmail(), user.getPassword(), user.getRole(),
-                user.getAvatar(), user.getBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
+                user.getAvatar(), user.isBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     public LoginResponse login(@Valid LoginRequest loginRequest) {
@@ -168,9 +163,8 @@ public class UserService {
             // Load the full user details after successful authentication
             User user = (User) authentication.getPrincipal();
 
-            LocalDateTime until = user.getBannedUntil();
-            if (until != null && until.isAfter(LocalDateTime.now())) {
-                throw new DisabledException(String.format("Account is banned until ", until.toString()));
+            if (user.isBannedUntil()) {
+                throw new DisabledException(String.format("Account is banned"));
             }
             // Generate token with user details (not just nickname)
             String jwtToken = jwtService.generateToken(user);

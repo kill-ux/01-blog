@@ -4,7 +4,7 @@ export interface User {
     email: string;
     role: string;
     avatar: string | null;
-    bannedUntil: string | null;
+    bannedUntil: boolean;
     birthDate: string | null;
     createdAt: string | null;
     updatedAt: string | null;

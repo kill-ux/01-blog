@@ -29,17 +29,12 @@ public class AdminController {
     }
 
     @PatchMapping("/ban")
-    public ResponseEntity<String> banUser(@Valid @RequestBody UserRequests.BanRequest request) {
-        this.userService.banUser(request.userId(),request.until());
+    public ResponseEntity<String> banUser(@Valid @RequestBody UserRequests.UserId request) {
+        System.out.println("##################");
+        System.out.println(request.userId());
+        this.userService.banUser(request.userId());
         return ResponseEntity.ok("success baned");
     }
-
-    @PatchMapping("/unban")
-    public ResponseEntity<String> unBanUser(@RequestBody UserRequests.UserId request) {
-        this.userService.unBanUser(request.userId());
-        return ResponseEntity.ok("success unbaned");
-    }
-
 
     @PatchMapping("/adminify")
     public ResponseEntity<String> adminify(@RequestBody UserRequests.UserId request) {

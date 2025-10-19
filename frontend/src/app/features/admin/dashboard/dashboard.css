@@ -15,13 +15,19 @@
 }
 
 ::ng-deep .mat-mdc-tab-body-wrapper {
-    margin-top: 30px !important;
+    margin-top: 40px !important;
     border-top: 1px solid var(--bg-tertiary);
-    padding: 30px;
+    /* padding: 30px; */
+    margin-inline: -2px;
     background-color: var(--bg-primary);
     box-shadow: 0 1px 100px var(--ba);
+    /* max-height: 520px; */
 }
 
+
+app-blogs {
+    width: 100%;
+}
 .badge {
     background-color: #dc3545;
     color: #fef4f5;
@@ -38,4 +44,12 @@
 
 .cap {
     --size: 2px;
+}
+
+.blog-div {
+    /* padding-inline: 5px; */
+}
+
+mat-tab-group {
+    margin-block: 40px;
 }
