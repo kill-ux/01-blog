@@ -18,9 +18,6 @@ export const routes: Routes = [
         component: AuthLayout,
         children: authRoutes,
         canActivate: [noAuthGuard]
-    },
-    {
-        path: 'dashboard'
     }
     // {
     //     path: 'users',

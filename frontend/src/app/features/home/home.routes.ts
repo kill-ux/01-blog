@@ -5,6 +5,7 @@ import { BlogsRoutes } from "../blog/home.routes";
 import { Discover } from "../user/discover/discover";
 import { Profile } from "../user/profile/profile";
 import { Notifications } from "../user/notifications/notifications";
+import { Dashboard } from "../admin/dashboard/dashboard";
 
 export const homeRoutes: Routes = [
     // {
@@ -32,6 +33,10 @@ export const homeRoutes: Routes = [
         path: 'profile/:id',
         component: Profile,
         pathMatch: 'full'
+    },
+    {
+        path: 'dashboard',
+        component: Dashboard,
     },
     // {
     //     path: 'blogs',

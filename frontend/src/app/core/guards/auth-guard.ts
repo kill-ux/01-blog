@@ -11,9 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 	}
 
 	authService.removeAuthToken()
-	router.navigate(["/auth/signin"], {
-		queryParams: { returnUrl: state.url }
-	})
+	router.navigate(["/auth/signin"])
 
 	return false;
 };

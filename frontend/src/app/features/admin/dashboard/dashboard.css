@@ -1,0 +1,41 @@
+.container {
+    margin-inline: 200px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        margin-inline: 5px;
+    }
+
+}
+
+::ng-deep .mdc-data-table__content {
+    background-color: var(--color-white) !important;
+    margin: 20px !important;
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper {
+    margin-top: 30px !important;
+    border-top: 1px solid var(--bg-tertiary);
+    padding: 30px;
+    background-color: var(--bg-primary);
+    box-shadow: 0 1px 100px var(--ba);
+}
+
+.badge {
+    background-color: #dc3545;
+    color: #fef4f5;
+    padding: 2px 4px;
+    font-weight: 800;
+}
+
+.warning {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+    padding: 3px 5px;
+    font-weight: 800;
+}
+
+.cap {
+    --size: 2px;
+}

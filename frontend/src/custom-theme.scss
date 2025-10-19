@@ -80,7 +80,7 @@ html.dark-theme {
   --bg-secondary: #f8f9fa;
   --bg-tertiary: #e9ecef;
   --bg-card: #ffffff;
-  --bg-hover: #f1f3f4;
+  --bg-hover: #f8f9fa; 
   --bg-back: #1a202c11;
   --btn--primarey : #030213;
   --outline: rgba(0, 0, 0, 0.1);
@@ -93,6 +93,7 @@ html.dark-theme {
   --text-secondary: #6c757d;
   --text-muted: #adb5bd;
   --text-inverse: #ffffff;
+  --ba : rgba(0, 0, 0, 0.123);
 
   --border-color: #dee2e6;
   --border-light: #f1f3f4;
@@ -112,12 +113,13 @@ html.dark-theme {
   --bg-secondary: #1e1e1e;
   --bg-tertiary: #2d2d2d;
   --bg-card: #0c0c0c;
-  --bg-hover: #2d2d2d;
+  --bg-hover: #343a40;
   --bg-back: #ffffff2d;
   --outline: rgba(255, 255, 255, 0.1);
   --color-black: white;
 	--color-white: black;
   --color-current-taxonomy: #e4e3e7;  
+  --ba : rgba(255, 255, 255, 0.123);
 
   
   --btn--primarey : #e9ecef;
