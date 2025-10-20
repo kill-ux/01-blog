@@ -28,9 +28,9 @@ export class Dashboard implements OnInit {
 	authService = inject(AuthService)
 	router = inject(Router)
 	userService = inject(UserService)
-	admineUser = inject(AdminService)
-	displayedColumns: string[] = ['position', 'nickname', 'email', 'statue', 'actions'];
-	displayedColumnsReports: string[] = ['position'];
+	admineService = inject(AdminService)
+	displayedColumns: string[] = ['id', 'nickname', 'email', 'statue', 'actions'];
+	displayedColumnsReports: string[] = ['id', 'type', 'reason', 'status', 'reportingUser', 'reportedUser', 'actions'];
 
 	private isLoading = false;
 
@@ -43,7 +43,6 @@ export class Dashboard implements OnInit {
 	getReports() {
 		if (this.isLoading) return;
 		this.isLoading = true;
-		console.log("cursorReportdfdsfsdf")
 		this.userService.getReports(this.cursorReport).subscribe({
 			next: reports => {
 				if (reports.length > 0) {
@@ -95,7 +94,7 @@ export class Dashboard implements OnInit {
 	}
 
 	deleteUser(id: number) {
-		this.admineUser.deleteUser(id).subscribe({
+		this.admineService.deleteUser(id).subscribe({
 			next: data => {
 				this.users.update(users => {
 					return users.filter(user => user.id != id)
@@ -109,12 +108,15 @@ export class Dashboard implements OnInit {
 	}
 
 	openUser(id: number) {
-		console.log(id)
 		this.router.navigate(["profile", id])
 	}
 
+	openBlog(id: number) {
+		this.router.navigate(["blog", id])
+	}
+
 	banUser(id: number) {
-		this.admineUser.banUser(id).subscribe({
+		this.admineService.banUser(id).subscribe({
 			next: data => {
 				this.users.update(users => {
 					const user = users.find(user => user.id == id)
@@ -142,9 +144,27 @@ export class Dashboard implements OnInit {
 
 	onTabChange(event: MatTabChangeEvent) {
 		// Check if the label of the selected tab is 'Reports'
-		if (event.tab.textLabel === 'Reports') {
+		if (event.tab.textLabel === 'Reports' && this.cursorReport == 0) {
 			this.getReports();
 		}
+	}
+
+	reviewReport(id: number) {
+		this.admineService.reviewReport(id).subscribe({
+			next: data => {
+				this.reports.update(reports => {
+					const report = reports.find(report => report.id == id)
+					if (report) {
+						report.status = !report.status;
+					}
+					return reports
+				})
+				console.log(data)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
 	}
 
 }

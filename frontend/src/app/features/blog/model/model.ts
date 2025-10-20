@@ -41,8 +41,8 @@ export interface Report {
     id: number,
     reason: string,
     status: boolean,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: string,
+    updatedAt: string,
     blogId: number,
     reportingUser: User,
     reportedUser: User

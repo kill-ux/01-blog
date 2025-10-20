@@ -30,6 +30,12 @@
     /* max-height: 520px; */    
 }
 
+::ng-deep .mat-mdc-tab-body-wrapper:has(* .reason) {
+    /* box-shadow: 0 1px 100px var(--ba); */
+    box-shadow: 0 1px 100px var(--bared);
+}
+
+
 
 ::ng-deep .mat-mdc-tab-body-wrapper {
     width: 100%;
@@ -87,4 +93,27 @@ table {
   flex-direction: column;
   gap: 1.5rem;
   background-color: var(--back);
+}
+
+.badge-type {
+    padding-inline: 6px;
+    border-radius: 2px;
+}
+
+.post {
+    background-color: #7956eed8;
+}
+
+.user {
+    background-color: #ee5656d8;
+}
+
+.close {
+    background-color: var(--text-primary); 
+    /* rgb(43, 43, 43) */
+    color: var(--bg-primary);
+}
+
+.open {
+    background-color: #5698eed8;
 }

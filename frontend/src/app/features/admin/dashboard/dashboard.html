@@ -6,7 +6,7 @@
                     <table mat-table [dataSource]="users()" class="mat-elevation-z8">
 
                         <!-- Position Column -->
-                        <ng-container matColumnDef="position">
+                        <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef> No. </th>
                             <td mat-cell *matCellDef="let element"> {{element.id}} </td>
                         </ng-container>
@@ -64,10 +64,10 @@
                                 </mat-menu>
 
                                 @if (cursorUser == element.id) {
-                                    <div #loadTrigger>postgress</div>
-                                    @defer (on viewport(loadTrigger)) {
-                                        <div>{{ loadMoreBlogs() }}</div>
-                                    }
+                                <div #loadTrigger>postgress</div>
+                                @defer (on viewport(loadTrigger)) {
+                                <div>{{ loadMoreBlogs() }}</div>
+                                }
                                 }
                             </td>
                         </ng-container>
@@ -75,11 +75,6 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
-
-
-
-
-
                 </div>
             </mat-tab>
             <mat-tab label="Blogs">
@@ -87,7 +82,104 @@
                     <app-blogs class="app-blogs" [args]="{user : null}"></app-blogs>
                 </div>
             </mat-tab>
-            <mat-tab label="Reports" (click)="getReports()" >Reports 3</mat-tab>
+            <mat-tab label="Reports">
+                <div class="table reason">
+                    <table mat-table class="mat-elevation-z8" [dataSource]="reports()">
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> No. </th>
+                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell *matHeaderCellDef> Type </th>
+                            <td mat-cell *matCellDef="let element">
+                                @if (element.blogId) {
+                                <span class="badge badge-type post">POST</span>
+
+                                } @else {
+                                <span class="badge badge-type user">USER</span>
+                                }
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="reason">
+                            <th mat-header-cell *matHeaderCellDef> Reason </th>
+                            <td mat-cell *matCellDef="let element"> {{element.reason}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef> Status </th>
+                            <td mat-cell *matCellDef="let element">
+                                @if (!element.status) {
+                                <span class="badge badge-type open">OPEN</span>
+
+                                } @else {
+                                <span class="badge badge-type close">CLOSE</span>
+                                }
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="reportingUser">
+                            <th mat-header-cell *matHeaderCellDef> reporting User </th>
+                            <td mat-cell *matCellDef="let element"> {{element.reportingUser.nickname}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="reportedUser">
+                            <th mat-header-cell *matHeaderCellDef> reported User </th>
+                            <td mat-cell *matCellDef="let element"> {{element.reportedUser.nickname}} </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <button matIconButton [matMenuTriggerFor]="menu"
+                                    aria-label="Example icon-button with a menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="reviewReport(element.id)">
+                                        @if (element.status) {
+                                        <mat-icon>verified</mat-icon>
+                                        } @else {
+                                        <mat-icon>pending</mat-icon>
+                                        }
+
+                                        @if (element.status) {
+                                        <span>Review (Open)</span>
+                                        } @else {
+                                        <span>Review (Closed)</span>
+                                        }
+                                    </button>
+                                    @if (element.blogId) {
+                                    <button mat-menu-item (click)="openBlog(element.blogId)">
+                                        <mat-icon>open_in_new</mat-icon>
+                                        <span>Open Blog</span>
+                                    </button>
+                                    }
+                                    <button mat-menu-item (click)="banUser(element.id)">
+                                        <mat-icon>block</mat-icon>
+                                        <span>
+                                            @if (!element.bannedUntil) {
+                                            Ban
+                                            } @else {
+                                            unBan
+                                            }
+                                        </span>
+                                    </button>
+                                </mat-menu>
+
+                                @if (cursorUser == element.id) {
+                                <div #loadTrigger>postgress</div>
+                                @defer (on viewport(loadTrigger)) {
+                                <div>{{ loadMoreBlogs() }}</div>
+                                }
+                                }
+                            </td>
+                        </ng-container>
+
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsReports"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsReports;"></tr>
+                    </table>
+                </div>
+            </mat-tab>
         </mat-tab-group>
     </div>
 </div>

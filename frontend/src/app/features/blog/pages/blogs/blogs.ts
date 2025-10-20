@@ -169,10 +169,10 @@ export class Blogs implements OnInit, OnChanges {
 		this.router.navigate(["edit", id])
 	}
 
-	ReportBlog(id: number, reason: string, menuTrigger: MatMenuTrigger) {
-		reason = reason.trim();
-		if (reason.length == 0) return
-		this.blogService.Report({ blogId: id, reason }).subscribe({
+	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger) {
+		const value = e.value.trim();
+		if (value.length == 0) return
+		this.blogService.Report({ blogId: id, reason: value }).subscribe({
 			next: res => {
 				console.log(res)
 			},

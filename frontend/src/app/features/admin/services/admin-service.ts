@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthState, User } from '../../auth/models/model';
-import { BlogResponce, Notification, NotificationResponce } from '../../blog/model/model';
+import { BlogResponce, Notification, NotificationResponce, Report } from '../../blog/model/model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -20,5 +20,8 @@ export class AdminService {
 		return this.http.patch<string>(`http://localhost:8080/api/admin/ban`, { userId: id }, { responseType: 'text' as 'json' })
 	}
 
+	reviewReport(id: number) {
+		return this.http.patch<Report>(`http://localhost:8080/api/reports/${id}/review`, {})
+	}
 
 }
