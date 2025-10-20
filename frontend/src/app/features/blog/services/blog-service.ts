@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { BlogRequest, BlogResponce } from '../model/model';
+import { BlogRequest, BlogResponce, Report } from '../model/model';
 
 @Injectable({
 	providedIn: 'root'
@@ -47,7 +47,7 @@ export class BlogService {
 	}
 
 	Report(report: any) {
-		return this.http.post<void>(`${this.API_URL}/reports/store`, report, { responseType: 'text' as 'json' })
+		return this.http.post<Report>(`${this.API_URL}/reports/store`, report, { responseType: 'text' as 'json' })
 	}
 
 	toggleLike(blogResponce: BlogResponce) {

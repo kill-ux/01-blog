@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthState, User } from '../../auth/models/model';
-import { BlogResponce, Notification, NotificationResponce } from '../../blog/model/model';
+import { BlogResponce, Notification, NotificationResponce, Report } from '../../blog/model/model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -53,6 +53,11 @@ export class UserService {
 
     markAll() {
         return this.http.patch<Notification>(`${this.apiUrl}/users/notification/markall`, {})
+    }
+
+
+    getReports(cursor: number) {
+        return this.http.get<Report[]>(`${this.apiUrl}/reports?cursor=${cursor}`)
     }
 
 

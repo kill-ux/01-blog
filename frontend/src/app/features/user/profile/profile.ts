@@ -14,6 +14,7 @@ import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { BlogService } from '../../blog/services/blog-service';
 
 @Component({
 	selector: 'app-profile',
@@ -29,6 +30,7 @@ export class Profile implements OnInit {
 	isLoading = false
 	currentComponent = signal("blogs")
 	public authService = inject(AuthService)
+	public blogService = inject(BlogService)
 
 
 
@@ -137,18 +139,17 @@ export class Profile implements OnInit {
 		}
 	}
 
-	ReportBlog(id: number | undefined, reason: string, menuTrigger: MatMenuTrigger) {
+	ReportUser(id: number | undefined, reason: string, menuTrigger: MatMenuTrigger) {
 		reason = reason.trim();
 		if (reason.length == 0 || !id) return
-		// this.blogService.Report({ blogId: id, reason }).subscribe({
-		// 	next: res => {
-		// 		console.log("ok", res)
-		// 		console.log(res)
-		// 	},
-		// 	error: err => {
-		// 		console.log(err)
-		// 	}
-		// })
+		this.blogService.Report({ userId: id, reason }).subscribe({
+			next: res => {
+				console.log("ok", res)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
 		menuTrigger.closeMenu()
 	}
 }

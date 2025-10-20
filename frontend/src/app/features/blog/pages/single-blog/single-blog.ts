@@ -4,8 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';

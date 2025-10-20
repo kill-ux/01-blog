@@ -174,7 +174,6 @@ export class Blogs implements OnInit, OnChanges {
 		if (reason.length == 0) return
 		this.blogService.Report({ blogId: id, reason }).subscribe({
 			next: res => {
-				console.log("ok", res)
 				console.log(res)
 			},
 			error: err => {

@@ -11,6 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AdminService } from '../services/admin-service';
 import { Blogs } from "../../blog/pages/blogs/blogs";
+import { Report } from '../../blog/model/model';
 
 @Component({
 	selector: 'app-dashboard',
@@ -20,33 +21,58 @@ import { Blogs } from "../../blog/pages/blogs/blogs";
 })
 export class Dashboard implements OnInit {
 	users = signal<User[]>([])
-	cursor = 0
+	reports = signal<Report[]>([])
+	cursorUser = 0
+	cursorReport = 0
 	apiUrl = environment.API_URL
 	authService = inject(AuthService)
 	router = inject(Router)
 	userService = inject(UserService)
 	admineUser = inject(AdminService)
 	displayedColumns: string[] = ['position', 'nickname', 'email', 'statue', 'actions'];
+	displayedColumnsReports: string[] = ['position'];
 
 	private isLoading = false;
 
 	ngOnInit(): void {
-		if (this.cursor == 0) {
+		if (this.cursorUser == 0) {
 			this.getUsers()
 		}
+	}
+
+	getReports() {
+		if (this.isLoading) return;
+		this.isLoading = true;
+			console.log("cursorReportdfdsfsdf")
+		this.userService.getReports(this.cursorReport).subscribe({
+			next: reports => {
+				if (reports.length > 0) {
+					this.cursorReport = reports[reports.length - 1].id
+					this.reports.update(rs => [...rs, ...reports])
+					console.log("cursorReport => ", this.reports())
+				} else {
+					this.cursorReport = 0
+				}
+				this.isLoading = false
+			},
+			error: err => {
+				console.log(err);
+				this.isLoading = false
+			}
+		})
 	}
 
 	getUsers() {
 		if (this.isLoading) return;
 		this.isLoading = true;
-		this.userService.getUsers(this.cursor).subscribe({
+		this.userService.getUsers(this.cursorUser).subscribe({
 			next: users => {
 				if (users.length > 0) {
-					this.cursor = users[users.length - 1].id
+					this.cursorUser = users[users.length - 1].id
 					this.users.update(us => [...us, ...users])
 					console.log(this.users())
 				} else {
-					this.cursor = 0
+					this.cursorUser = 0
 				}
 				this.isLoading = false
 			},
@@ -108,7 +134,7 @@ export class Dashboard implements OnInit {
 	loadMoreBlogs() {
 		if (!this.isLoading) {
 			console.log("hiiiiiiiiiiiii")
-			if (!this.isLoading && this.cursor != 0) {
+			if (!this.isLoading && this.cursorUser != 0) {
 				this.getUsers()
 			}
 		}

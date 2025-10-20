@@ -35,3 +35,15 @@ export interface NotificationResponce {
     notfs: Notification[],
     count: number
 }
+
+
+export interface Report {
+    id: number,
+    reason: string,
+    status: boolean,
+    createdAt: Date,
+    updatedAt: Date,
+    blogId: number,
+    reportingUser: User,
+    reportedUser: User
+}
