@@ -48,3 +48,32 @@
     /* background-color: red; */
     margin: 0;
 }
+
+.mat-red, .mat-red * {
+    color: #f84b4be0;
+}
+
+
+.report{
+    width: 100%;
+}
+
+
+.report *{
+    width: 100%;
+}
+
+
+::ng-deep .mat-mdc-menu-panel:has(.report) {
+    width: 600px;
+    max-width: 600px;
+    padding: 30px;
+}
+
+::ng-deep .mdc-text-field--filled {
+    background-color: var(--bg-secondary) !important;
+}
+
+.textarea {
+    background-color: red !important;
+}

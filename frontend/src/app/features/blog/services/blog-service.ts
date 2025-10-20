@@ -18,6 +18,9 @@ export class BlogService {
 		return this.http.put<BlogResponce>(`${this.API_URL}/blogs/${blogId}/update`, blogRequest)
 	}
 
+	getBlogs(cursor: number) {
+		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs?cursor=${cursor}`)
+	}
 
 	getBlogsNetworks(cursor: number) {
 		return this.http.get<BlogResponce[]>(`${this.API_URL}/blogs/networks?cursor=${cursor}`)
@@ -35,8 +38,16 @@ export class BlogService {
 		return this.http.get<{ children: BlogResponce[], count: number }>(`${this.API_URL}/blogs/${blogId}/children?cursor=${cursor}`)
 	}
 
-	DeleteBlog(blogId: any) {
+	DeleteBlog(blogId: number) {
 		return this.http.delete<void>(`${this.API_URL}/blogs/${blogId}/delete`, { responseType: 'text' as 'json' })
+	}
+
+	HideBlog(blogId: number){
+		return this.http.patch<void>(`${this.API_URL}/blogs/${blogId}/hide`, { responseType: 'text' as 'json' })
+	}
+
+	ReportBlog(blogId: number){
+		return this.http.patch<void>(`${this.API_URL}/reports/${blogId}/hide`, { responseType: 'text' as 'json' })
 	}
 
 	toggleLike(blogResponce: BlogResponce) {

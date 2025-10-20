@@ -8,14 +8,18 @@ import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { AuthService } from '../../../auth/services/auth-api';
 import { User } from '../../../auth/models/model';
 import { environment } from '../../../../../environments/environment';
+import { AdminService } from '../../../admin/services/admin-service';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	selector: 'app-blogs',
-	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon],
+	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon,FormsModule, MatFormFieldModule, MatInputModule],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css',
 	host: {
@@ -28,7 +32,7 @@ export class Blogs implements OnInit, OnChanges {
 	public lastBlog = 0;
 	private isLoading = false;
 	public authService = inject(AuthService)
-	@Input() args: { user: User | null } | null = null
+	@Input() args: { user: User | null} | null = null
 
 	apiUrl = environment.API_URL;
 
@@ -54,8 +58,12 @@ export class Blogs implements OnInit, OnChanges {
 		if (this.isLoading) return;
 		this.isLoading = true;
 		let obs;
-		if (this.args && this.args.user) {
-			obs = this.blogService.getBlogsByUserId(this.args.user.id, cursor)
+		if (this.args) {
+			if (this.args.user) {
+				obs = this.blogService.getBlogsByUserId(this.args.user.id, cursor)
+			} else  {
+				obs = this.blogService.getBlogs(cursor)
+			}
 		} else {
 			obs = this.blogService.getBlogsNetworks(cursor)
 		}
@@ -138,8 +146,32 @@ export class Blogs implements OnInit, OnChanges {
 		})
 	}
 
+	HideBlog(id: number) {
+		console.log("hide this id =>", id)
+		this.blogService.HideBlog(id).subscribe({
+			next: res => {
+				this.blogs.update(bs => {
+					const blog = bs.find(blog => blog.id == id)
+					if (blog) {
+						blog.hidden = !blog.hidden
+					}
+					return bs
+				})
+				console.log(res)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
+	}
+
 	EditBlog(id: number) {
 		this.router.navigate(["edit", id])
+	}
+
+	ReportBlog(id: number, menuTrigger: MatMenuTrigger){
+		
+		menuTrigger.closeMenu()
 	}
 
 }

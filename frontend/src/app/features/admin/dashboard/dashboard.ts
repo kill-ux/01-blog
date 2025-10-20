@@ -105,4 +105,13 @@ export class Dashboard implements OnInit {
 		})
 	}
 
+	loadMoreBlogs() {
+		if (!this.isLoading) {
+			console.log("hiiiiiiiiiiiii")
+			if (!this.isLoading && this.cursor != 0) {
+				this.getUsers()
+			}
+		}
+	}
+
 }

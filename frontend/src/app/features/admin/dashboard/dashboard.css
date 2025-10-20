@@ -2,9 +2,14 @@
     margin-inline: 200px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
     .container {
-        margin-inline: 5px;
+        margin-inline: 20px;
+    }
+
+    ::ng-deep .mat-mdc-tab-body-wrapper {
+        max-width: 100px;
+        /* max-height: 520px; */
     }
 
 }
@@ -21,8 +26,8 @@
     margin-inline: -2px;
     background-color: var(--bg-primary);
     box-shadow: 0 1px 100px var(--ba);
-    max-width: 1200px;
-    /* max-height: 520px; */
+    max-width: 1100px;
+    /* max-height: 520px; */    
 }
 
 
@@ -30,9 +35,11 @@
     width: 100%;
     /* max-height: 520px; */
 }
+
 app-blogs {
     width: 100%;
 }
+
 .badge {
     background-color: #dc3545;
     color: #fef4f5;
@@ -57,4 +64,27 @@ app-blogs {
 
 mat-tab-group {
     margin-block: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table {
+    padding: 30px;
+}
+
+::ng-deep  .mat-mdc-tab-body-wrapper:has(.table) {
+    height: 600px;
+}
+
+table {
+    box-shadow: 0 1px 5px var(--ba);
+    height: 500px !important;
+}
+
+.app-blogs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: var(--back);
 }

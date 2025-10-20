@@ -65,7 +65,7 @@ public class BlogController {
         return ResponseEntity.ok(savedBlog);
     }
 
-    @PutMapping("{blogId}/hide")
+    @PatchMapping("{blogId}/hide")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String,Boolean>> hideBlog(@PathVariable long blogId) {
         return ResponseEntity.ok(Map.of("hide",this.blogService.hideBlog(blogId)));

@@ -7,11 +7,11 @@
             <div class="user-info">
                 <div class="avatar">
                     @if (item.user.id == this.authService.currentUser?.id) {
-                    <img [src]="this.authService.currentUser?.avatar ? apiUrl+this.authService.currentUser?.avatar : '/default-avatar.jpg'" alt="{{ item.user.nickname }}'s avatar"
-                        onerror="this.src='/default-avatar.jpg'">
+                    <img [src]="this.authService.currentUser?.avatar ? apiUrl+this.authService.currentUser?.avatar : '/default-avatar.jpg'"
+                        alt="{{ item.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
                     } @else {
-                    <img [src]="item.user.avatar ?  apiUrl+item.user.avatar : '/default-avatar.jpg'" alt="{{ item.user.nickname }}'s avatar"
-                        onerror="this.src='/default-avatar.jpg'">
+                    <img [src]="item.user.avatar ?  apiUrl+item.user.avatar : '/default-avatar.jpg'"
+                        alt="{{ item.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
                     }
                 </div>
                 <div class="user-details">
@@ -20,26 +20,69 @@
                 </div>
 
             </div>
-            <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
-                aria-label="Example icon-button with a menu">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                @if (authService.currentUser?.id == item.user.id) {
-                <button mat-menu-item (click)="DeleteBlog(item.id)">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete</span>
-                </button>
-                <button mat-menu-item (click)="EditBlog(item.id)">
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit</span>
-                </button>
+            <div class="flex-row">
+                @if (item.hidden) {
+                <span class="app-badge">
+                    <svg viewBox="0 0 6 6" aria-hidden="true" class="qxn qyn">
+                        <circle r="3" cx="3" cy="3"></circle>
+                    </svg>
+                    <span>HIDDEN</span>
+                </span>
                 }
-                <button mat-menu-item (click)="DeleteBlog(item.id)">
-                    <mat-icon>report</mat-icon>
-                    <span>Report</span>
+                <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
+                    aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
                 </button>
-            </mat-menu>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    @if (authService.isAdmin()) {
+                    <button class="mat-red" mat-menu-item (click)="DeleteBlog(item.id)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                    <button mat-menu-item (click)="HideBlog(item.id)">
+                        @if (item.hidden) {
+                        <mat-icon>visibility_off</mat-icon>
+                        } @else {
+                        <mat-icon>visibility</mat-icon>
+                        }
+
+                        @if (item.hidden) {
+                        <span>Unhide</span>
+                        } @else {
+                        <span>Hide</span>
+                        }
+                    </button>
+                    }@else if (authService.currentUser?.id == item.user.id) {
+                    <button mat-menu-item (click)="DeleteBlog(item.id)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                    <button mat-menu-item (click)="EditBlog(item.id)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                    }
+                    <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
+                        #menuTrigger="matMenuTrigger">
+                        <mat-icon>report</mat-icon>
+                        <span>Report</span>
+                    </button>
+                    <mat-menu #reportUser="matMenu">
+                        <div class="report" (click)="$event.stopPropagation()">
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Report your problem</mat-label>
+                                    <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                                </mat-form-field>
+                            </form>
+
+                            <button (click)="ReportBlog(item.id, menuTrigger)" class="btn btn-primary">submit</button>
+                        </div>
+                    </mat-menu>
+
+                </mat-menu>
+            </div>
+
 
 
 
