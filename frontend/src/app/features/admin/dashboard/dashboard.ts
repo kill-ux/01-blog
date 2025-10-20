@@ -1,5 +1,5 @@
 import { Component, inject, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
-import { MatTabsModule, MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTabsModule, MatTabGroup, MatTab, MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth-api';
 import { environment } from '../../../../environments/environment';
@@ -43,7 +43,7 @@ export class Dashboard implements OnInit {
 	getReports() {
 		if (this.isLoading) return;
 		this.isLoading = true;
-			console.log("cursorReportdfdsfsdf")
+		console.log("cursorReportdfdsfsdf")
 		this.userService.getReports(this.cursorReport).subscribe({
 			next: reports => {
 				if (reports.length > 0) {
@@ -137,6 +137,13 @@ export class Dashboard implements OnInit {
 			if (!this.isLoading && this.cursorUser != 0) {
 				this.getUsers()
 			}
+		}
+	}
+
+	onTabChange(event: MatTabChangeEvent) {
+		// Check if the label of the selected tab is 'Reports'
+		if (event.tab.textLabel === 'Reports') {
+			this.getReports();
 		}
 	}
 
