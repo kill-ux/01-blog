@@ -25,7 +25,36 @@
 
         <input #upload (change)="uploadImage($event)" style="display: none;" type="file" name="" id="" accept="image/*">
         <div class="content">
-            <div class="nickname">{{ userProfile()?.nickname }}</div>
+
+            <div class="flex-row">
+                <div class="nickname">{{ userProfile()?.nickname }}</div>
+                <div class="end">
+                    <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
+                            #menuTrigger="matMenuTrigger">
+                            <mat-icon>report</mat-icon>
+                            <span>Report</span>
+                        </button>
+                        <mat-menu #reportUser="matMenu">
+                            <div class="report" (click)="$event.stopPropagation()">
+                                <form class="example-form">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Report your problem</mat-label>
+                                        <textarea #textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                                    </mat-form-field>
+                                </form>
+
+                                <button (click)="ReportBlog(userProfile()?.id, textarea.value ,menuTrigger)"
+                                    class="btn btn-primary">submit</button>
+                            </div>
+                        </mat-menu>
+                    </mat-menu>
+                </div>
+            </div>
             <div class="">{{ userProfile()?.email }}</div>
             <div class=""> Joind At : {{ userProfile()?.createdAt | date:'mediumDate' }}</div>
             <div class="flex-row">

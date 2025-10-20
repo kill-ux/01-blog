@@ -126,3 +126,33 @@
     border-radius: 50%;
     transition: all 0.5s ease;
 }
+
+.end {
+    display: flex;
+    justify-content: end;
+}
+
+
+.report{
+    width: 100%;
+}
+
+
+.report *{
+    width: 100%;
+}
+
+
+::ng-deep .mat-mdc-menu-panel:has(.report) {
+    width: 600px;
+    max-width: 600px;
+    padding: 30px;
+}
+
+::ng-deep .mdc-text-field--filled {
+    background-color: var(--bg-secondary) !important;
+}
+
+.textarea {
+    background-color: red !important;
+}

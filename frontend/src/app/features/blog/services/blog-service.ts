@@ -42,12 +42,12 @@ export class BlogService {
 		return this.http.delete<void>(`${this.API_URL}/blogs/${blogId}/delete`, { responseType: 'text' as 'json' })
 	}
 
-	HideBlog(blogId: number){
+	HideBlog(blogId: number) {
 		return this.http.patch<void>(`${this.API_URL}/blogs/${blogId}/hide`, { responseType: 'text' as 'json' })
 	}
 
-	ReportBlog(blogId: number){
-		return this.http.patch<void>(`${this.API_URL}/reports/${blogId}/hide`, { responseType: 'text' as 'json' })
+	Report(report: any) {
+		return this.http.post<void>(`${this.API_URL}/reports/store`, report, { responseType: 'text' as 'json' })
 	}
 
 	toggleLike(blogResponce: BlogResponce) {

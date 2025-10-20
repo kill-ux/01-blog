@@ -7,10 +7,17 @@ import { Blogs } from "../../blog/pages/blogs/blogs";
 import { DatePipe } from '@angular/common';
 import { Discover } from "../discover/discover";
 import { environment } from '../../../../environments/environment';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	selector: 'app-profile',
-	imports: [Blogs, DatePipe, Discover],
+	imports: [Blogs, DatePipe, Discover, DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, FormsModule, MatFormFieldModule, MatInputModule],
 	templateUrl: './profile.html',
 	styleUrl: './profile.css'
 })
@@ -128,5 +135,20 @@ export class Profile implements OnInit {
 				})
 			}
 		}
+	}
+
+	ReportBlog(id: number | undefined, reason: string, menuTrigger: MatMenuTrigger) {
+		reason = reason.trim();
+		if (reason.length == 0 || !id) return
+		// this.blogService.Report({ blogId: id, reason }).subscribe({
+		// 	next: res => {
+		// 		console.log("ok", res)
+		// 		console.log(res)
+		// 	},
+		// 	error: err => {
+		// 		console.log(err)
+		// 	}
+		// })
+		menuTrigger.closeMenu()
 	}
 }

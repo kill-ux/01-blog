@@ -72,11 +72,12 @@
                             <form class="example-form">
                                 <mat-form-field class="example-full-width">
                                     <mat-label>Report your problem</mat-label>
-                                    <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                                    <textarea #textarea matInput placeholder="Ex. It makes me feel..."></textarea>
                                 </mat-form-field>
                             </form>
 
-                            <button (click)="ReportBlog(item.id, menuTrigger)" class="btn btn-primary">submit</button>
+                            <button (click)="ReportBlog(item.id, textarea.value ,menuTrigger)"
+                                class="btn btn-primary">submit</button>
                         </div>
                     </mat-menu>
 

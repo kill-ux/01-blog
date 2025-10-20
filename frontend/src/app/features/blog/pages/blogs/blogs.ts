@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	selector: 'app-blogs',
-	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon,FormsModule, MatFormFieldModule, MatInputModule],
+	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, FormsModule, MatFormFieldModule, MatInputModule],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css',
 	host: {
@@ -32,7 +32,7 @@ export class Blogs implements OnInit, OnChanges {
 	public lastBlog = 0;
 	private isLoading = false;
 	public authService = inject(AuthService)
-	@Input() args: { user: User | null} | null = null
+	@Input() args: { user: User | null } | null = null
 
 	apiUrl = environment.API_URL;
 
@@ -61,7 +61,7 @@ export class Blogs implements OnInit, OnChanges {
 		if (this.args) {
 			if (this.args.user) {
 				obs = this.blogService.getBlogsByUserId(this.args.user.id, cursor)
-			} else  {
+			} else {
 				obs = this.blogService.getBlogs(cursor)
 			}
 		} else {
@@ -169,8 +169,18 @@ export class Blogs implements OnInit, OnChanges {
 		this.router.navigate(["edit", id])
 	}
 
-	ReportBlog(id: number, menuTrigger: MatMenuTrigger){
-		
+	ReportBlog(id: number, reason: string, menuTrigger: MatMenuTrigger) {
+		reason = reason.trim();
+		if (reason.length == 0) return
+		this.blogService.Report({ blogId: id, reason }).subscribe({
+			next: res => {
+				console.log("ok", res)
+				console.log(res)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
 		menuTrigger.closeMenu()
 	}
 
