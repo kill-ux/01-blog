@@ -42,6 +42,7 @@ public class BlogController {
     }
 
     @GetMapping("{blogId}")
+    @PreAuthorize("hasRole('ADMIN') or @blogService.getBlog(#blogId).isHidden == false")
     public ResponseEntity<BlogResponse> getBlog(
             @PathVariable long blogId) {
         BlogResponse savedBlog = this.blogService.getBlog(blogId);
@@ -72,7 +73,7 @@ public class BlogController {
     }
 
     @DeleteMapping("{blogId}/delete")
-    @PreAuthorize("hasRole('ADMIN') or @blogService.getBlog(#blogId).user.id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or (@blogService.getBlog(#blogId).user.id == authentication.principal.id and @blogService.getBlog(#blogId).isHidden == false)")
     public ResponseEntity<String> deleteBlog(@PathVariable long blogId) {
         this.blogService.deleteBlog(blogId);
         return ResponseEntity.ok("success deleted of BLOG");

@@ -41,8 +41,12 @@ export class Signin {
 				next: (res) => {
 					// this.authService.setAuthToken(res.token)
 					this.router.navigate(["/"])
+					this.isLoading = false;
 				},
-				error: (err) => console.log('Login faild', err)
+				error: (err) => {
+					console.log('Login faild', err)
+					this.isLoading = false;
+				}
 
 			})
 		}

@@ -97,13 +97,6 @@ export class Blogs implements OnInit, OnChanges {
 		console.log("aa")
 	}
 
-	sanitizeHtml(text: string) {
-		return sanitizeHtml(this.blogs()[0].description, {
-			allowedTags: ALLOWED_TAGS,
-			allowedAttributes: { 'a': ['href'], 'img': ['src'] }
-		})
-	}
-
 	toggleLike(blogResponce: BlogResponce) {
 		this.blogService.toggleLike(blogResponce).subscribe({
 			next: res => {
@@ -169,29 +162,26 @@ export class Blogs implements OnInit, OnChanges {
 		this.router.navigate(["edit", id])
 	}
 
-	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger) {
+	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger, menuTrigger1: MatMenuTrigger) {
 		const value = e.value.trim();
 		if (value.length == 0) return
 		this.blogService.Report({ blogId: id, reason: value }).subscribe({
 			next: res => {
 				console.log(res)
+				e.value = ''
 			},
 			error: err => {
 				console.log(err)
 			}
 		})
 		menuTrigger.closeMenu()
+		menuTrigger1.closeMenu()
+	}
+
+	openUser(id: number) {
+		this.router.navigate(["profile", id])
 	}
 
 }
-
-const ALLOWED_TAGS = [
-	'h1', 'h2', 'h3', 'b', 'i', 'em', 'strong', 'u',
-	'p', 'br', 'span', 'div',
-	'ul', 'ol', 'li',
-	'a', 'img', 'video',
-	'blockquote',
-	'code', 'pre'
-]
 
 // const ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'style']

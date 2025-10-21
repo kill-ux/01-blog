@@ -80,12 +80,12 @@ mat-tab-group {
 }
 
 ::ng-deep  .mat-mdc-tab-body-wrapper:has(.table) {
-    height: 600px;
+    max-height: 600px;
 }
 
 table {
     box-shadow: 0 1px 5px var(--ba);
-    height: 500px !important;
+    max-height: 500px !important;
 }
 
 .app-blogs {
@@ -116,4 +116,36 @@ table {
 
 .open {
     background-color: #5698eed8;
+}
+
+.veiw-user:hover {
+    background-color: var(--ba); 
+    padding: 4px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.veiw-user {
+    padding: 4px 6px;
+}
+
+.time {
+    color: var(--text-muted);
+}
+
+
+/* .rs {
+    max-height: 70px !important;
+    overflow: scroll;
+    background-color: red;
+} */
+
+::ng-deep .reason-cell {
+    max-height: 100px;
+    overflow-y: auto;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.4;
+    padding: 6px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.055);
 }

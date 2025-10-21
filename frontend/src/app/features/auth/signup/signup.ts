@@ -11,53 +11,57 @@ import { Router } from '@angular/router';
 import { ThemeToggle } from "../../../Theme/theme-toggle/theme-toggle";
 
 @Component({
-  selector: 'app-signup',
-  imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon, ThemeToggle],
-  templateUrl: './signup.html',
-  styleUrl: './signup.css'
+	selector: 'app-signup',
+	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon, ThemeToggle],
+	templateUrl: './signup.html',
+	styleUrl: './signup.css'
 })
 export class Signup {
-  myForm: FormGroup;
-  hidePassword = true;
-  isLoading = false;
+	myForm: FormGroup;
+	hidePassword = true;
+	isLoading = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
-    this.myForm = this.fb.group({
-      nickname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    })
-  }
+	constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+		this.myForm = this.fb.group({
+			nickname: ['', Validators.required],
+			email: ['', [Validators.required, Validators.email]],
+			password: ['', Validators.required]
+		})
+	}
 
-  onSubmit() {
-    if (this.myForm.valid) {
-      this.isLoading = true;
-      console.log('Form data:', this.myForm.value);
-      this.authService.signup(this.myForm.value).subscribe({
-        next: (res) => {
-          console.log('Signup successful', res.user)
-          this.router.navigate(["/auth/signin"])
-        },
-        error: (err) => console.log('Login faild', err)
+	onSubmit() {
+		if (this.myForm.valid) {
+			this.isLoading = true;
+			console.log('Form data:', this.myForm.value);
+			this.authService.signup(this.myForm.value).subscribe({
+				next: (res) => {
+					this.isLoading = false;
+					console.log('Signup successful', res.user)
+					this.router.navigate(["/auth/signin"])
+				},
+				error: (err) => {
+					console.log('Login faild', err)
+					this.isLoading = false;
+				}
 
-      })
-    }
-  }
+			})
+		}
+	}
 
 
-  get nickname() {
-    return this.myForm.get("nickname")
-  }
+	get nickname() {
+		return this.myForm.get("nickname")
+	}
 
-  get password() {
-    return this.myForm.get("password")
-  }
+	get password() {
+		return this.myForm.get("password")
+	}
 
-  get email() {
-    return this.myForm.get("email")
-  }
+	get email() {
+		return this.myForm.get("email")
+	}
 
-  togglePasswordVisibility(): void {
-    this.hidePassword = !this.hidePassword;
-  }
+	togglePasswordVisibility(): void {
+		this.hidePassword = !this.hidePassword;
+	}
 }

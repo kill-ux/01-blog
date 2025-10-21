@@ -73,7 +73,7 @@ public class BlogService {
             cursor = Long.MAX_VALUE;
         }
         return this.blogRepository
-                .findByUserIdAndParentIsNullAndIdLessThan(userId, cursor, pageable)
+                .findByUserIdAndParentIsNullAndIdLessThanAndHiddenFalse(userId, cursor, pageable)
                 .stream()
                 .map(b -> new BlogResponse(b, user.getId()))
                 .toList();

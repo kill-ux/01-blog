@@ -12,10 +12,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { AdminService } from '../services/admin-service';
 import { Blogs } from "../../blog/pages/blogs/blogs";
 import { Report } from '../../blog/model/model';
+import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
 
 @Component({
 	selector: 'app-dashboard',
-	imports: [MatTabGroup, MatTab, MatTableModule, MatButtonModule, MatMenuModule, MatIcon, Blogs],
+	imports: [MatTabGroup, MatTab, MatTableModule, MatButtonModule, MatMenuModule, MatIcon, Blogs, TimeAgoPipe],
 	templateUrl: './dashboard.html',
 	styleUrl: './dashboard.css'
 })
@@ -30,7 +31,7 @@ export class Dashboard implements OnInit {
 	userService = inject(UserService)
 	admineService = inject(AdminService)
 	displayedColumns: string[] = ['id', 'nickname', 'email', 'statue', 'actions'];
-	displayedColumnsReports: string[] = ['id', 'type', 'reason', 'status', 'reportingUser', 'reportedUser', 'actions'];
+	displayedColumnsReports: string[] = ['id', 'type', 'createdAt', 'reason', 'status', 'reportingUser', 'reportedUser', 'actions'];
 
 	private isLoading = false;
 
@@ -134,11 +135,14 @@ export class Dashboard implements OnInit {
 	}
 
 	loadMoreBlogs() {
-		if (!this.isLoading) {
-			console.log("hiiiiiiiiiiiii")
-			if (!this.isLoading && this.cursorUser != 0) {
-				this.getUsers()
-			}
+		if (!this.isLoading && this.cursorUser != 0) {
+			this.getUsers()
+		}
+	}
+
+	loadMoreReports() {
+		if (!this.isLoading && this.cursorReport != 0) {
+			this.getReports()
 		}
 	}
 
@@ -167,4 +171,21 @@ export class Dashboard implements OnInit {
 		})
 	}
 
+	adminify(id: number) {
+		this.admineService.adminify(id).subscribe({
+			next: data => {
+				this.users.update(users => {
+					const user = users.find(user => user.id == id)
+					if (user) {
+						user.role = data;
+					}
+					return users
+				})
+				console.log(data)
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
+	}
 }

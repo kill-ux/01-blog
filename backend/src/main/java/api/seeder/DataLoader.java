@@ -54,7 +54,7 @@ public class DataLoader implements CommandLineRunner {
         IntStream.range(0, 100).forEach(i -> {
             String nickname = faker.internet().username().replaceAll("[^a-zA-Z0-9_-]", "");
             String email = faker.internet().emailAddress();
-            String password = faker.internet().uuid();
+            String password = "$2a$10$U6RSphWBDit1fvQ1BLSfz.vDf8MrW0Bjj55.7nqMOmrwE9UMtrABm";
             String role = "ROLE_USER";
 
             User user = new User();

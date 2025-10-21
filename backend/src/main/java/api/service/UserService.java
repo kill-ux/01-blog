@@ -120,19 +120,16 @@ public class UserService {
         userRepository.save(user);
     }
 
-
     public String adminify(long id) {
+        System.out.println(id);
         User user = this.userRepository.findById(id).get();
-        user.setRole("ROLE_ADMIN");
+        if (user.getRole().equals("ROLE_USER")) {
+            user.setRole("ROLE_ADMIN");
+        } else {
+            user.setRole("ROLE_USER");
+        }
         userRepository.save(user);
-        return String.format("%s successfully promoted to admin", user.getNickname());
-    }
-
-    public String deadminify(long id) {
-        User user = this.userRepository.findById(id).get();
-        user.setRole("ROLE_USER");
-        userRepository.save(user);
-        return String.format("%s successfully demoted to user", user.getNickname());
+        return user.getRole();
     }
 
     private User convertToEntity(UserRecord userRecord) {

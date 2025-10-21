@@ -3,7 +3,7 @@
         <article class="blog-card">
             <!-- Header with user info -->
             <header class="blog-header">
-                <div class="user-info">
+                <div class="user-info" (click)="$event.stopPropagation(); openUser(blog?.user.id)">
                     <div class="avatar">
                         <img [src]="this.blog?.user.avatar ?  apiUrl+this.blog?.user.avatar : '/default-avatar.jpg'"
                             alt="{{ this.blog?.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
@@ -68,6 +68,12 @@
 
                 @for (item of (this.blog?.children || []); track item.id) {
                 <app-child-blog [thread]="2" [child]="item"></app-child-blog>
+                    @if (lastChild == item.id) {
+                        <div #loadTrigger></div>
+                        @defer (on viewport(loadTrigger),) {
+                            <div>{{ loadMoreChildren() }}</div>
+                        }
+                    }
                 }
             </footer>
         </article>

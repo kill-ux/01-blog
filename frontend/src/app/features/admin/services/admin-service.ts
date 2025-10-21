@@ -24,4 +24,12 @@ export class AdminService {
 		return this.http.patch<Report>(`http://localhost:8080/api/reports/${id}/review`, {})
 	}
 
+	adminify(id: number) {
+		return this.http.patch<string>(`http://localhost:8080/api/admin/adminify`, { userId: id }, { responseType: 'text' as 'json' })
+	}
+
+	deadminify(id: number) {
+		return this.http.patch<string>(`http://localhost:8080/api/admin/deadminify`, { userId: id }, { responseType: 'text' as 'json' })
+	}
+
 }

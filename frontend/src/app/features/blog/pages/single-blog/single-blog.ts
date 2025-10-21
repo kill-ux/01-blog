@@ -73,6 +73,10 @@ export class SingleBlog implements OnInit {
 		this.blogService.getBlogChildren(this.blog?.id, cursor).subscribe({
 			next: (res) => {
 				if (this.blog && res.children.length > 0) {
+					res.children = res.children.map(child => {
+						child.parent = this.blog
+						return child
+					})
 					this.blog.children = [...this.blog.children, ...res.children]
 					this.lastChild = res.children[res.children.length - 1].id
 				} else {
@@ -137,4 +141,9 @@ export class SingleBlog implements OnInit {
 	EditBlog(id: number) {
 		this.router.navigate(["edit", id])
 	}
+
+	openUser(id: number) {
+		this.router.navigate(["profile", id])
+	}
+
 }

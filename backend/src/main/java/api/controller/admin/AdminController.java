@@ -30,8 +30,6 @@ public class AdminController {
 
     @PatchMapping("/ban")
     public ResponseEntity<String> banUser(@Valid @RequestBody UserRequests.UserId request) {
-        System.out.println("##################");
-        System.out.println(request.userId());
         this.userService.banUser(request.userId());
         return ResponseEntity.ok("success baned");
     }
@@ -41,8 +39,4 @@ public class AdminController {
         return ResponseEntity.ok(this.userService.adminify(request.userId()));
     }
 
-     @PatchMapping("/deadminify")
-    public ResponseEntity<String> deadminify(@RequestBody UserRequests.UserId request) {
-        return ResponseEntity.ok(this.userService.deadminify(request.userId())); 
-    }
 }

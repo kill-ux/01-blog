@@ -7,8 +7,8 @@
                 <!-- <img [src]="'images/'+this.child.user.avatar" alt="{{ this.child.user.nickname }}'s avatar"
                     onerror="this.src='/default-avatar.jpg'"> -->
 
-                     <img [src]="this.child.user.avatar ?  apiUrl+this.child.user.avatar : '/default-avatar.jpg'"
-                            alt="{{ this.child.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
+                <img [src]="this.child.user.avatar ?  apiUrl+this.child.user.avatar : '/default-avatar.jpg'"
+                    alt="{{ this.child.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
             </div>
             @if (this.child.childrenCount > 0) {
             @if (!this.hidden) {
@@ -75,7 +75,7 @@
                         d="M17 13l-5 6-5-6h3.125c0-3.314 2.798-6 6.25-6 .17 0 .34.006.506.02-1.787.904-3.006 2.705-3.006 4.78V13H17z">
                     </path>
                 </svg>
-                Thread
+                Thread To {{this.child.parent?.user?.nickname}}
             </span>
             }
         </div>
@@ -103,21 +103,23 @@
                 </span>
 
                 <span class="stat">
-                     <svg (click)="showReply()" width="20" viewBox="0 0 20 20">
-                            <path d="M15 2H5V4H15V2Z" class="fill-icon-btn"></path>
-                            <path d="M17 4H15V6H17V4Z" class="fill-icon-btn"></path>
-                            <path d="M5 4H3V6H5V4Z" class="fill-icon-btn"></path>
-                            <path d="M5 13H3V15H5V13Z" class="fill-icon-btn"></path>
-                            <path d="M9 15H7V17H9V15Z" class="fill-icon-btn"></path>
-                            <path d="M17 13H9V15H17V13Z" class="fill-icon-btn"></path>
-                            <path d="M7 15H5V19H7V15Z" class="fill-icon-btn"></path>
-                            <path d="M19 6H17V13H19V6Z" class="fill-icon-btn"></path>
-                            <path d="M3 6H1V13H3V6Z" class="fill-icon-btn"></path>
-                            <path d="M14 7H6V9H14V7Z" class="fill-icon-btn-secondary"></path>
-                            <path d="M11 10H6V12H11V10Z" class="fill-icon-btn-secondary"></path>
-                        </svg>
+                    <svg (click)="showReply()" width="20" viewBox="0 0 20 20">
+                        <path d="M15 2H5V4H15V2Z" class="fill-icon-btn"></path>
+                        <path d="M17 4H15V6H17V4Z" class="fill-icon-btn"></path>
+                        <path d="M5 4H3V6H5V4Z" class="fill-icon-btn"></path>
+                        <path d="M5 13H3V15H5V13Z" class="fill-icon-btn"></path>
+                        <path d="M9 15H7V17H9V15Z" class="fill-icon-btn"></path>
+                        <path d="M17 13H9V15H17V13Z" class="fill-icon-btn"></path>
+                        <path d="M7 15H5V19H7V15Z" class="fill-icon-btn"></path>
+                        <path d="M19 6H17V13H19V6Z" class="fill-icon-btn"></path>
+                        <path d="M3 6H1V13H3V6Z" class="fill-icon-btn"></path>
+                        <path d="M14 7H6V9H14V7Z" class="fill-icon-btn-secondary"></path>
+                        <path d="M11 10H6V12H11V10Z" class="fill-icon-btn-secondary"></path>
+                    </svg>
                     {{ this.child.childrenCount || 0 }}
                 </span>
+
+                @if (this.reply) {
 
                 <span (click)="showReply(); changeReply();" class="stat">
                     <svg width="20" viewBox="0 0 20 20"
@@ -134,9 +136,30 @@
                             <path d="M12 11H14V13H12V11Z"></path>
                             <path d="M12 7H14V9H12V7Z"></path>
                         </g>
-                    </svg>
-                    @if (this.reply) {No Reply} @else {Reply}
+                    </svg> No Reply
                 </span>
+                } @else {
+                <span (click)="showReply(); changeReply();" class="stat">
+                    <svg width="20" viewBox="0 0 20 20"
+                        class="hover:text-blue transition-colors duration-500 hover:scale-98 rotate-180">
+                        <g class="fill-icon">
+                            <path d="M17 1H3V3H17V1Z"></path>
+                            <path d="M19 3H17V17H19V3Z"></path>
+                            <path d="M17 17H3V19H17V17Z"></path>
+                            <path d="M3 3H1V17H3V3Z"></path>
+                            <path d="M8 3H6V17H8V3Z"></path>
+                        </g>
+                        <g class="fill-icon-secondary">
+                            <path d="M10 9H12V11H10V9Z"></path>
+                            <path d="M12 11H14V13H12V11Z"></path>
+                            <path d="M12 7H14V9H12V7Z"></path>
+                        </g>
+                    </svg>Reply
+                </span>
+                }
+
+
+
             </div>
         </footer>
 
@@ -177,6 +200,17 @@
     @for (item of (this.child.children); track item.id) {
     <app-child-blog [thread]="this.thread != null && this.thread != 0 ? this.thread-1 : null"
         [child]="item"></app-child-blog>
+    @if (lastChild == item.id && this.child.childrenCount > this.child.children.length) {
+    <div class="fle" (click)="loadMoreChildren()"><span>Load More</span> <svg width="16" height="20" viewBox="0 0 20 20"
+            style="rotate: -90deg;">
+            <path d="M8.2 8.40039H5V11.6004H8.2V8.40039Z"></path>
+            <path d="M11.4002 5.2002H8.2002V8.4002H11.4002V5.2002Z"></path>
+            <path d="M14.5999 2H11.3999V5.2H14.5999V2Z"></path>
+            <path d="M14.5999 14.7998H11.3999V17.9998H14.5999V14.7998Z"></path>
+            <path d="M11.4002 11.5996H8.2002V14.7996H11.4002V11.5996Z"></path>
+        </svg>
+    </div>
+    }
     }
 </div>
 }

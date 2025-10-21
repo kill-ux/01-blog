@@ -252,3 +252,16 @@ pre {
     align-items: center;
     gap: 0.5rem;
 }
+
+.fle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+svg {
+    /* fill: var(--text-muted); */
+    fill: var(--text-primary);
+}

@@ -10,7 +10,7 @@ export interface BlogResponce {
     id: number;
     title: string;
     description: string;
-    parent: BlogResponce
+    parent: BlogResponce | null
     user: User
     createdAt: Date;
     updatedAt: Date;

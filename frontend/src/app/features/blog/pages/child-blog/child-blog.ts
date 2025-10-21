@@ -84,22 +84,6 @@ export class ChildBlog implements OnInit {
 					console.log(err)
 				}
 			})
-			// this.blogService.saveBlog(comment).subscribe({
-			// 	next: (res) => {
-			// 		console.log("ok")
-			// 		console.log(res)
-			// 		if (this.child) {
-			// 			this.child.children = [res, ...this.child.children]
-			// 			this.formCommend.reset()
-			// 		}
-
-
-			// 	},
-			// 	error: (err) => {
-			// 		console.log(err)
-			// 	}
-			// })
-
 		}
 	}
 
@@ -138,6 +122,12 @@ export class ChildBlog implements OnInit {
 			this.blogService.getBlogChildren(this.child.id, cursor).subscribe({
 				next: (res) => {
 					if (this.child && res.children.length > 0) {
+						res.children = res.children.map(child => {
+							if(child) {
+								child.parent = this.child
+							}
+							return child
+						})
 						this.child.children = [...this.child.children, ...res.children]
 						this.lastChild = res.children[res.children.length - 1].id
 					} else {
@@ -172,7 +162,14 @@ export class ChildBlog implements OnInit {
 		this.formCommend.patchValue({ description: this.child?.description })
 	}
 
-	changeReply(){
+	changeReply() {
 		this.reply = !this.reply
+	}
+
+
+	loadMoreChildren() {
+		if (this.lastChild != 0 && !this.isLoading) {
+			this.getBlogChildren(this.lastChild);
+		}
 	}
 }

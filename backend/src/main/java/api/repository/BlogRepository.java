@@ -19,7 +19,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             "WHERE b.id < :cursor AND sub.id = :userId AND b.parent IS NULL AND b.hidden = false")
     Page<Blog> findSubscribedUsersBlogs(@Param("userId") Long userId, long cursor, Pageable pageable);
 
-    Page<Blog> findByUserIdAndParentIsNullAndIdLessThan(Long userId, long cursor, Pageable pageable);
+    Page<Blog> findByUserIdAndParentIsNullAndIdLessThanAndHiddenFalse(Long userId, long cursor, Pageable pageable);
 
     Page<Blog> findByParentIdAndIdLessThan(Long parentId, long cursor, Pageable pageable);
 

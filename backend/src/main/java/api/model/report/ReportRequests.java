@@ -4,12 +4,13 @@ import java.time.LocalDateTime;
 
 import api.model.user.UserResponse;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class ReportRequests {
     public record ReportRequestDto(
-            @NotNull(message = "reason is required!!") String reason,
+            @Size(max = 1000, message = "reason must not exceed 1000 characters") @NotNull(message = "reason is required!!") String reason,
             Long blogId,
             Long userId) {
         public boolean isValid() {

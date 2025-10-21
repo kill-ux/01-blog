@@ -2,9 +2,8 @@
 
 <article class="blog-card-back" (click)="clickOnnArcticle(item.id)">
     <article class="blog-card">
-        <!-- Header with user info -->
         <header class="blog-header">
-            <div class="user-info">
+            <div class="user-info" (click)="$event.stopPropagation(); openUser(item.user.id)">
                 <div class="avatar">
                     @if (item.user.id == this.authService.currentUser?.id) {
                     <img [src]="this.authService.currentUser?.avatar ? apiUrl+this.authService.currentUser?.avatar : '/default-avatar.jpg'"
@@ -29,7 +28,7 @@
                     <span>HIDDEN</span>
                 </span>
                 }
-                <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
+                <button #menuTrigger1="matMenuTrigger" (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
                     aria-label="Example icon-button with a menu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
@@ -72,11 +71,11 @@
                             <form class="example-form">
                                 <mat-form-field class="example-full-width">
                                     <mat-label>Report your problem</mat-label>
-                                    <textarea #textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                                    <textarea maxlength="1000" #textarea matInput placeholder="Ex. It makes me feel..."></textarea>
                                 </mat-form-field>
                             </form>
 
-                            <button (click)="ReportBlog(item.id, textarea ,menuTrigger)"
+                            <button (click)="ReportBlog(item.id, textarea ,menuTrigger , menuTrigger1)"
                                 class="btn btn-primary">submit</button>
                         </div>
                     </mat-menu>
