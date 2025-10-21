@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { ThemeToggle } from "../../../Theme/theme-toggle/theme-toggle";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-signup',
@@ -20,6 +21,7 @@ export class Signup {
 	myForm: FormGroup;
 	hidePassword = true;
 	isLoading = false;
+	snackBar = inject(MatSnackBar)
 
 	constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 		this.myForm = this.fb.group({
@@ -40,8 +42,11 @@ export class Signup {
 					this.router.navigate(["/auth/signin"])
 				},
 				error: (err) => {
-					console.log('Login faild', err)
-					this.isLoading = false;
+					this.isLoading = false
+					console.log('Signup faild', err)
+					this.snackBar.open('Login faild', "Close", {
+						duration: 2000,
+					});
 				}
 
 			})

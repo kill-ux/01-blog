@@ -43,10 +43,6 @@
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
                                 <mat-menu #menu="matMenu">
-                                    <button mat-menu-item (click)="deleteUser(element.id)">
-                                        <mat-icon>delete</mat-icon>
-                                        <span>Delete</span>
-                                    </button>
                                     <button mat-menu-item (click)="openUser(element.id)">
                                         <mat-icon>open_in_new</mat-icon>
                                         <span>Open</span>
@@ -73,6 +69,10 @@
                                             }
                                         </span>
                                     </button>
+                                    <button class="mat-red" mat-menu-item (click)="deleteUser(element.id)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
                                 </mat-menu>
 
                                 @if (cursorUser == element.id) {
@@ -96,7 +96,7 @@
             </mat-tab>
             <mat-tab label="Reports">
                 <div class="table reason">
-                    <table mat-table class="mat-elevation-z8" [dataSource]="reports()" >
+                    <table mat-table class="mat-elevation-z8" [dataSource]="reports()">
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef> No. </th>
                             <td mat-cell *matCellDef="let element"> {{element.id}} </td>

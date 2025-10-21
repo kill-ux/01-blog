@@ -73,7 +73,3 @@
 ::ng-deep .mdc-text-field--filled {
     background-color: var(--bg-secondary) !important;
 }
-
-.textarea {
-    background-color: red !important;
-}

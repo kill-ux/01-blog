@@ -6,7 +6,7 @@
                     <button #submit style="display: none;" type="submit" class="btn btn-primary with-100">save</button>
 
                     <!-- <label class="panel-label"> -->
-                    <input class="title-input" formControlName="title" placeholder="New post title here" type="text" />
+                    <input maxlength="255" class="title-input" formControlName="title" placeholder="New post title here" type="text" />
                     <!-- </label> -->
                     <div class="editor-toolbar">
                         <!-- Bold Button -->
@@ -49,7 +49,7 @@
                             (change)="onImageUpload($event,myTextarea)">
                     </div>
 
-                    <textarea #myTextarea (drop)="onDrop($event)" (paste)="onPaste($event)"
+                    <textarea maxlength="5000" #myTextarea (drop)="onDrop($event)" (paste)="onPaste($event)"
                         class="markdown-textarea NgxEditor__Wrapper" formControlName="description"
                         placeholder="Start typing your markdown here..."></textarea>
                     <!-- Proper error handling -->

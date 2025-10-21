@@ -139,7 +139,7 @@
     justify-content: space-between;
     /* width: 150px; */
     margin-inline: 10px;
-    background-color: var(--outline);
+    background-color: var(--bg-hover);
     padding: 3px;
     border-radius: 2px;
 }
@@ -155,9 +155,7 @@
 
 .comment-content {
     width: 100%;
-    border: 1px solid var(--bg-back);
-    /* border-top: none;
-    border-bottom: none; */
+    border-right: 1px solid var(--bg-back);
     padding-block: 10px;
     margin: 5px;
     border-radius: 4px;
@@ -212,6 +210,7 @@
 .user-info {
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
 }
 
 .user-info svg {
@@ -220,8 +219,8 @@
 
 .replays {
     margin-left: 25px;
-    padding-left: 20px;
-    border-left: 3px solid var(--bg-tertiary);
+    padding-left: 5px;
+    border-left: 1px solid var(--bg-tertiary);
 }
 
 .thread {

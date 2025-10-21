@@ -47,6 +47,10 @@
                 </button>
                 <mat-menu #menu="matMenu">
                     @if (authService.currentUser?.id == this.child.user.id) {
+                    <button mat-menu-item (click)="openBlog(this.child.id)">
+                        <mat-icon>open_in_new</mat-icon>
+                        <span>Open</span>
+                    </button>
                     <button mat-menu-item (click)="DeleteBlog(this.child.id)">
                         <mat-icon>delete</mat-icon>
                         <span>Delete</span>
@@ -121,7 +125,7 @@
 
                 @if (this.reply) {
 
-                <span (click)="showReply(); changeReply();" class="stat">
+                <span (click)="showReply(false); changeReply();" class="stat">
                     <svg width="20" viewBox="0 0 20 20"
                         class="hover:text-blue transition-colors duration-500 hover:scale-98 rotate-180">
                         <g class="fill-icon">
@@ -139,7 +143,7 @@
                     </svg> No Reply
                 </span>
                 } @else {
-                <span (click)="showReply(); changeReply();" class="stat">
+                <span (click)="showReply(false); changeReply();" class="stat">
                     <svg width="20" viewBox="0 0 20 20"
                         class="hover:text-blue transition-colors duration-500 hover:scale-98 rotate-180">
                         <g class="fill-icon">
@@ -172,7 +176,7 @@
 <div class="form-child">
     <form [formGroup]="formCommend" class="comments" (submit)="(submitComment())">
         <div class="comment-back cap">
-            <textarea formControlName="description" class="comment-textarea" name="" id=""
+            <textarea maxlength="5000" formControlName="description" class="comment-textarea" name="" id=""
                 placeholder="Add a comment to the discussion" rows="5" (keydown)="onKeyDown($event,btn)"></textarea>
         </div>
         <button #btn type="submit" class="btn btn-primary">Update</button>

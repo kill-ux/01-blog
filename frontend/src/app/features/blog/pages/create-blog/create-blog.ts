@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MarkdownModule } from 'ngx-markdown';
 
 import { BlogService } from '../../services/blog-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-create-blog',
@@ -16,6 +17,7 @@ export class CreateBlog implements OnInit {
 	formBlog: FormGroup;
 	isUploading = false;
 	id: string | null = null
+	snackBar = inject(MatSnackBar)
 	// 
 
 	constructor(private fb: FormBuilder, private blogService: BlogService, private route: ActivatedRoute, private router: Router) {
@@ -47,6 +49,8 @@ export class CreateBlog implements OnInit {
 	}
 
 	onSubmit() {
+		if (this.isUploading) return
+		this.isUploading = true;
 		console.log("submit")
 		this.formBlog.markAllAsTouched();
 
@@ -61,10 +65,18 @@ export class CreateBlog implements OnInit {
 			obs.subscribe({
 				next: (res) => {
 					console.log("ok")
+					this.isUploading = false;
 					this.router.navigate(['blog', res.id])
+					this.snackBar.open('new blog created', "Close", {
+						duration: 2000,
+					});
 				},
 				error: (err) => {
 					console.log(err)
+					this.isUploading = false;
+					this.snackBar.open('create blog faild', "Close", {
+						duration: 2000,
+					});
 				}
 			})
 
@@ -155,21 +167,18 @@ export class CreateBlog implements OnInit {
 					}
 				}
 			}
-
-
-
 		} catch (error) {
 			console.error('Upload failed:', error);
 		} finally {
 			this.isUploading = false;
+			this.snackBar.open('upploading faild', "Close", {
+				duration: 2000,
+			});
 		}
 	}
 
 	toolBarClick(textarea: HTMLTextAreaElement, start: string, end: string) {
-
-		console.log(start)
 		textarea.focus()
-		// this.insertText(`${start}${window}${end}`)
 		document.execCommand('insertText', false, `${start}${window.getSelection()?.toString()}${end}`);
 		this.formBlog.get('description')?.setValue(textarea.value);
 	}

@@ -7,15 +7,18 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../auth/services/auth-api';
 import { ChildBlog } from "../child-blog/child-blog";
 import { environment } from '../../../../../environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	selector: 'app-single-blog',
-	imports: [DatePipe, MarkdownComponent, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, ChildBlog],
+	imports: [DatePipe, MarkdownComponent, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, ChildBlog, MatInputModule],
 	templateUrl: './single-blog.html',
 	styleUrl: './single-blog.css'
 })
@@ -25,6 +28,8 @@ export class SingleBlog implements OnInit {
 	lastChild = 0
 	isLoading = false
 	apiUrl = environment.API_URL
+
+	snackBar = inject(MatSnackBar)
 	public authService = inject(AuthService)
 
 	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
@@ -42,14 +47,22 @@ export class SingleBlog implements OnInit {
 	}
 
 	toggleLike(blogResponce: BlogResponce) {
+		if (this.isLoading) return;
+		this.isLoading = true;
+
 		this.blogService.toggleLike(blogResponce).subscribe({
 			next: res => {
 				console.log(res)
 				blogResponce.like = res.like == 1
 				blogResponce.likes += res.like;
+				this.isLoading = false
 			},
 			error: err => {
 				console.log(err)
+				this.isLoading = false
+				this.snackBar.open('toggle faild', "Close", {
+					duration: 2000,
+				});
 			}
 		})
 	}
@@ -87,6 +100,9 @@ export class SingleBlog implements OnInit {
 			error: (err) => {
 				console.log(err)
 				this.isLoading = false;
+				this.snackBar.open('get childs Faild', "Close", {
+					duration: 2000,
+				});
 			}
 		})
 	}
@@ -98,21 +114,24 @@ export class SingleBlog implements OnInit {
 	}
 
 	submitComment() {
-		console.log(this.formCommend.value.description)
-		console.log("submit")
+		if (this.isLoading) return;
+		this.isLoading = true;
 		this.formCommend.markAllAsTouched();
 
 		if (this.formCommend.valid) {
 			let comment: any = { description: this.formCommend.value.description, parent: this.blog.id }
 			this.blogService.saveBlog(comment).subscribe({
 				next: (res) => {
-					console.log("ok")
-					console.log(res)
 					this.blog.children = [res, ...this.blog.children]
 					this.formCommend.reset()
+					this.isLoading = false
 				},
 				error: (err) => {
 					console.log(err)
+					this.isLoading = false
+					this.snackBar.open('comment faild', "Close", {
+						duration: 2000,
+					});
 				}
 			})
 
@@ -126,16 +145,40 @@ export class SingleBlog implements OnInit {
 	}
 
 	DeleteBlog(id: number) {
-		console.log("delete this id =>", id)
+		if (this.isLoading) return;
+		this.isLoading = true;
 		this.blogService.DeleteBlog(id).subscribe({
 			next: res => {
-				console.log(res)
 				this.router.navigate([""])
+				this.isLoading = false
 			},
 			error: err => {
 				console.log(err)
+				this.isLoading = false
 			}
 		})
+	}
+
+	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger) {
+		if (this.isLoading) return
+		this.isLoading = true
+		const value = e.value.trim();
+		if (value.length == 0) return
+		this.blogService.Report({ blogId: id, reason: value }).subscribe({
+			next: res => {
+				console.log(res)
+				e.value = ''
+				this.isLoading = false
+			},
+			error: err => {
+				console.log(err)
+				this.isLoading = false
+				this.snackBar.open("report faild", "Closa", {
+					duration: 2000
+				})
+			}
+		})
+		menuTrigger.closeMenu()
 	}
 
 	EditBlog(id: number) {

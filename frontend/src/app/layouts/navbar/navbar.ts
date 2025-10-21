@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth-api';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { environment } from '../../../environments/environment';
 import { ThemeToggle } from "../../Theme/theme-toggle/theme-toggle";
@@ -8,7 +8,7 @@ import { Notifications } from "../../features/user/notifications/notifications";
 
 @Component({
 	selector: 'app-navbar',
-	imports: [RouterLink, MatMenu, MatMenuModule, ThemeToggle, Notifications],
+	imports: [RouterLink, MatMenu, MatMenuModule, ThemeToggle, Notifications, RouterLinkActive],
 	templateUrl: './navbar.html',
 	styleUrl: './navbar.css'
 })

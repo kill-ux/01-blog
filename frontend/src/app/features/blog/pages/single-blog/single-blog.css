@@ -49,6 +49,7 @@
     font-weight: 700;
     color: var(--btn--primarey);
     line-height: 1.3;
+    word-break: break-all;
 }
 
 .blog-content * {
@@ -200,5 +201,31 @@
 
 app-child-blog {
     width: 100%;
+}
+
+
+
+.report{
+    width: 100%;
+}
+
+
+.report *{
+    width: 100%;
+}
+
+
+::ng-deep .mat-mdc-menu-panel:has(.report) {
+    width: 600px;
+    max-width: 600px;
+    padding: 30px;
+}
+
+::ng-deep .mdc-text-field--filled {
+    background-color: var(--bg-secondary) !important;
+}
+
+.blog-card:hover {
+	transform: translateX(0);
 }
 

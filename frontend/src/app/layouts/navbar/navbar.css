@@ -47,8 +47,9 @@ body {
 }
 
 .navbar-content {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    /* justify-content: space-between; */
     align-items: center;
     height: 4rem;
 }
@@ -85,13 +86,11 @@ body {
     color: rgb(220, 20, 60);
 }
 
-/* Desktop Navigation */
-.nav-links {}
-
 
 
 .nav-links-list {
     display: flex;
+    justify-content: center;
     align-items: baseline;
     gap: 2rem;
     list-style: none;
@@ -152,13 +151,14 @@ body {
 
 /* Mobile Menu Button */
 .mobile-menu-btn {
-    display: block;
+    display: none;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 0.375rem;
     transition: background-color 0.2s ease;
+    margin-right: 10px;
 }
 
 .mobile-menu-btn:hover {
@@ -217,23 +217,26 @@ body {
 }
 
 /* Responsive Design */
-@media (min-width: 768px) {
+@media (max-width: 1000px) {
+
     .navbar-container {
         padding: 0 1.5rem;
     }
 
     .nav-links {
-        display: block;
+        display: none;
     }
+
 
     .action-buttons {
         display: flex;
     }
 
     .mobile-menu-btn {
-        display: none;
+        display: block;
     }
 }
+
 
 @media (min-width: 1024px) {
     .navbar-container {
@@ -265,7 +268,7 @@ body {
     /* border: 1px solid #dbdbdb; */
     width: 220px;
     /* box-shadow: var(--outline) 0px 4px 4px -3px, var(--outline) 0px 4px 6px -2px, var(--outline) 0px 0px 1px !important; */
-    box-shadow: var(--outline) -1px -1px 1px , var(--outline) 1px 1px 1px !important;
+    box-shadow: var(--outline) -1px -1px 1px, var(--outline) 1px 1px 1px !important;
     /* padding: 25px; */
 }
 
@@ -277,7 +280,7 @@ body {
 }
 
 ::ng-deep .mat-mdc-menu-item-text {
-    justify-content: start !important ;
+    justify-content: start !important;
     margin-left: 5px;
 }
 
@@ -292,12 +295,12 @@ body {
 .user-info {
     font-size: 16px;
     text-align: center;
-    border-bottom:  1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
     color: var(--text-muted);
 }
 
 .logout {
-    border-top:  1px solid var(--border-light);
+    border-top: 1px solid var(--border-light);
 }
 
 app-theme-toggle {

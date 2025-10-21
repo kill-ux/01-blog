@@ -100,13 +100,18 @@ export class ChildBlog implements OnInit {
 		}
 	}
 
-	showReply() {
+	showReply(toggle?: boolean) {
 		if (this.child?.children.length == 0) {
 			this.hidden = true
 			this.getBlogChildren(0)
-		} else {
+		} else if (toggle == undefined) {
 			this.hidden = !this.hidden
+			if (this.hidden == false) {
+				this.reply = false
+			}
 			console.log(this.hidden)
+		} else {
+			this.hidden = true
 		}
 	}
 
@@ -123,7 +128,7 @@ export class ChildBlog implements OnInit {
 				next: (res) => {
 					if (this.child && res.children.length > 0) {
 						res.children = res.children.map(child => {
-							if(child) {
+							if (child) {
 								child.parent = this.child
 							}
 							return child
@@ -163,6 +168,7 @@ export class ChildBlog implements OnInit {
 	}
 
 	changeReply() {
+		// this.reply = !this.reply
 		this.reply = !this.reply
 	}
 
@@ -171,5 +177,9 @@ export class ChildBlog implements OnInit {
 		if (this.lastChild != 0 && !this.isLoading) {
 			this.getBlogChildren(this.lastChild);
 		}
+	}
+
+	openBlog(id: number) {
+		this.router.navigate(["blog", id])
 	}
 }

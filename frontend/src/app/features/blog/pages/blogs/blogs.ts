@@ -3,7 +3,6 @@ import { BlogService } from '../../services/blog-service';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 
-import sanitizeHtml from 'sanitize-html';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { MatButtonModule } from '@angular/material/button';
@@ -12,9 +11,8 @@ import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { AuthService } from '../../../auth/services/auth-api';
 import { User } from '../../../auth/models/model';
 import { environment } from '../../../../../environments/environment';
-import { AdminService } from '../../../admin/services/admin-service';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from "@angular/forms";
 import { MatInputModule } from '@angular/material/input';
 
 @Component({

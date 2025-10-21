@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button'
 
@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ThemeToggle } from "../../../Theme/theme-toggle/theme-toggle";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-signin',
@@ -20,6 +21,7 @@ export class Signin {
 	myForm: FormGroup;
 	hidePassword = true;
 	isLoading = false;
+	snackBar = inject(MatSnackBar)
 
 	constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 		this.myForm = this.fb.group({
@@ -39,12 +41,14 @@ export class Signin {
 			console.log('Form data:', this.myForm.value);
 			this.authService.signin(this.myForm.value).subscribe({
 				next: (res) => {
-					// this.authService.setAuthToken(res.token)
 					this.router.navigate(["/"])
 					this.isLoading = false;
 				},
 				error: (err) => {
 					console.log('Login faild', err)
+					this.snackBar.open('Login faild', "Close", {
+						duration: 2000,
+					});
 					this.isLoading = false;
 				}
 

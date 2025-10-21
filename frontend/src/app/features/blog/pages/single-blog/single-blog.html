@@ -29,10 +29,29 @@
                         <span>Edit</span>
                     </button>
                     }
-                    <button mat-menu-item (click)="DeleteBlog(this.blog.id)">
+                    <!-- <button mat-menu-item (click)="ReportBlog(this.blog.id)">
+                        <mat-icon>report</mat-icon>
+                        <span>Report</span>
+                    </button> -->
+                    <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
+                        #menuTrigger="matMenuTrigger">
                         <mat-icon>report</mat-icon>
                         <span>Report</span>
                     </button>
+                    <mat-menu #reportUser="matMenu">
+                        <div class="report" (click)="$event.stopPropagation()">
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Report your problem</mat-label>
+                                    <textarea  maxlength="1000" #textarea matInput
+                                        placeholder="Ex. It makes me feel..."></textarea>
+                                </mat-form-field>
+                            </form>
+
+                            <button (click)="ReportBlog(this.blog.id, textarea ,menuTrigger)"
+                                class="btn btn-primary">submit</button>
+                        </div>
+                    </mat-menu>
                 </mat-menu>
 
             </header>
@@ -59,7 +78,7 @@
 
                 <form [formGroup]="formCommend" class="comments" (submit)="(submitComment())">
                     <div class="comment-back cap">
-                        <textarea formControlName="description" class="comment-textarea" name="" id=""
+                        <textarea maxlength="5000" formControlName="description" class="comment-textarea" name="" id=""
                             placeholder="Add a comment to the discussion" rows="5"
                             (keydown)="onKeyDown($event,btn)"></textarea>
                     </div>
@@ -68,12 +87,12 @@
 
                 @for (item of (this.blog?.children || []); track item.id) {
                 <app-child-blog [thread]="2" [child]="item"></app-child-blog>
-                    @if (lastChild == item.id) {
-                        <div #loadTrigger></div>
-                        @defer (on viewport(loadTrigger),) {
-                            <div>{{ loadMoreChildren() }}</div>
-                        }
-                    }
+                @if (lastChild == item.id) {
+                <div #loadTrigger></div>
+                @defer (on viewport(loadTrigger),) {
+                <div>{{ loadMoreChildren() }}</div>
+                }
+                }
                 }
             </footer>
         </article>
