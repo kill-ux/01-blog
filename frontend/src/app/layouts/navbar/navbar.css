@@ -235,6 +235,14 @@ body {
     .mobile-menu-btn {
         display: block;
     }
+
+    .navbar-content {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .d-l {
+        margin: 0;
+    }
 }
 
 
@@ -254,6 +262,7 @@ body {
 }
 
 .img-profile {
+    min-width: 40px;
     width: 80px;
 }
 
