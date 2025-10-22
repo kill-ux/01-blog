@@ -12,9 +12,7 @@ svg {
     padding: 0.5rem 0.75rem;
     border-radius: 0.375rem;
     transition: color 0.2s ease;
-    /* margin-left: 2.5rem; */
     display: flex;
-    /* margin-left: 2.5rem; */
 }
 
 .nav-link svg {
@@ -29,7 +27,7 @@ svg {
     color: var(--foreground);
 }
 
-::ng-deep .mat-menu-after:has(.parent) {
+::ng-deep .mat-menu-after:has(#desktop) {
     transform: translateX(-30%) !important;
 }
 

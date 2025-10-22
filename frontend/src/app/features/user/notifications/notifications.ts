@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, input, OnInit, signal } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { Router } from '@angular/router';
 import { MatMenuModule } from "@angular/material/menu";
@@ -19,6 +19,7 @@ export class Notifications implements OnInit {
 	private isLoading = false;
 	cursor = 0;
 	notfs = signal<NotificationResponce | null>(null)
+	mobile = input<boolean>()
 
 	apiUrl = environment.API_URL
 

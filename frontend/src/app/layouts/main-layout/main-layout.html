@@ -1,24 +1,73 @@
-<div class="main-layout">
+<!-- <div class="main-layout"> -->
 
-    <!-- Navigation Bar -->
-    <app-navbar></app-navbar>
+<mat-sidenav-container class="main-layout" class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [opened]="opened" mode="over">
+        <mat-toolbar color="primary">Menu</mat-toolbar>
+        <mat-nav-list>
+            <a (click)="drawer.close()" mat-list-item routerLinkActive="active" routerLink="" class="nav-link"><svg
+                    width="20" viewBox="0 0 20 20" class="text-icon-secondary">
+                    <path d="M5 3H3V5H5V3Z" class="fill-icon"></path>
+                    <path d="M5 7H3V9H5V7Z" class="fill-icon"></path>
+                    <path d="M5 11H3V13H5V11Z" class="fill-icon"></path>
+                    <path d="M5 15H3V17H5V15Z" class="fill-icon"></path>
+                    <path d="M17 3H7V5H17V3Z" class="fill-current"></path>
+                    <path d="M15 7H7V9H15V7Z" class="fill-current"></path>
+                    <path d="M16 11H7V13H16V11Z" class="fill-current"></path>
+                    <path d="M12 15H7V17H12V15Z" class="fill-current"></path>
+                </svg>Feed</a>
 
-    <!-- Main Content -->
-    <main  class="main-content">
-        <div style="text-align: center;">
-            <!-- <h1>Welcome to 01Blog</h1>
-            <p style="color: var(--muted-foreground); margin-top: 0.5rem;">Share your learning journey with the
-                community</p> -->
+            <a (click)="drawer.close()" mat-list-item routerLinkActive="active" routerLink="/discover" class="nav-link">
+                <svg width="20" viewBox="0 0 16 16" class="text-text-primary fill-current">
+                    <path d="M11.2008 11.2H4.80078V12.8H11.2008V11.2Z"></path>
+                    <path d="M11.2008 12.8H4.80078V14.4H11.2008V12.8Z"></path>
+                    <path d="M4.79922 12.8H3.19922V14.4H4.79922V12.8Z"></path>
+                    <path d="M12.7992 12.8H11.1992V14.4H12.7992V12.8Z"></path>
+                    <path d="M10.4016 1.59998H5.60156V3.19998H10.4016V1.59998Z"></path>
+                    <path d="M10.4016 8H5.60156V9.6H10.4016V8Z"></path>
+                    <path d="M11.9984 3.19995H10.3984V7.99995H11.9984V3.19995Z"></path>
+                    <path d="M5.6 3.19995H4V7.99995H5.6V3.19995Z"></path>
+                    <path d="M10.4016 3.19995H5.60156V7.99995H10.4016V3.19995Z"></path>
+                </svg>
+                Discover</a>
 
-            <router-outlet></router-outlet>
-        </div>
-    </main> 
+
+            <a (click)="drawer.close()" mat-list-item routerLink="create" class="nav-link"><svg width="20"
+                    viewBox="0 0 20 20" class="text-icon-btn fill-current" shape-rendering="crispEdges"
+                    style="image-rendering: pixelated;">
+                    <path d="M16 9V11L18 11V9L16 9Z"></path>
+                    <path d="M13 7V9L16 9V7L13 7Z"></path>
+                    <path d="M13 13V11L16 11V13L13 13Z"></path>
+                    <path d="M10 5V7L13 7V5L10 5Z"></path>
+                    <path d="M10 15V13L13 13V15L10 15Z"></path>
+                    <path d="M7 3V5L10 5V3L7 3Z"></path>
+                    <path d="M7 17V15L10 15V17L7 17Z"></path>
+                    <path d="M4 1V3L7 3V1L4 1Z"></path>
+                    <path d="M4 19V17L7 17V19L4 19Z"></path>
+                    <path d="M2 3L2 17L4 17L4 3L2 3Z"></path>
+                </svg>Create</a>
 
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <!-- Your footer content -->
-        </div>
-    </footer>
-</div>
+            <app-notifications mat-list-item [mobile]="true"></app-notifications>
+            <mat-divider></mat-divider>
+
+            <a mat-list-item (click)="drawer.close()">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+
+        <app-navbar (opened)="drawer.toggle()"></app-navbar>
+
+        <main class="main">
+            <main class="main-content">
+                <div style="text-align: center;">
+                    <router-outlet></router-outlet>
+                </div>
+            </main>
+        </main>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>

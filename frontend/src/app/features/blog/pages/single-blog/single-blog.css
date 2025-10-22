@@ -4,7 +4,7 @@
 /* Responsive */
 @media (max-width: 768px) {
     .container-blogs {
-        padding: 1rem;
+        /* padding: 1rem; */
         gap: 1rem;
     }
 

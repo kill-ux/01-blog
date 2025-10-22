@@ -17,3 +17,12 @@ svg:hover {
 .d-l {
     width: 60px;
 }
+
+
+/* Responsive Design */
+@media (max-width: 1000px) {
+    .d-l {
+        padding: 0;
+        width: 20px
+    }
+}

@@ -1,23 +1,44 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../features/user/services/user-service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { M } from '@angular/cdk/keycodes';
 import { Navbar } from "../navbar/navbar";
 import { AuthService } from '../../features/auth/services/auth-api';
+
+
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from "@angular/material/menu";
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+
+
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
+import { Notifications } from "../../features/user/notifications/notifications";
 
 
 declare var Prism: any;
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, MatToolbarModule, Navbar],
+  imports: [RouterOutlet, MatToolbarModule, Navbar, CommonModule,RouterLink,
+    MatIcon,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatDividerModule,
+    MatExpansionModule, Notifications],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.css'
 })
 export class MainLayout {
   isLoggedIn = false;
   currentUser: any;
+  opened = false
 
   constructor(
     private router: Router,

@@ -76,7 +76,6 @@
 .user {
     background-color: var(--bg-back);
     padding: 2px;
-    box-shadow: 0 0 10px var(--bg-back);
 }
 
 @media (max-width: 768px) {
