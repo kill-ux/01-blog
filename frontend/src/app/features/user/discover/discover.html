@@ -37,14 +37,14 @@
         </div>
     </div>
 
-    <div>
+    <!-- <div> -->
         @if (cursor == user.id) {
         <div #loadTrigger></div>
         @defer (on viewport(loadTrigger)) {
         <div>{{ loadMoreBlogs() }}</div>
         }
         }
-    </div>
+    <!-- </div> -->
     } @empty {
     <p>No items found.</p>
     }

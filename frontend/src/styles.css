@@ -482,3 +482,7 @@ a {
 }
 
 
+p:has(img) {
+	display: flex;
+	align-items: center;
+}

@@ -47,10 +47,6 @@
                 </button>
                 <mat-menu #menu="matMenu">
                     @if (authService.currentUser?.id == this.child.user.id) {
-                    <button mat-menu-item (click)="openBlog(this.child.id)">
-                        <mat-icon>open_in_new</mat-icon>
-                        <span>Open</span>
-                    </button>
                     <button mat-menu-item (click)="DeleteBlog(this.child.id)">
                         <mat-icon>delete</mat-icon>
                         <span>Delete</span>
@@ -60,6 +56,10 @@
                         <span>Edit</span>
                     </button>
                     }
+                    <button mat-menu-item (click)="openBlog(this.child.id)">
+                        <mat-icon>open_in_new</mat-icon>
+                        <span>Open</span>
+                    </button>
                     <button mat-menu-item (click)="DeleteBlog(this.child.id)">
                         <mat-icon>report</mat-icon>
                         <span>Report</span>

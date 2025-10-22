@@ -35,13 +35,43 @@
     align-items: center;
     gap: 1rem;
     width: 100%;
-    
 }
 
 
+
+
+
+@media (max-width: 1000px) {
+    .info {
+        flex-direction: column;
+    }
+
+    .avatar {
+        width: 200px;
+        height: 100%;
+    }
+
+    .flex-row {
+        gap: 0px;
+    }
+
+    .content div  {
+        width: auto !important;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+    .subs {
+        flex-direction: column !important;
+    }
+
+}
+
 .nickname {
     font-family: "BoldPixels", sans-serif;
-    font-size: 50px;
+    font-size: 40px;
     padding-block: 20px;
 }
 
@@ -64,7 +94,7 @@
 .flex-row {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 20px;
 }
@@ -133,12 +163,12 @@
 }
 
 
-.report{
+.report {
     width: 100%;
 }
 
 
-.report *{
+.report * {
     width: 100%;
 }
 

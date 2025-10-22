@@ -14,45 +14,67 @@
                     </div>
                 </div>
 
-                <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
-                    aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    @if (authService.currentUser?.id == this.blog?.user.id) {
-                    <button mat-menu-item (click)="DeleteBlog(this.blog.id)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Delete</span>
+                <div class="flex-row">
+                    <span class="stat">
+                        <svg (click)="toggleLike(this.blog); $event.stopPropagation()" width="20" height="20"
+                            viewBox="0 0 20 20" [class.liked]="this.blog.like" [class.not-liked]="!this.blog.like">
+                            <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
+                            <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
+                            <path d="M14.3043 1.59375H11.4492V4.48449H14.3043V1.59375Z"></path>
+                            <path d="M17.1519 1.59375H14.2969V4.48449H17.1519V1.59375Z"></path>
+                            <path d="M11.4556 4.47681H8.60059V7.36755H11.4556V4.47681Z"></path>
+                            <path d="M2.91075 4.47681H0.0557022V7.36755H2.91075V4.47681Z"></path>
+                            <path d="M20.0006 4.47656H17.1455V7.3673H20.0006V4.47656Z"></path>
+                            <path d="M2.91075 7.36108H0.0557022V10.2518H2.91075V7.36108Z"></path>
+                            <path d="M5.75837 10.2451H2.90332V13.1359H5.75837V10.2451Z"></path>
+                            <path d="M8.60701 13.1289H5.75195V16.0197H8.60701V13.1289Z"></path>
+                            <path d="M11.4556 16.0127H8.60059V18.9034H11.4556V16.0127Z"></path>
+                            <path d="M14.3043 13.1289H11.4492V16.0196H14.3043V13.1289Z"></path>
+                            <path d="M17.1519 10.2451H14.2969V13.1359H17.1519V10.2451Z"></path>
+                            <path d="M20.0006 7.36133H17.1455V10.2521H20.0006V7.36133Z"></path>
+                        </svg>
+                        {{ this.blog.likes }}
+                    </span>
+                    <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
                     </button>
-                    <button mat-menu-item (click)="EditBlog(this.blog.id)">
-                        <mat-icon>edit</mat-icon>
-                        <span>Edit</span>
-                    </button>
-                    }
-                    <!-- <button mat-menu-item (click)="ReportBlog(this.blog.id)">
+                    <mat-menu #menu="matMenu">
+                        @if (authService.currentUser?.id == this.blog?.user.id) {
+                        <button mat-menu-item (click)="DeleteBlog(this.blog.id)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                        <button mat-menu-item (click)="EditBlog(this.blog.id)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit</span>
+                        </button>
+                        }
+                        <!-- <button mat-menu-item (click)="ReportBlog(this.blog.id)">
                         <mat-icon>report</mat-icon>
                         <span>Report</span>
                     </button> -->
-                    <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
-                        #menuTrigger="matMenuTrigger">
-                        <mat-icon>report</mat-icon>
-                        <span>Report</span>
-                    </button>
-                    <mat-menu #reportUser="matMenu">
-                        <div class="report" (click)="$event.stopPropagation()">
-                            <form class="example-form">
-                                <mat-form-field class="example-full-width">
-                                    <mat-label>Report your problem</mat-label>
-                                    <textarea maxlength="1000" #textarea matInput
-                                        placeholder="Ex. It makes me feel..."></textarea>
-                                </mat-form-field>
-                            </form>
+                        <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
+                            #menuTrigger="matMenuTrigger">
+                            <mat-icon>report</mat-icon>
+                            <span>Report</span>
+                        </button>
+                        <mat-menu #reportUser="matMenu">
+                            <div class="report" (click)="$event.stopPropagation()">
+                                <form class="example-form">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Report your problem</mat-label>
+                                        <textarea maxlength="1000" #textarea matInput
+                                            placeholder="Ex. It makes me feel..."></textarea>
+                                    </mat-form-field>
+                                </form>
 
-                            <button (click)="ReportBlog(this.blog.id, textarea ,menuTrigger)"
-                                class="btn btn-primary">submit</button>
-                        </div>
+                                <button (click)="ReportBlog(this.blog.id, textarea ,menuTrigger)"
+                                    class="btn btn-primary">submit</button>
+                            </div>
+                        </mat-menu>
                     </mat-menu>
-                </mat-menu>
+                </div>
 
             </header>
 

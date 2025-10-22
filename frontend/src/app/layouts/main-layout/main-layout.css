@@ -6,8 +6,7 @@ mat-sidenav-container {
 
 .main-content {
     background-color: var(--bg-background--filter);
-    height: 100%;
-    width: 100%;
+    min-height: 100%;
 }
 
 .main {

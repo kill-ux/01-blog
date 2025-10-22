@@ -27,7 +27,7 @@
         <div class="content">
 
             <div class="flex-row">
-                <div class="nickname">{{ userProfile()?.nickname }}</div>
+                <div class="nickname">@{{ userProfile()?.nickname }}</div>
                 <div class="end">
                     <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
                         aria-label="Example icon-button with a menu">
@@ -57,7 +57,7 @@
             </div>
             <div class="">{{ userProfile()?.email }}</div>
             <div class=""> Joind At : {{ userProfile()?.createdAt | date:'mediumDate' }}</div>
-            <div class="flex-row">
+            <div class="flex-row subs">
                 <button (click)="getSubscribers()" class="btn btn-primary">subscribers<span
                         class="number">{{userProfile()?.subscribers}}</span>
                 </button>
