@@ -1,10 +1,18 @@
-.main {
+mat-sidenav-container {
     background: url(/changes-header.jpg) no-repeat fixed;
     color: var(--text-primary);
 }
 
+
 .main-content {
     background-color: var(--bg-background--filter);
+    height: 100%;
+    width: 100%;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
 }
 
 .sidenav-container {
@@ -116,4 +124,21 @@ a {
 
 ::ng-deep .mat-sidenav {
     border-radius: 0 !important;
+}
+
+.end {
+    /* margin-bottom: auto; */
+    /* align-self: flex-end !important; */
+}
+
+mat-nav-list {
+    display: flex;
+    flex-direction: column;
+    /* height: 100%; */
+}
+
+::ng-deep .mat-drawer-inner-container {
+    display: grid;
+    grid-template-rows: 1fr 20fr 1fr;
+    height: 100% !important;
 }

@@ -21,38 +21,42 @@ import { Notifications } from "../../features/user/notifications/notifications";
 declare var Prism: any;
 
 @Component({
-  selector: 'app-main-layout',
-  imports: [RouterOutlet, MatToolbarModule, Navbar, CommonModule,RouterLink,
-    MatIcon,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatDividerModule,
-    MatExpansionModule, Notifications],
-  templateUrl: './main-layout.html',
-  styleUrl: './main-layout.css'
+	selector: 'app-main-layout',
+	imports: [RouterOutlet, MatToolbarModule, Navbar, CommonModule, RouterLink,
+		MatIcon,
+		MatSidenavModule,
+		MatToolbarModule,
+		MatListModule,
+		MatIconModule,
+		MatButtonModule,
+		MatMenuModule,
+		MatDividerModule,
+		MatExpansionModule, Notifications],
+	templateUrl: './main-layout.html',
+	styleUrl: './main-layout.css'
 })
 export class MainLayout {
-  isLoggedIn = false;
-  currentUser: any;
-  opened = false
+	isLoggedIn = false;
+	currentUser: any;
+	opened = false
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-  ) { }
+	constructor(
+		private router: Router,
+		private authService: AuthService,
+	) { }
 
-  ngOnInit() {
-    this.authService.initialize()
-    setTimeout(() => {
-      console.log("p=>", Prism.plugins.autoloader)
-      if (Prism && Prism.plugins.autoloader) {
-        Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/';
-        Prism.highlightAll(); // Re-highlight all code blocks
-      }
-    }, 0);
-  }
+	ngOnInit() {
+		this.authService.initialize()
+		setTimeout(() => {
+			console.log("p=>", Prism.plugins.autoloader)
+			if (Prism && Prism.plugins.autoloader) {
+				Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/';
+				Prism.highlightAll(); // Re-highlight all code blocks
+			}
+		}, 0);
+	}
+
+	logout() {
+		this.authService.logout()
+	}
 }

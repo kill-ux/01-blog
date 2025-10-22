@@ -14,21 +14,12 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 	templateUrl: './navbar.html',
 	styleUrl: './navbar.css'
 })
-export class Navbar implements OnInit {
+export class Navbar {
 	public authService = inject(AuthService)
 	public router = inject(Router)
 	opened = output<void>();
-	// public userService = inject(UserService)
-	//  environment.API_URL
+	
 	apiUrl = environment.API_URL;
-
-	ngOnInit(): void {
-		// this.userService.getUserById(this.authService.currentUser?.id).subscribe({
-		// 	next: data => {
-		// 		this.authService.currentUserSubject.next(data.user)
-		// 	}
-		// })
-	}
 
 	logout() {
 		this.authService.logout()
@@ -43,7 +34,6 @@ export class Navbar implements OnInit {
 	}
 
 	toggleMobileMenu(){
-		console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
 		this.opened.emit()
 	}
 }

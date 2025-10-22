@@ -14,6 +14,12 @@
 
 }
 
+@media (max-width: 1400px) {
+    .container {
+        margin-inline: 0;
+    }
+}
+
 ::ng-deep .mdc-data-table__content {
     background-color: var(--color-white) !important;
     margin: 20px !important;
@@ -69,7 +75,7 @@ app-blogs {
 }
 
 mat-tab-group {
-    margin-block: 40px;
+    padding: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,3 +160,9 @@ table {
 .mat-red, .mat-red * {
     color: #f84b4be0;
 }
+
+/* .dashboard {
+    background-color: red;
+    height: 100vh;
+    display: block;
+} */

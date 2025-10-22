@@ -43,7 +43,7 @@
                             <form class="example-form">
                                 <mat-form-field class="example-full-width">
                                     <mat-label>Report your problem</mat-label>
-                                    <textarea  maxlength="1000" #textarea matInput
+                                    <textarea maxlength="1000" #textarea matInput
                                         placeholder="Ex. It makes me feel..."></textarea>
                                 </mat-form-field>
                             </form>
@@ -58,12 +58,13 @@
 
 
             <!-- Blog content -->
+            @if (this.blog?.title) {
             <div class="blog-content">
                 <div class="blog-title">
                     <h3>{{ this.blog?.title }}</h3>
                 </div>
             </div>
-
+            }
 
 
             <div class="blog-content">

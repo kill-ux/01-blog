@@ -48,9 +48,11 @@
 
 
             <app-notifications mat-list-item [mobile]="true"></app-notifications>
-            <mat-divider></mat-divider>
-
-            <a mat-list-item (click)="drawer.close()">
+           
+        </mat-nav-list>
+        <mat-nav-list>
+             <mat-divider></mat-divider>
+            <a class="end" mat-list-item (click)="drawer.close(); logout()">
                 <mat-icon>logout</mat-icon>
                 <span>Logout</span>
             </a>

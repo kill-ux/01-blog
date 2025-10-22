@@ -254,6 +254,7 @@ body {
 	justify-content: space-between;
 	align-items: flex-start;
 	gap: 1rem;
+	padding-bottom: 10px;
 }
 
 .user-info {

@@ -12,11 +12,6 @@
         padding: 1rem;
     }
 
-    .blog-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
-    }
 
     .blog-actions {
         align-self: flex-end;

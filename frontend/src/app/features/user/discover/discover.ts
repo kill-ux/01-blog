@@ -12,7 +12,7 @@ import { environment } from '../../../../environments/environment';
 	templateUrl: './discover.html',
 	styleUrl: './discover.css'
 })
-export class Discover implements OnInit, OnChanges {
+export class Discover implements OnInit {
 	users = signal<User[]>([])
 	user = input<User | null>();
 	authService = inject(AuthService);
@@ -33,14 +33,6 @@ export class Discover implements OnInit, OnChanges {
 		if (this.cursor == 0) {
 			this.getUsers()
 		}
-	}
-
-	ngOnChanges(changes: SimpleChanges): void {
-		console.log("changeeeeeeeeeee")
-		// console.log(this.user)
-		// if (this.cursor == 0) {
-		// 	this.getUsers()
-		// }
 	}
 
 
