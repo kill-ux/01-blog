@@ -36,7 +36,6 @@ export class Notifications implements OnInit {
 		this.isLoading = true
 		this.userService.getNotifications(this.cursor).subscribe({
 			next: notfs => {
-				console.log("nots +>", notfs)
 				this.notfs.update(ns => {
 					if (notfs.notfs.length > 0) {
 						if (ns) {
@@ -62,7 +61,6 @@ export class Notifications implements OnInit {
 
 	loadMoreNotifications() {
 		if (this.cursor != 0) {
-			console.log("gg")
 			this.getNotifications()
 		}
 	}
@@ -73,7 +71,6 @@ export class Notifications implements OnInit {
 	}
 
 	markRead(id: number) {
-		console.log(id)
 		const ntfs = this.notfs()
 		if (!ntfs || ntfs.count < 1) return
 		this.userService.markRead(id).subscribe({

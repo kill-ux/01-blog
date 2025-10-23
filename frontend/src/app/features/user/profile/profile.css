@@ -186,3 +186,9 @@
 .textarea {
     background-color: red !important;
 }
+
+.sub {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border: var(--text-primary) 1px solid;
+}

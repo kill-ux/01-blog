@@ -38,15 +38,17 @@ export class Signin {
 	onSubmit() {
 		if (this.myForm.valid) {
 			this.isLoading = true;
-			console.log('Form data:', this.myForm.value);
 			this.authService.signin(this.myForm.value).subscribe({
 				next: (res) => {
 					this.router.navigate(["/"])
 					this.isLoading = false;
 				},
 				error: (err) => {
-					console.log('Login faild', err)
-					this.snackBar.open('Login faild', "Close", {
+					let message = 'Login faild'
+					if (err.status == 423) {
+						message += ` ${err.error.error}`
+					}
+					this.snackBar.open(message, "Close", {
 						duration: 2000,
 					});
 					this.isLoading = false;

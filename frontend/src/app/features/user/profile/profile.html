@@ -58,11 +58,13 @@
             <div class="">{{ userProfile()?.email }}</div>
             <div class=""> Joind At : {{ userProfile()?.createdAt | date:'mediumDate' }}</div>
             <div class="flex-row subs">
-                <button (click)="getSubscribers()" class="btn btn-primary">subscribers<span
-                        class="number">{{userProfile()?.subscribers}}</span>
-                </button>
-                <button (click)="getSubscribtions()" class="btn btn-primary">subscribtions <span
-                        class="number">{{userProfile()?.subscribtions}}</span> </button>
+                <div class="flex-row">
+                    <button (click)="getSubscribers()" class="btn sub ">subscribers<span
+                            class="number">{{userProfile()?.subscribers}}</span>
+                    </button>
+                    <button (click)="getSubscribtions()" class="btn sub">subscribtions <span
+                            class="number">{{userProfile()?.subscribtions}}</span> </button>
+                </div>
                 @if (this.authService.currentUser?.id != userProfile()?.id ) {
                 @if (userProfile()) {
                 @if (userProfile()?.sub) {
@@ -102,7 +104,7 @@
                 <path d="M12 7H14V9H12V7Z"></path>
             </g>
         </svg>
-        
+
         All Blogs
     </div>
     @if (currentComponent() == "subscribers") {

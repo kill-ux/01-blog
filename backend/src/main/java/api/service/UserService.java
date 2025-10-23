@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -161,7 +162,7 @@ public class UserService {
             User user = (User) authentication.getPrincipal();
 
             if (user.isBannedUntil()) {
-                throw new DisabledException(String.format("Account is banned"));
+                throw new LockedException(String.format("Account is banned"));
             }
             // Generate token with user details (not just nickname)
             String jwtToken = jwtService.generateToken(user);
@@ -170,7 +171,7 @@ public class UserService {
             loginResponse.setExpiresIn(jwtService.getExpirationTime());
             return loginResponse;
 
-        } catch (DisabledException e) {
+        } catch (LockedException e) {
             throw e;
         } catch (Exception e) {
             throw new BadCredentialsException("Invalid username or password");

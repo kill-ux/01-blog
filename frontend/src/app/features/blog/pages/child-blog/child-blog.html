@@ -60,10 +60,25 @@
                         <mat-icon>open_in_new</mat-icon>
                         <span>Open</span>
                     </button>
-                    <button mat-menu-item (click)="DeleteBlog(this.child.id)">
+                    <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
+                        #menuTrigger="matMenuTrigger">
                         <mat-icon>report</mat-icon>
                         <span>Report</span>
                     </button>
+                    <mat-menu #reportUser="matMenu">
+                        <div class="report" (click)="$event.stopPropagation()">
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Report your problem</mat-label>
+                                    <textarea maxlength="1000" #textarea matInput
+                                        placeholder="Ex. It makes me feel..."></textarea>
+                                </mat-form-field>
+                            </form>
+
+                            <button (click)="ReportBlog({id: this.child.id, e: textarea ,menuTrigger:menuTrigger})"
+                                class="btn btn-primary">submit</button>
+                        </div>
+                    </mat-menu>
                 </mat-menu>
 
             </span>
@@ -202,7 +217,7 @@
 
 <div [className]="this.thread != null && this.thread != 0 ? 'replays' : ''">
     @for (item of (this.child.children); track item.id) {
-    <app-child-blog [thread]="this.thread != null && this.thread != 0 ? this.thread-1 : null"
+    <app-child-blog (emitReport)="ReportBlog($event)" [thread]="this.thread != null && this.thread != 0 ? this.thread-1 : null"
         [child]="item"></app-child-blog>
     @if (lastChild == item.id && this.child.childrenCount > this.child.children.length) {
     <div class="fle" (click)="loadMoreChildren()"><span>Load More</span> <svg width="16" height="20" viewBox="0 0 20 20"

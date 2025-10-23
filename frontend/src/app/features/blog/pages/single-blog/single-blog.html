@@ -17,7 +17,7 @@
                 <div class="flex-row">
                     <span class="stat">
                         <svg (click)="toggleLike(this.blog); $event.stopPropagation()" width="20" height="20"
-                            viewBox="0 0 20 20" [class.liked]="this.blog.like" [class.not-liked]="!this.blog.like">
+                            viewBox="0 0 20 20" [class.liked]="this.blog?.like" [class.not-liked]="!this.blog?.like">
                             <path d="M5.75837 1.59375H2.90332V4.48449H5.75837V1.59375Z"></path>
                             <path d="M8.60701 1.59375H5.75195V4.48449H8.60701V1.59375Z"></path>
                             <path d="M14.3043 1.59375H11.4492V4.48449H14.3043V1.59375Z"></path>
@@ -33,7 +33,7 @@
                             <path d="M17.1519 10.2451H14.2969V13.1359H17.1519V10.2451Z"></path>
                             <path d="M20.0006 7.36133H17.1455V10.2521H20.0006V7.36133Z"></path>
                         </svg>
-                        {{ this.blog.likes }}
+                        {{ this.blog?.likes }}
                     </span>
                     <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
                         aria-label="Example icon-button with a menu">
@@ -41,19 +41,16 @@
                     </button>
                     <mat-menu #menu="matMenu">
                         @if (authService.currentUser?.id == this.blog?.user.id) {
-                        <button mat-menu-item (click)="DeleteBlog(this.blog.id)">
+                        <button mat-menu-item (click)="DeleteBlog(this.blog?.id)">
                             <mat-icon>delete</mat-icon>
                             <span>Delete</span>
                         </button>
-                        <button mat-menu-item (click)="EditBlog(this.blog.id)">
+                        <button mat-menu-item (click)="EditBlog(this.blog?.id)">
                             <mat-icon>edit</mat-icon>
                             <span>Edit</span>
                         </button>
                         }
-                        <!-- <button mat-menu-item (click)="ReportBlog(this.blog.id)">
-                        <mat-icon>report</mat-icon>
-                        <span>Report</span>
-                    </button> -->
+
                         <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
                             #menuTrigger="matMenuTrigger">
                             <mat-icon>report</mat-icon>
@@ -109,7 +106,7 @@
                 </form>
 
                 @for (item of (this.blog?.children || []); track item.id) {
-                <app-child-blog [thread]="2" [child]="item"></app-child-blog>
+                <app-child-blog (emitReport)="EmmitReport($event)"  [thread]="2" [child]="item"></app-child-blog>
                 @if (lastChild == item.id) {
                 <div #loadTrigger></div>
                 @defer (on viewport(loadTrigger),) {

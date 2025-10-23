@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, output, Output } from '@angular/core';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 import { BlogService } from '../../services/blog-service';
@@ -9,10 +9,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../auth/services/auth-api';
 import { environment } from '../../../../../environments/environment';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { dataReport } from '../single-blog/single-blog';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	selector: 'app-child-blog',
-	imports: [DatePipe, ReactiveFormsModule, MatButtonModule, MatMenuModule, MatIcon],
+	imports: [DatePipe, ReactiveFormsModule, MatButtonModule, MatMenuModule, MatIcon, MatFormField, MatLabel,MatInputModule],
 	templateUrl: './child-blog.html',
 	styleUrl: './child-blog.css'
 })
@@ -20,6 +23,9 @@ export class ChildBlog implements OnInit {
 	formCommend: FormGroup
 	@Input() child: BlogResponce | null = null;
 	@Input() thread: number | null = null
+
+
+	emitReport = output<dataReport>()
 
 	apiUrl = environment.API_URL
 
@@ -47,7 +53,6 @@ export class ChildBlog implements OnInit {
 	toggleLike(blogResponce: BlogResponce) {
 		this.blogService.toggleLike(blogResponce).subscribe({
 			next: res => {
-				console.log(res)
 				blogResponce.like = res.like == 1
 				blogResponce.likes += res.like;
 			},
@@ -69,7 +74,6 @@ export class ChildBlog implements OnInit {
 			}
 			obs.subscribe({
 				next: (res) => {
-					console.log("ok")
 					if (this.edit) {
 						this.child = res
 						this.child.children = []
@@ -95,7 +99,6 @@ export class ChildBlog implements OnInit {
 
 	updateParent(p: { childrenCount: number }) {
 		if (this.child) {
-			console.log("hhhhhhhhh", p)
 			this.child.childrenCount = p.childrenCount
 		}
 	}
@@ -109,7 +112,6 @@ export class ChildBlog implements OnInit {
 			if (this.hidden == false) {
 				this.reply = false
 			}
-			console.log(this.hidden)
 		} else {
 			this.hidden = true
 		}
@@ -117,7 +119,6 @@ export class ChildBlog implements OnInit {
 
 	toggelReply() {
 		this.hidden = !this.hidden
-		console.log(this.hidden)
 	}
 
 	getBlogChildren(cursor: number) {
@@ -150,11 +151,9 @@ export class ChildBlog implements OnInit {
 	}
 
 	DeleteBlog(id: number) {
-		console.log("delete this id =>", id)
 		this.blogService.DeleteBlog(id).subscribe({
 			next: res => {
 				this.child = null
-				console.log(res)
 			},
 			error: err => {
 				console.log(err)
@@ -182,4 +181,12 @@ export class ChildBlog implements OnInit {
 	openBlog(id: number) {
 		this.router.navigate(["blog", id])
 	}
+
+	ReportBlog(data: dataReport) {
+		this.emitReport.emit(data)
+	}
+
+	// EmmitReport(data: dataReport) {
+	// 	this.ReportBlog(data.id, data.e, data.menuTrigger)
+	// }
 }

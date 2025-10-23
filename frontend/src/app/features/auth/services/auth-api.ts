@@ -24,7 +24,6 @@ export class AuthService {
         private userService: UserService
     ) {
         this.apiUrl = environment.API_URL
-        console.log("environment => ", environment.API_URL);
     }
 
     initialize(): void {
@@ -37,7 +36,6 @@ export class AuthService {
                 tap(response => {
                     this.setAuthToken(response.token);
                     this.setUserFromToken(response.token);
-                    console.log(this.currentUserSubject)
                 })
             );
     }
@@ -45,11 +43,6 @@ export class AuthService {
     signup(credentials: SignupCredentials): Observable<AuthState> {
         return this.http.post<AuthState>(`${this.apiUrl}/auth/signup`, credentials);
     }
-
-    // getUserById(userId: any) {
-    //     console.log("decoded => ", userId)
-    //     return this.http.get<AuthState>("http://localhost:8080/api/users/profile?userId=" + userId)
-    // }
 
 
     setAuthToken(token: string) {

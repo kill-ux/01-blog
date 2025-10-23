@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,7 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(nickname);
 
                     if (((User) userDetails).isBannedUntil()) {
-                        throw new DisabledException(String.format("Account is banned"));
+                        throw new LockedException(String.format("Account is banned"));
                     }
 
                     if (jwtService.isTokenValid(jwt, userDetails)) {

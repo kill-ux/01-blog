@@ -1,11 +1,13 @@
 package api.service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,23 @@ import api.repository.NotificationRepository;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
 
-    public NotificationService(NotificationRepository notificationRepository) {
+    private final SimpMessagingTemplate messagingTemplate;
+
+    public NotificationService(NotificationRepository notificationRepository, SimpMessagingTemplate messagingTemplate) {
         this.notificationRepository = notificationRepository;
+        this.messagingTemplate = messagingTemplate;
+    }
+
+    public void notifyUser(String username, String type, Object data) {
+        this.messagingTemplate.convertAndSendToUser(
+            username,
+            "/queue/notifications",
+            Map.of(
+                "type", type,
+                "data", data,
+                "timestamp", Instant.now()
+            )
+        );
     }
 
     public void saveNotification(Blog blog) {
@@ -30,8 +47,11 @@ public class NotificationService {
             notification.setBlog(blog);
             notification.setUser(subscriber);
             this.notificationRepository.save(notification);
+            this.notifyUser(user.getNickname(), "CREATE_BLOG", notification);
         }
     }
+
+    
 
     public Map<String, Object> getNotification(long userId, long cursor) {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt", "id").descending());

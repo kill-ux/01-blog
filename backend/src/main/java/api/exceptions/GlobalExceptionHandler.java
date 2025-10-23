@@ -2,7 +2,9 @@ package api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,14 +35,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Map.of("error", ex.getReason()), ex.getStatusCode());
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Map<String, String>> handleBadCredentials(BadCredentialsException ex) {
+    @ExceptionHandler({ BadCredentialsException.class })
+    public ResponseEntity<Map<String, String>> handleBadCredentials(Exception ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @ExceptionHandler({ AuthenticationException.class })
+    @ExceptionHandler({ AuthenticationException.class, AccessDeniedException.class })
     public ResponseEntity<Map<String, String>> handleDisabledException(Exception ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
@@ -59,6 +61,15 @@ public class GlobalExceptionHandler {
         Map<String, String> response = new HashMap<>();
         response.put("error", "Invalid JWT");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    // AccessDeniedException
+    // LockedException
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<Map<String, String>> handleLockedException(Exception ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.LOCKED).body(response);
     }
 
     @ExceptionHandler(Exception.class)

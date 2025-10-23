@@ -48,7 +48,6 @@ export class MainLayout {
 	ngOnInit() {
 		this.authService.initialize()
 		setTimeout(() => {
-			console.log("p=>", Prism.plugins.autoloader)
 			if (Prism && Prism.plugins.autoloader) {
 				Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/';
 				Prism.highlightAll(); // Re-highlight all code blocks

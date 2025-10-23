@@ -54,7 +54,6 @@ export class Discover implements OnInit {
 
 		obs.subscribe({
 			next: users => {
-				console.log(users)
 				if (users.length > 0) {
 					this.cursor = users[users.length - 1].id
 					this.users.update(us => [...us, ...users])
@@ -73,7 +72,6 @@ export class Discover implements OnInit {
 	subscribe(id: number) {
 		this.userService.subscribe(id).subscribe({
 			next: res => {
-				console.log(res)
 				if (this.users) {
 					this.users.update(us => {
 						return us?.map((user) => {

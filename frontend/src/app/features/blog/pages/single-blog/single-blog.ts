@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogResponce } from '../../model/model';
@@ -15,6 +15,8 @@ import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
+export type dataReport = { id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger }
 
 @Component({
 	selector: 'app-single-blog',
@@ -52,7 +54,6 @@ export class SingleBlog implements OnInit {
 
 		this.blogService.toggleLike(blogResponce).subscribe({
 			next: res => {
-				console.log(res)
 				blogResponce.like = res.like == 1
 				blogResponce.likes += res.like;
 				this.isLoading = false
@@ -159,6 +160,10 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	EmmitReport(data: dataReport) {
+		this.ReportBlog(data.id, data.e, data.menuTrigger)
+	}
+
 	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger) {
 		if (this.isLoading) return
 		this.isLoading = true
@@ -166,7 +171,6 @@ export class SingleBlog implements OnInit {
 		if (value.length == 0) return
 		this.blogService.Report({ blogId: id, reason: value }).subscribe({
 			next: res => {
-				console.log(res)
 				e.value = ''
 				this.isLoading = false
 			},

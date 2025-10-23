@@ -34,11 +34,9 @@ export class Signup {
 	onSubmit() {
 		if (this.myForm.valid) {
 			this.isLoading = true;
-			console.log('Form data:', this.myForm.value);
 			this.authService.signup(this.myForm.value).subscribe({
 				next: (res) => {
 					this.isLoading = false;
-					console.log('Signup successful', res.user)
 					this.router.navigate(["/auth/signin"])
 				},
 				error: (err) => {

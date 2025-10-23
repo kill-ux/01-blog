@@ -6,6 +6,7 @@ import { Discover } from "../user/discover/discover";
 import { Profile } from "../user/profile/profile";
 import { Notifications } from "../user/notifications/notifications";
 import { Dashboard } from "../admin/dashboard/dashboard";
+import { adminGuard } from "../../core/guards/admin-guard";
 
 export const homeRoutes: Routes = [
     // {
@@ -37,6 +38,7 @@ export const homeRoutes: Routes = [
     {
         path: 'dashboard',
         component: Dashboard,
+        canActivate: [adminGuard]
     },
     // {
     //     path: 'blogs',

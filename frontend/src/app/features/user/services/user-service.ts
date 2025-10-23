@@ -25,7 +25,6 @@ export class UserService {
     }
 
     getUserById(userId: any) {
-        console.log("decoded => ", userId)
         return this.http.get<AuthState>(`${this.apiUrl}/users/profile?userId=${userId}`)
     }
 

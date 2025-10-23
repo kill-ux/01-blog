@@ -39,7 +39,6 @@ export class Blogs implements OnInit, OnChanges {
 	}
 
 	ngOnInit(): void {
-		console.log("feeds")
 		this.loadBlogs(0)
 	}
 
@@ -67,16 +66,12 @@ export class Blogs implements OnInit, OnChanges {
 		}
 		obs.subscribe({
 			next: (res) => {
-				console.log("res", res)
 				this.blogs.update(bs => [...bs, ...res])
-				// this.blogs = [...this.blogs, ...res];
 				if (res.length > 0) {
 					this.lastBlog = res[res.length - 1].id;
 				} else {
 					this.lastBlog = 0;
 				}
-
-				console.log(this.blogs)
 				this.isLoading = false;
 			},
 			error: (err) => {
@@ -91,14 +86,11 @@ export class Blogs implements OnInit, OnChanges {
 		if (this.lastBlog !== 0 && !this.isLoading) {
 			this.loadBlogs(this.lastBlog);
 		}
-		// this.lastBlog = 0
-		console.log("aa")
 	}
 
 	toggleLike(blogResponce: BlogResponce) {
 		this.blogService.toggleLike(blogResponce).subscribe({
 			next: res => {
-				console.log(res)
 				blogResponce.like = res.like == 1
 				blogResponce.likes += res.like;
 			},
@@ -125,11 +117,9 @@ export class Blogs implements OnInit, OnChanges {
 	}
 
 	DeleteBlog(id: number) {
-		console.log("delete this id =>", id)
 		this.blogService.DeleteBlog(id).subscribe({
 			next: res => {
 				this.blogs.update(bs => bs.filter(blog => blog.id != id))
-				console.log(res)
 			},
 			error: err => {
 				console.log(err)
@@ -138,7 +128,6 @@ export class Blogs implements OnInit, OnChanges {
 	}
 
 	HideBlog(id: number) {
-		console.log("hide this id =>", id)
 		this.blogService.HideBlog(id).subscribe({
 			next: res => {
 				this.blogs.update(bs => {
@@ -148,7 +137,6 @@ export class Blogs implements OnInit, OnChanges {
 					}
 					return bs
 				})
-				console.log(res)
 			},
 			error: err => {
 				console.log(err)
@@ -165,7 +153,6 @@ export class Blogs implements OnInit, OnChanges {
 		if (value.length == 0) return
 		this.blogService.Report({ blogId: id, reason: value }).subscribe({
 			next: res => {
-				console.log(res)
 				e.value = ''
 			},
 			error: err => {

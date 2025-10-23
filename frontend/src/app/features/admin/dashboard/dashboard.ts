@@ -49,7 +49,6 @@ export class Dashboard implements OnInit {
 				if (reports.length > 0) {
 					this.cursorReport = reports[reports.length - 1].id
 					this.reports.update(rs => [...rs, ...reports])
-					console.log("cursorReport => ", this.reports())
 				} else {
 					this.cursorReport = 0
 				}
@@ -70,7 +69,6 @@ export class Dashboard implements OnInit {
 				if (users.length > 0) {
 					this.cursorUser = users[users.length - 1].id
 					this.users.update(us => [...us, ...users])
-					console.log(this.users())
 				} else {
 					this.cursorUser = 0
 				}
@@ -163,7 +161,6 @@ export class Dashboard implements OnInit {
 					}
 					return reports
 				})
-				console.log(data)
 			},
 			error: err => {
 				console.log(err)

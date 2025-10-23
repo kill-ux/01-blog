@@ -51,11 +51,9 @@ export class CreateBlog implements OnInit {
 	onSubmit() {
 		if (this.isUploading) return
 		this.isUploading = true;
-		console.log("submit")
 		this.formBlog.markAllAsTouched();
 
 		if (this.formBlog.valid) {
-			console.log("hh")
 			let obs;
 			if (this.id) {
 				obs = this.blogService.updateBlog(this.formBlog.value, this.id)
@@ -64,7 +62,6 @@ export class CreateBlog implements OnInit {
 			}
 			obs.subscribe({
 				next: (res) => {
-					console.log("ok")
 					this.isUploading = false;
 					this.router.navigate(['blog', res.id])
 					this.snackBar.open('new blog created', "Close", {

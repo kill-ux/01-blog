@@ -20,12 +20,8 @@ export class ThemeToggle implements OnInit, OnDestroy {
     });
   }
 
-  sdfsd(){
-    console.log("gggggggg")
-  }
 
   toggleTheme(): void {
-    console.log("gggggggg")
     this.themeService.toggleTheme();
   }
 

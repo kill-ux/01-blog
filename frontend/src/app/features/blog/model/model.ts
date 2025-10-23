@@ -47,3 +47,11 @@ export interface Report {
     reportingUser: User,
     reportedUser: User
 }
+
+export interface NotData {
+  type: string;
+  title: string;
+  message: string;
+  timestamp: Date;
+  data?: any;
+}

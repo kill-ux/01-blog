@@ -50,7 +50,6 @@ export class Profile implements OnInit {
 		this.userService.getUserById(id).subscribe({
 			next: (profile) => {
 				this.userProfile.set(profile.user);
-				console.log('User profile loaded', this.userProfile());
 			},
 			error: (error) => {
 				console.error('Failed to load profile', error);
@@ -61,10 +60,8 @@ export class Profile implements OnInit {
 	subscribe(id: any) {
 		if (this.isLoading) return
 		this.isLoading = true
-		console.log(id)
 		this.userService.subscribe(id).subscribe({
 			next: res => {
-				console.log(res)
 				this.userProfile.update(user => {
 					if (user && user.id == id) {
 						user.sub = res.operation == "subscribed" ? true : false
@@ -72,7 +69,6 @@ export class Profile implements OnInit {
 					}
 					return user
 				})
-				console.log(this.userProfile())
 				this.isLoading = false
 
 
@@ -116,11 +112,9 @@ export class Profile implements OnInit {
 		const input = event.target as HTMLInputElement;
 		if (input.files && input.files.length > 0) {
 			const selectedFile = input.files[0]
-			console.log(selectedFile)
 			if (selectedFile.type.startsWith('image/')) {
 				this.userService.updateProfile(selectedFile).subscribe({
 					next: res => {
-						console.log(res)
 						if (this.authService.currentUser) {
 							this.authService.currentUser.avatar = res.url + `?time=${Date.now()}`
 							this.userProfile.update(user => {
@@ -144,7 +138,6 @@ export class Profile implements OnInit {
 		if (reason.length == 0 || !id) return
 		this.blogService.Report({ userId: id, reason }).subscribe({
 			next: res => {
-				console.log("ok", res)
 			},
 			error: err => {
 				console.log(err)
