@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +21,7 @@ import api.model.blog.Blog;
 import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
 import api.model.blog.ChildrenResponse;
+import api.model.notification.NotificationResponse;
 import api.model.user.User;
 import api.repository.BlogRepository;
 import api.repository.UserRepository;
@@ -28,6 +31,10 @@ public class BlogService {
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
+
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     private final NotificationService notificationService;
     private static final Set<String> VALID_MEDIA_TYPES = Set.of("image", "video");
@@ -191,4 +198,6 @@ public class BlogService {
         Blog blog = this.blogRepository.findById(blogId).get();
         return Map.of("count", blog.getLikedBy().size());
     }
+
+ 
 }

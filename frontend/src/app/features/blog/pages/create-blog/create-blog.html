@@ -6,7 +6,8 @@
                     <button #submit style="display: none;" type="submit" class="btn btn-primary with-100">save</button>
 
                     <!-- <label class="panel-label"> -->
-                    <input maxlength="255" class="title-input" formControlName="title" placeholder="New post title here" type="text" />
+                    <input maxlength="255" class="title-input" formControlName="title" placeholder="New post title here"
+                        type="text" />
                     <!-- </label> -->
                     <div class="editor-toolbar">
                         <!-- Bold Button -->
@@ -59,19 +60,18 @@
                         <mat-error>title and Content is required</mat-error>
                         }
                     </div>
-                    <!-- <label >
-                        <button type="submit" class="btn btn-primary with-100">save</button>
-                    </label> -->
                 </form>
             </div>
             <div class="preview-panel">
                 <h1>{{ this.formBlog.value.title }}</h1>
                 <markdown class="markdown-preview" [data]="this.formBlog.value.description"></markdown>
             </div>
-            <!-- </div> -->
         </div>
         <label class="panel-label">
-            <button (click)="submit.click()" type="submit" class="btn btn-primary with-100">@if (this.id) {update} @else {save} </button>
+            <button (click)="submit.click()" type="submit" class="btn btn-primary with-100" [disabled]="isSaving">
+                @if (this.id) { {{ isSaving ? 'Updating...' : 'Update' }}} @else
+                { {{ isSaving ? 'Saving...' : 'Save' }}}
+            </button>
         </label>
     </div>
 </div>

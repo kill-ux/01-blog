@@ -84,6 +84,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers("/api/images/**").permitAll()
+
+                        .requestMatchers("/ws/**").permitAll() // SockJS endpoint
+                        // .requestMatchers("/ws-raw/**").permitAll() // Raw WebSocket endpoint
+                        // .requestMatchers("/websocket/**").permitAll() // SockJS fallback
+
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

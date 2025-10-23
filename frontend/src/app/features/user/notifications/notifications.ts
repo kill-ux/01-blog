@@ -8,6 +8,8 @@ import { environment } from '../../../../environments/environment';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
 import { MatBadgeModule } from '@angular/material/badge'
+import { WebsocketService } from '../services/websocket';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-notifications',
@@ -20,15 +22,55 @@ export class Notifications implements OnInit {
 	cursor = 0;
 	notfs = signal<NotificationResponce | null>(null)
 	mobile = input<boolean>()
+	private subscription: Subscription | null = null
+	private connectionSubscription: Subscription | null = null
+	connectionStatus = signal<string>('disconnected');
 
 	apiUrl = environment.API_URL
 
-	constructor(private userService: UserService, private router: Router) {
+	constructor(private userService: UserService, private router: Router, private websocketService: WebsocketService) {
 
 	}
 
 	ngOnInit(): void {
 		this.getNotifications()
+		this.setupWebSocket();
+		// const wsUrl = 'ws://localhost:8080/ws';
+		// const obs = this.websocketService.connect(wsUrl)
+		// if (obs) {
+		// 	this.subscription = obs.subscribe({
+		// 		next: (msg) => {
+		// 			// This is where you handle incoming messages from the server
+		// 			// this.messages.push(msg.data);
+		// 			console.log("Reciver data")
+		// 			console.log(msg.data)
+		// 		},
+		// 		error: (err) => console.error('WebSocket error:', err),
+		// 		complete: () => console.log('WebSocket connection closed'),
+		// 	})
+		// }
+
+	}
+
+	private setupWebSocket(): void {
+		console.log('🔧 Setting up WebSocket listener...');
+
+		this.subscription = this.websocketService.notifications$.subscribe({
+			next: (notification) => {
+				if (notification) {
+					console.log('✅ COMPONENT: Received WebSocket notification:', notification);
+					// this.handleRealTimeNotification(notification);
+				}
+			},
+			error: (err) => console.error('WebSocket error:', err)
+		});
+	}
+
+	ngOnDestroy(): void {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+		}
+		// this.websocketService.close();
 	}
 
 	getNotifications() {

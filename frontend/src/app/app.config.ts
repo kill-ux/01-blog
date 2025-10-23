@@ -6,7 +6,6 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { MARKED_OPTIONS, MarkedOptions, MarkedRenderer, provideMarkdown } from 'ngx-markdown';
 import { Tokens } from 'marked';
-
 export function markedOptionsFactory(): MarkedOptions {
 	const renderer = new MarkedRenderer()
 	const linkRenderer = renderer.link;
@@ -22,6 +21,7 @@ export function markedOptionsFactory(): MarkedOptions {
 		renderer
 	}
 }
+
 
 export const appConfig: ApplicationConfig = {
 	providers: [

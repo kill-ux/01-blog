@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 final String jwt = authHeader.substring(7);
                 final String nickname = jwtService.extractNickname(jwt);
 
-                if (nickname != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (nickname != null) { // SecurityContextHolder.getContext().getAuthentication() == null
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(nickname);
 
                     if (((User) userDetails).isBannedUntil()) {

@@ -3,6 +3,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { Navbar } from './layouts/navbar/navbar';
 import { ThemeService } from './Theme/services/theme';
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
