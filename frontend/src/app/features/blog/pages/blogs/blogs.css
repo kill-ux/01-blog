@@ -73,3 +73,7 @@
 ::ng-deep .mdc-text-field--filled {
     background-color: var(--bg-secondary) !important;
 }
+
+.blog-description {
+    margin: 0 0 1rem 3.5rem;
+}

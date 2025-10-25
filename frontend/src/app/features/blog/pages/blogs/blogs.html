@@ -28,8 +28,8 @@
                     <span>HIDDEN</span>
                 </span>
                 }
-                <button #menuTrigger1="matMenuTrigger" (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
-                    aria-label="Example icon-button with a menu">
+                <button #menuTrigger1="matMenuTrigger" (click)="$event.stopPropagation()" matIconButton
+                    [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu" xPosition="before">
@@ -71,7 +71,8 @@
                             <form class="example-form">
                                 <mat-form-field class="example-full-width">
                                     <mat-label>Report your problem</mat-label>
-                                    <textarea maxlength="1000" #textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                                    <textarea maxlength="1000" #textarea matInput
+                                        placeholder="Ex. It makes me feel..."></textarea>
                                 </mat-form-field>
                             </form>
 
@@ -98,11 +99,11 @@
 
         <!-- Load more when last item is in viewport -->
 
-        <!-- <div class="blog-content">
-                    <div class="blog-description">
-                        <markdown class="markdown-preview" [data]="item.description.substring(0,255)"></markdown>
-                    </div>
-                </div> -->
+        <div class="blog-content">
+            <div class="blog-description">
+                <p class="markdown-preview">{{item.description.substring(0,255)}}</p>
+            </div>
+        </div>
 
         <!-- Footer with stats -->
         <footer class="blog-footer">

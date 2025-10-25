@@ -1,6 +1,8 @@
 
 package api.config;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import api.repository.UserRepository;
@@ -68,6 +72,7 @@ public class SecurityConfig {
         return new JwtAuthenticationFilter(handlerExceptionResolver, jwtService, userDetailsService);
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
             throws Exception {
@@ -77,18 +82,17 @@ public class SecurityConfig {
                     config.addAllowedOrigin("http://localhost:4200");
                     config.addAllowedMethod("*");
                     config.addAllowedHeader("*");
+                    config.setAllowCredentials(true);
                     return config;
                 }))
+                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers("/api/images/**").permitAll()
 
-                        .requestMatchers("/ws/**").permitAll() // SockJS endpoint
-                        // .requestMatchers("/ws-raw/**").permitAll() // Raw WebSocket endpoint
-                        // .requestMatchers("/websocket/**").permitAll() // SockJS fallback
-
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -47,7 +47,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 
-        registry.addEndpoint("/ws").setAllowedOrigins("*") /// ideally add a single origin
+        registry.addEndpoint("/ws")
+                .setAllowedOriginPatterns("http://localhost:4200") // <-- ADD THIS LINE
+                .addInterceptors(new WebSocketAuthInterceptor())
                 .withSockJS();
     }
 
@@ -63,7 +65,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 
+        // This is the part you are missing.
+        // It enables a simple in-memory broker to send messages back to clients
+        // on destinations prefixed with "/queue" and "/user"
+        registry.enableSimpleBroker("/queue", "/user");
+
+        // This sets the prefix for messages from clients to the server (e.g.,
+        // @MessageMapping)
         registry.setApplicationDestinationPrefixes("/app");
+
+        // This sets the prefix for user-specific destinations
         registry.setUserDestinationPrefix("/user");
     }
 

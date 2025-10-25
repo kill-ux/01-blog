@@ -2,14 +2,14 @@ import { Component, input, OnInit, signal } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { Router } from '@angular/router';
 import { MatMenuModule } from "@angular/material/menu";
-import { NotificationResponce } from '../../blog/model/model';
+import { Notification, NotificationResponce } from '../../blog/model/model';
 import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
 import { environment } from '../../../../environments/environment';
-import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
 import { MatBadgeModule } from '@angular/material/badge'
 import { Subscription } from 'rxjs';
 import { WebSocketApi } from '../services/websocket';
+import { AuthService } from '../../auth/services/auth-api';
 
 @Component({
 	selector: 'app-notifications',
@@ -19,50 +19,60 @@ import { WebSocketApi } from '../services/websocket';
 })
 export class Notifications implements OnInit {
 	private isLoading = false;
+	private open = false;
 	cursor = 0;
 	notfs = signal<NotificationResponce | null>(null)
 	mobile = input<boolean>()
-	private subscription: Subscription | null = null
-	private connectionSubscription: Subscription | null = null
+	private notificationSubscription: Subscription | null = null;
 	connectionStatus = signal<string>('disconnected');
 
 	apiUrl = environment.API_URL
 
-	constructor(private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
+
+	constructor(private authService: AuthService, private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
 
 	}
 
 	ngOnInit(): void {
 		this.getNotifications()
-		this.setupWebSocket();
-		// const wsUrl = 'ws://localhost:8080/ws';
-		// const obs = this.websocketService.connect(wsUrl)
-		// if (obs) {
-		// 	this.subscription = obs.subscribe({
-		// 		next: (msg) => {
-		// 			// This is where you handle incoming messages from the server
-		// 			// this.messages.push(msg.data);
-		// 			console.log("Reciver data")
-		// 			console.log(msg.data)
-		// 		},
-		// 		error: (err) => console.error('WebSocket error:', err),
-		// 		complete: () => console.log('WebSocket connection closed'),
-		// 	})
-		// }
-
+		this.authService.currentUser$.subscribe((user) => {
+			if (user) {
+				this.setupWebSocket();
+			}
+		})
 	}
 
 	private setupWebSocket(): void {
 		console.log('🔧 Setting up WebSocket listener...');
+		this.websocketService.connect();
 
-		this.websocketService.connect()
+		this.notificationSubscription = this.websocketService.notification$.subscribe(
+			(newMessage: Notification) => {
+				console.log('🎁 New notification received in component!', newMessage);
+
+				this.notfs.update(currentNotfs => {
+					const newNotfList = [newMessage, ...(currentNotfs?.notfs || [])];
+
+					if (currentNotfs) {
+						currentNotfs.notfs = newNotfList;
+						currentNotfs.count += 1;
+						return currentNotfs; 
+					} else {
+						return {
+							notfs: newNotfList,
+							count: 1
+						};
+					}
+				});
+			}
+		);
 	}
 
+
 	ngOnDestroy(): void {
-		if (this.subscription) {
-			this.subscription.unsubscribe();
+		if (this.notificationSubscription) {
+			this.notificationSubscription.unsubscribe();
 		}
-		// this.websocketService.close();
 	}
 
 	getNotifications() {

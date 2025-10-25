@@ -1,6 +1,5 @@
 package api.service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +10,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import api.model.NotificationMessage;
 import api.model.blog.Blog;
 import api.model.notification.Notification;
 import api.model.notification.NotificationResponse;
@@ -38,14 +34,31 @@ public class NotificationService {
             notification.setBlog(blog);
             notification.setUser(subscriber);
             this.notificationRepository.save(notification);
-            // this.notifyUser(user.getNickname(), "CREATE_BLOG", new NotificationResponse(notification));
-            this.notifyUser(subscriber.getNickname(), "NEW_BLOG",
-                    Map.of(
-                            "blogId", blog.getId(),
-                            "blogTitle", blog.getTitle(),
-                            "author", user.getNickname(),
-                            "notificationId", notification.getId()));
+            this.sendPrivateNotification(subscriber.getNickname(), notification);
         }
+    }
+
+    /**
+     * Sends a notification to a specific user.
+     * * @param username The user's ID or name to send to
+     * 
+     * @param notification The message payload
+     */
+    public void sendPrivateNotification(String username, Notification notification) {
+
+        // 2. Define the user's private destination
+        // This is the destination your Angular client is subscribed to,
+        // *without* the "/user/{username}" prefix.
+        String destination = "/queue/chat";
+
+        // 3. Send the message
+        messagingTemplate.convertAndSendToUser(
+                username, 
+                destination, 
+                new NotificationResponse(notification) 
+        );
+
+        System.out.println("Sent message to " + username + " at " + destination);
     }
 
     public Map<String, Object> getNotification(long userId, long cursor) {
@@ -74,42 +87,6 @@ public class NotificationService {
         for (Notification not : notfs) {
             not.setRead(true);
             this.notificationRepository.save(not);
-        }
-    }
-
-    // Method to send notifications from anywhere in your app
-    public void sendNotificationToUser(String username, NotificationMessage message) {
-        messagingTemplate.convertAndSendToUser(
-                username,
-                "/queue/notifications",
-                message);
-    }
-
-    // Method to broadcast to all users
-    public void broadcastNotification(NotificationMessage message) {
-        messagingTemplate.convertAndSend("/topic/notifications", message);
-    }
-
-    public void notifyUser(String username, String type, Object data) {
-        try {
-            System.out.println("📨 Sending WebSocket notification to: " + username);
-
-            NotificationMessage message = new NotificationMessage(
-                    type,
-                    "New notification for " + username,
-                    data);
-
-            // Send to user-specific queue
-            this.sendNotificationToUser(username, message);
-
-            // Also broadcast to public topic for testing
-            this.broadcastNotification(message);
-
-            System.out.println("✅ WebSocket notification sent successfully!");
-
-        } catch (Exception e) {
-            System.err.println("❌ Error sending WebSocket notification: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
