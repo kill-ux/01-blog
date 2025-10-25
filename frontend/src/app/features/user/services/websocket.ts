@@ -1,94 +1,82 @@
-// websocket.service.ts - Following the Spring guide pattern
 import { Injectable } from '@angular/core';
-import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { BehaviorSubject, Observable } from 'rxjs';
-
-export interface NotificationMessage {
-	type: string;
-	message: string;
-	data: any;
-}
+// Import the Client class
+import { Client } from '@stomp/stompjs';
+import { Notification } from '../../blog/model/model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class WebsocketService {
-	private stompClient: Client | null = null;
-	private connected: boolean = false;
-
-	private notificationSubject = new BehaviorSubject<NotificationMessage | null>(null);
-	public notifications$ = this.notificationSubject.asObservable();
+export class WebSocketApi {
+	brokerURL: string = "http://localhost:8099/ws";
+	// Type the client properly instead of using 'any'
+	stompClient: Client;
+	username: String = 'james';
 
 	constructor() {
-		this.initializeConnection();
-	}
-
-	private initializeConnection(): void {
-		// Create SockJS connection like in the Spring guide
-		const socket = new SockJS('http://localhost:8080/ws');
-
+		// Initialize the client in the constructor
 		this.stompClient = new Client({
-			webSocketFactory: () => socket,
-			debug: (str) => {
-				console.log('STOMP: ' + str);
+			// Use a factory function for SockJS
+			webSocketFactory: () => {
+				return new SockJS(this.brokerURL);
 			},
+			// Set headers here
+			connectHeaders: {
+				"Authorization": "Bearer " + localStorage.getItem('token')
+			},
+			// Set log levels for debugging
+			debug: (str) => {
+				console.log(new Date(), str);
+			},
+			// Set reconnection delay
 			reconnectDelay: 5000,
+			// Heartbeat (optional but recommended)
 			heartbeatIncoming: 4000,
 			heartbeatOutgoing: 4000,
-		});
 
-		this.stompClient.onConnect = (frame) => {
-			console.log('✅ Connected: ' + frame);
-			this.connected = true;
-			if (this.stompClient) {
-				// Subscribe to topics exactly like in the Spring guide
-				this.stompClient.subscribe('/topic/notifications', (message) => {
-					console.log('📢 Received from /topic/notifications:', message.body);
-					this.handleMessage(message.body);
+			// Set callbacks
+			onConnect: (frame) => {
+				console.log('Connected: ' + frame);
+				// Subscribe upon connection
+				this.stompClient.subscribe(`/user/${this.username}/queue/chat`, (message) => {
+					this.onMessageRecived(message.body);
 				});
-
-				this.stompClient.subscribe('/user/queue/notifications', (message) => {
-					console.log('👤 Received from /user/queue/notifications:', message.body);
-					this.handleMessage(message.body);
-				});
+			},
+			onStompError: (frame) => {
+				console.error('Broker reported error: ' + frame.headers['message']);
+				console.error('Additional details: ' + frame.body);
+			},
+			onWebSocketError: (error) => {
+				console.error('WebSocket Error: ', error);
 			}
+		});
+	}
 
-
-		};
-
-		this.stompClient.onStompError = (frame) => {
-			console.error('❌ Broker error: ' + frame.headers['message']);
-			console.error('Additional details: ' + frame.body);
-		};
-
+	// Call this method from your component to start the connection
+	connect() {
 		this.stompClient.activate();
 	}
 
-	private handleMessage(messageBody: string): void {
-		try {
-			const notification: NotificationMessage = JSON.parse(messageBody);
-			console.log('🎯 Parsed notification:', notification);
-			this.notificationSubject.next(notification);
-		} catch (e) {
-			console.error('Error parsing message:', e);
-		}
+	// Call this to disconnect
+	disconnect() {
+		this.stompClient.deactivate();
 	}
 
-	// Send message to server like in the Spring guide
-	public sendNotification(message: NotificationMessage): void {
-		if (this.stompClient && this.connected) {
+	onMessageRecived(msg: any) {
+		console.log("Message received: ", msg);
+		const message = JSON.parse(msg);
+		// ... do something with the message
+	}
+
+	send(message: Notification): void {
+		// Check if client is active before sending
+		if (this.stompClient.active) {
 			this.stompClient.publish({
-				destination: '/app/notification',
+				destination: "/app/chat",
 				body: JSON.stringify(message)
 			});
-			console.log('📤 Sent message to /app/notification:', message);
-		}
-	}
-
-	public disconnect(): void {
-		if (this.stompClient) {
-			this.stompClient.deactivate();
+		} else {
+			console.error("Cannot send message, STOMP client is not active.");
 		}
 	}
 }

@@ -8,8 +8,8 @@ import { environment } from '../../../../environments/environment';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
 import { MatBadgeModule } from '@angular/material/badge'
-import { WebsocketService } from '../services/websocket';
 import { Subscription } from 'rxjs';
+import { WebSocketApi } from '../services/websocket';
 
 @Component({
 	selector: 'app-notifications',
@@ -28,7 +28,7 @@ export class Notifications implements OnInit {
 
 	apiUrl = environment.API_URL
 
-	constructor(private userService: UserService, private router: Router, private websocketService: WebsocketService) {
+	constructor(private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
 
 	}
 
@@ -55,15 +55,7 @@ export class Notifications implements OnInit {
 	private setupWebSocket(): void {
 		console.log('🔧 Setting up WebSocket listener...');
 
-		this.subscription = this.websocketService.notifications$.subscribe({
-			next: (notification) => {
-				if (notification) {
-					console.log('✅ COMPONENT: Received WebSocket notification:', notification);
-					// this.handleRealTimeNotification(notification);
-				}
-			},
-			error: (err) => console.error('WebSocket error:', err)
-		});
+		this.websocketService.connect()
 	}
 
 	ngOnDestroy(): void {

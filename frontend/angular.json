@@ -30,7 +30,8 @@
 						],
 						"scripts": [
 							"node_modules/prismjs/prism.js",
-							"node_modules/prismjs/plugins/autoloader/prism-autoloader.js"
+							"node_modules/prismjs/plugins/autoloader/prism-autoloader.js",
+							"src/global-polyfill.js"
 						]
 					},
 					"configurations": {

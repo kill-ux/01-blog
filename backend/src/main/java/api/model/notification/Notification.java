@@ -25,4 +25,11 @@ public class Notification {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
 
+    public String getRecipient(){
+        return user.getNickname();
+    }
+
+    public String content() {
+        return "fff";
+    }
 }
