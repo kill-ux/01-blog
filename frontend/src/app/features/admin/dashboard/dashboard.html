@@ -8,7 +8,15 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef> No. </th>
-                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.id}}
+                                @if (cursorUser == element.id) {
+                                <div class="loadTrigger" #loadTrigger>postgress</div>
+                                @defer (on viewport(loadTrigger)) {
+                                <div>{{ loadMoreUsers() }}</div>
+                                }
+                                }
+                            </td>
                         </ng-container>
 
                         <!-- Name Column -->
@@ -38,11 +46,11 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef></th>
                             <td mat-cell *matCellDef="let element">
-                                <button matIconButton [matMenuTriggerFor]="menu"
+                                <button matIconButton [matMenuTriggerFor]="menu1"
                                     aria-label="Example icon-button with a menu">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
-                                <mat-menu #menu="matMenu">
+                                <mat-menu #menu1="matMenu">
                                     <button mat-menu-item (click)="openUser(element.id)">
                                         <mat-icon>open_in_new</mat-icon>
                                         <span>Open</span>
@@ -75,12 +83,7 @@
                                     </button>
                                 </mat-menu>
 
-                                @if (cursorUser == element.id) {
-                                <div #loadTrigger>postgress</div>
-                                @defer (on viewport(loadTrigger)) {
-                                <div>{{ loadMoreBlogs() }}</div>
-                                }
-                                }
+
                             </td>
                         </ng-container>
 
@@ -99,7 +102,16 @@
                     <table mat-table class="mat-elevation-z8" [dataSource]="reports()">
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef> No. </th>
-                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.id}}
+                                @if (cursorReport == element.id) {
+                                <div #loadTrigger>postgress</div>
+                                @defer (on viewport(loadTrigger)) {
+                                <div>{{ loadMoreReports() }}</div>
+                                }
+                                }
+
+                            </td>
                         </ng-container>
                         <ng-container matColumnDef="type">
                             <th mat-header-cell *matHeaderCellDef> Type </th>
@@ -136,14 +148,88 @@
                         </ng-container>
                         <ng-container matColumnDef="reportingUser">
                             <th mat-header-cell *matHeaderCellDef> reporting User </th>
+
                             <td mat-cell *matCellDef="let element"> <span class="veiw-user"
-                                    (click)="openUser(element.reportingUser.id)">{{element.reportingUser.nickname}}</span>
+                                    [matMenuTriggerFor]="menu2">{{element.reportingUser.nickname}}</span>
+                                <mat-menu #menu2="matMenu">
+                                    <button mat-menu-item (click)="openUser(element.reportingUser.id)">
+                                        <mat-icon>open_in_new</mat-icon>
+                                        <span>Open</span>
+                                    </button>
+                                    @if (element.reportingUser.role != "ROLE_ADMIN") {
+                                    <button mat-menu-item
+                                        (click)="adminify(element.reportingUser.id,element.reportingUser)">
+                                        <mat-icon>admin_panel_settings</mat-icon>
+                                        <span>Make Admin</span>
+                                    </button>
+                                    }@else {
+                                    <button mat-menu-item
+                                        (click)="adminify(element.reportingUser.id,element.reportingUser)">
+                                        <mat-icon>remove_moderator</mat-icon>
+                                        <span>Remove Admin</span>
+                                    </button>
+                                    }
+
+                                    <button mat-menu-item
+                                        (click)="banUser(element.reportingUser.id,element.reportingUser)">
+                                        <mat-icon>block</mat-icon>
+                                        <span>
+                                            @if (!element.reportingUser.bannedUntil) {
+                                            Ban
+                                            } @else {
+                                            unBan
+                                            }
+                                        </span>
+                                    </button>
+                                    <button class="mat-red" mat-menu-item
+                                        (click)="deleteUser(element.reportingUser.id)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </mat-menu>
+
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="reportedUser">
                             <th mat-header-cell *matHeaderCellDef> reported User </th>
                             <td mat-cell *matCellDef="let element"> <span class="veiw-user"
-                                    (click)="openUser(element.reportedUser.id)">{{element.reportedUser.nickname}}</span>
+                                    [matMenuTriggerFor]="menu3">{{element.reportedUser.nickname}}</span>
+                                <mat-menu #menu3="matMenu">
+                                    <button mat-menu-item (click)="openUser(element.reportedUser.id)">
+                                        <mat-icon>open_in_new</mat-icon>
+                                        <span>Open</span>
+                                    </button>
+                                    @if (element.reportedUser.role != "ROLE_ADMIN") {
+                                    <button mat-menu-item
+                                        (click)="adminify(element.reportedUser.id,element.reportedUser)">
+                                        <mat-icon>admin_panel_settings</mat-icon>
+                                        <span>Make Admin</span>
+                                    </button>
+                                    }@else {
+                                    <button mat-menu-item
+                                        (click)="adminify(element.reportedUser.id,element.reportedUser)">
+                                        <mat-icon>remove_moderator</mat-icon>
+                                        <span>Remove Admin</span>
+                                    </button>
+                                    }
+
+                                    <button mat-menu-item
+                                        (click)="banUser(element.reportedUser.id,element.reportedUser)">
+                                        <mat-icon>block</mat-icon>
+                                        <span>
+                                            @if (!element.reportedUser.bannedUntil) {
+                                            Ban
+                                            } @else {
+                                            unBan
+                                            }
+                                        </span>
+                                    </button>
+                                    <button class="mat-red" mat-menu-item (click)="deleteUser(element.reportedUser.id)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </mat-menu>
+
                             </td>
                         </ng-container>
 
@@ -151,11 +237,11 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef></th>
                             <td mat-cell *matCellDef="let element">
-                                <button matIconButton [matMenuTriggerFor]="menu"
+                                <button matIconButton [matMenuTriggerFor]="menu4"
                                     aria-label="Example icon-button with a menu">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
-                                <mat-menu #menu="matMenu">
+                                <mat-menu #menu4="matMenu">
                                     <button mat-menu-item (click)="reviewReport(element.id)">
                                         @if (element.status) {
                                         <mat-icon>verified</mat-icon>
@@ -174,15 +260,11 @@
                                         <mat-icon>open_in_new</mat-icon>
                                         <span>Open Blog</span>
                                     </button>
+
                                     }
                                 </mat-menu>
 
-                                @if (cursorReport == element.id) {
-                                <div #loadTrigger>postgress</div>
-                                @defer (on viewport(loadTrigger)) {
-                                <div>{{ loadMoreReports() }}</div>
-                                }
-                                }
+
                             </td>
                         </ng-container>
 

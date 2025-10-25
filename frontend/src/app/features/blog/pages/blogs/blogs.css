@@ -49,17 +49,18 @@
     margin: 0;
 }
 
-.mat-red, .mat-red * {
+.mat-red,
+.mat-red * {
     color: #f84b4be0;
 }
 
 
-.report{
+.report {
     width: 100%;
 }
 
 
-.report *{
+.report * {
     width: 100%;
 }
 
@@ -75,5 +76,21 @@
 }
 
 .blog-description {
-    margin: 0 0 1rem 3.5rem;
+    margin-left: 3.5rem;
+}
+
+.blog-description p {
+    margin: 1rem 0;
+}
+
+.blog-title, .blog-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-card {
+    border-top: none;
+    border-bottom: none
 }

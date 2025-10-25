@@ -114,13 +114,16 @@ export class Dashboard implements OnInit {
 		this.router.navigate(["blog", id])
 	}
 
-	banUser(id: number) {
+	banUser(id: number, userR?: User) {
 		this.admineService.banUser(id).subscribe({
 			next: data => {
 				this.users.update(users => {
 					const user = users.find(user => user.id == id)
 					if (user) {
 						user.bannedUntil = !user.bannedUntil;
+						if (userR) {
+							userR.bannedUntil = user.bannedUntil;
+						}
 					}
 					return users
 				})
@@ -132,7 +135,7 @@ export class Dashboard implements OnInit {
 		})
 	}
 
-	loadMoreBlogs() {
+	loadMoreUsers() {
 		if (!this.isLoading && this.cursorUser != 0) {
 			this.getUsers()
 		}
@@ -168,13 +171,16 @@ export class Dashboard implements OnInit {
 		})
 	}
 
-	adminify(id: number) {
+	adminify(id: number, userR?: User) {
 		this.admineService.adminify(id).subscribe({
 			next: data => {
 				this.users.update(users => {
 					const user = users.find(user => user.id == id)
 					if (user) {
 						user.role = data;
+						if (userR) {
+							userR.role = user.role
+						}
 					}
 					return users
 				})
