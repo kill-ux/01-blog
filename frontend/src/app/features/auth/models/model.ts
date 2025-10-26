@@ -9,8 +9,8 @@ export interface User {
     createdAt: string | null;
     updatedAt: string | null;
     sub: boolean
-    subscribers: number 
-    subscribtions: number 
+    subscribers: number
+    subscribtions: number
 }
 
 export interface AuthState {
@@ -26,4 +26,10 @@ export interface SignupCredentials {
     nickname: string;
     email: string;
     password: string;
+}
+
+export interface MostReport {
+    user: User,
+    reportCount: number
+
 }

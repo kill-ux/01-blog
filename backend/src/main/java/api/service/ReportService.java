@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import api.model.blog.Blog;
 import api.model.report.Report;
+import api.model.report.MostRportUser.MostReport;
+import api.model.report.MostRportUser.MostReportU;
 import api.model.report.ReportRequests.ReportRequestDto;
 import api.model.report.ReportRequests.ReportResponce;
 import api.model.user.User;
@@ -57,8 +59,12 @@ public class ReportService {
         return this.reportRepository.findByIdLessThan(cursor, pageable).map(ReportResponce::new).toList();
     }
 
-    public List<UserResponse> getMostReportedUsers() {
-        this.reportRepository.find
+    public List<MostReport> getMostReportedUsers() {
+        return this.reportRepository.getMostReportedUsers().stream()
+        .map(obj -> new MostReportU((User) obj[0], (Long) obj[1]))
+        .map(obj -> {
+            return new MostReport(new UserResponse(obj.user()),(Long) obj.reportCount());
+        }).toList();
     }
 
     public ReportResponce changeStatus(long reportId) {

@@ -3,7 +3,7 @@ import { MatTabsModule, MatTabGroup, MatTab, MatTabChangeEvent } from '@angular/
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth-api';
 import { environment } from '../../../../environments/environment';
-import { User } from '../../auth/models/model';
+import { MostReport, User } from '../../auth/models/model';
 import { UserService } from '../../user/services/user-service';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenu, MatMenuModule, MatMenuTrigger } from "@angular/material/menu";
@@ -24,6 +24,7 @@ export class Dashboard implements OnInit {
 	users = signal<User[]>([])
 	reports = signal<Report[]>([])
 	countPosts = signal(0)
+	mostReport = signal<MostReport[]>([])
 	cursorUser = 0
 	cursorReport = 0
 	apiUrl = environment.API_URL
@@ -40,6 +41,7 @@ export class Dashboard implements OnInit {
 		if (this.cursorUser == 0) {
 			this.getUsers()
 			this.getNumberOfPosts()
+			this.getMostReportedUsers()
 		}
 	}
 
@@ -90,6 +92,19 @@ export class Dashboard implements OnInit {
 			error: err => {
 				console.log(err);
 				this.isLoading = false
+			}
+		})
+	}
+
+	getMostReportedUsers() {
+		console.log("hh")
+		this.userService.getMostReportedUsers().subscribe({
+			next: mostReport => {
+				console.log(mostReport)
+				this.mostReport.set(mostReport)
+			},
+			error: err => {
+				console.log(err);
 			}
 		})
 	}

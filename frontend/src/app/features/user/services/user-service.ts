@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthState, User } from '../../auth/models/model';
+import { AuthState, MostReport, User } from '../../auth/models/model';
 import { BlogResponce, Notification, NotificationResponce, Report } from '../../blog/model/model';
 import { environment } from '../../../../environments/environment';
 
@@ -40,6 +40,10 @@ export class UserService {
 
     getNumberOfPosts() {
         return this.http.get<{count: number}>(`${this.apiUrl}/blogs/count`)
+    }
+
+    getMostReportedUsers(){
+        return this.http.get<MostReport[]>(`${this.apiUrl}/reports/mostreported`)
     }
 
     updateProfile(file: File) {

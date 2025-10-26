@@ -1,8 +1,21 @@
 <div class="dashboard">
     <div class="container">
         <div class="analytics">
-            <div class="posts">number of posts <span class="num">{{countPosts()}}</span> </div>
-            <div class="rep">most reported users</div>
+            <div class="posts">number of posts : <span class="num">{{countPosts()}}</span> </div>
+
+            <div class="most">
+                <h2>Most reported users </h2>
+                <div class="rep">
+                    <div>
+                        @for (item of mostReport(); track $index) {
+                        <div class="rep-user">
+                            {{item.user.nickname}}
+                            <span>{{item.reportCount}}</span>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)">
             <mat-tab label="Users">
