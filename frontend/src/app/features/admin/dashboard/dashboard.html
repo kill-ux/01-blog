@@ -9,8 +9,10 @@
                     <div>
                         @for (item of mostReport(); track $index) {
                         <div class="rep-user">
-                            {{item.user.nickname}}
-                            <span>{{item.reportCount}}</span>
+                            <div>
+                                {{item.user.nickname}}
+                                <span>{{item.reportCount}}</span>
+                            </div>
                         </div>
                         }
                     </div>
