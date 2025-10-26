@@ -66,8 +66,8 @@
 
 
 ::ng-deep .mat-mdc-menu-panel:has(.report) {
-    width: 600px;
-    max-width: 600px;
+    width: 400px;
+    max-width: 400px;
     padding: 30px;
 }
 

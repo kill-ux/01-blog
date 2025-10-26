@@ -31,7 +31,8 @@ declare var Prism: any;
 		MatButtonModule,
 		MatMenuModule,
 		MatDividerModule,
-		MatExpansionModule, Notifications],
+		MatExpansionModule
+	],
 	templateUrl: './main-layout.html',
 	styleUrl: './main-layout.css'
 })

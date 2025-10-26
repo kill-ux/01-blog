@@ -1,0 +1,10 @@
+<div class="dialog-container">
+    <h1 mat-dialog-title class="dialog-title">Confirm Action</h1>
+    <div mat-dialog-content class="dialog-content">
+        <p>Are you sure you want to proceed?</p>
+    </div>
+    <div mat-dialog-actions class="dialog-actions">
+        <button mat-stroked-button class="btn btn-primary cancel-button" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button class="btn btn-primary submit-button" [mat-dialog-close]="true">Submit</button>
+    </div>
+</div>

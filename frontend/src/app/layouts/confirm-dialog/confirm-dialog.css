@@ -1,0 +1,30 @@
+.dialog-container {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-white);
+    border-radius: 2px;
+}
+
+.cancel-button {
+    background-color: var(--bg-secondary);
+    color: var(--btn--primarey);
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+::ng-deep .mat-mdc-dialog-surface, .mdc-dialog__surface {
+    border-radius: 2px;
+}
+
+::ng-deep .cdk-global-overlay-wrapper {
+    background-color: rgba(0, 0, 0, 0.534);
+}

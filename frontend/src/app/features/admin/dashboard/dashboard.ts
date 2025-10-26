@@ -23,6 +23,7 @@ import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
 export class Dashboard implements OnInit {
 	users = signal<User[]>([])
 	reports = signal<Report[]>([])
+	countPosts = signal(0)
 	cursorUser = 0
 	cursorReport = 0
 	apiUrl = environment.API_URL
@@ -38,6 +39,7 @@ export class Dashboard implements OnInit {
 	ngOnInit(): void {
 		if (this.cursorUser == 0) {
 			this.getUsers()
+			this.getNumberOfPosts()
 		}
 	}
 
@@ -73,6 +75,17 @@ export class Dashboard implements OnInit {
 					this.cursorUser = 0
 				}
 				this.isLoading = false
+			},
+			error: err => {
+				this.isLoading = false
+			}
+		})
+	}
+
+	getNumberOfPosts() {
+		this.userService.getNumberOfPosts().subscribe({
+			next: c => {
+				this.countPosts.set(c.count)
 			},
 			error: err => {
 				console.log(err);

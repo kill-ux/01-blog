@@ -34,10 +34,6 @@
                 </button>
                 <mat-menu #menu="matMenu" xPosition="before">
                     @if (authService.isAdmin()) {
-                    <button class="mat-red" mat-menu-item (click)="DeleteBlog(item.id)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Delete</span>
-                    </button>
                     <button mat-menu-item (click)="HideBlog(item.id)">
                         @if (item.hidden) {
                         <mat-icon>visibility_off</mat-icon>
@@ -51,7 +47,8 @@
                         <span>Hide</span>
                         }
                     </button>
-                    }@else if (authService.currentUser?.id == item.user.id) {
+                    }
+                    @if (authService.currentUser?.id == item.user.id) {
                     <button mat-menu-item (click)="DeleteBlog(item.id)">
                         <mat-icon>delete</mat-icon>
                         <span>Delete</span>

@@ -45,6 +45,12 @@ public class ReportController {
         return ResponseEntity.ok(this.reportService.getReports(cursor));
     }
 
+    @GetMapping("/mostreported")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ReportResponce>> getMostReportedUsers() {
+        return ResponseEntity.ok(this.reportService.getMostReportedUsers());
+    }
+
     @PatchMapping("{reportId}/review")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ReportResponce> changeStatus(@PathVariable long reportId) {

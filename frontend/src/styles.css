@@ -500,3 +500,10 @@ p img {
 	margin-block: 16px;
 	border: 1px solid var(--btn--primarey);
 }
+
+
+
+/* .cdk-overlay-pane  {
+	width: 600px !important;
+	background-color: red !important;
+} */

@@ -2,7 +2,7 @@ import { Component, inject, Inject, Injector, OnInit, signal } from '@angular/co
 import { UserService } from '../services/user-service';
 import { AuthState, User } from '../../auth/models/model';
 import { AuthService } from '../../auth/services/auth-api';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Blogs } from "../../blog/pages/blogs/blogs";
 import { DatePipe } from '@angular/common';
 import { Discover } from "../discover/discover";
@@ -15,6 +15,9 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BlogService } from '../../blog/services/blog-service';
+import { AdminService } from '../../admin/services/admin-service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../layouts/confirm-dialog/confirm-dialog';
 
 @Component({
 	selector: 'app-profile',
@@ -31,12 +34,13 @@ export class Profile implements OnInit {
 	currentComponent = signal("blogs")
 	public authService = inject(AuthService)
 	public blogService = inject(BlogService)
+	admineService = inject(AdminService)
 
 
 
 	apiUrl = environment.API_URL;
 
-	constructor(private router: ActivatedRoute) { }
+	constructor(private router: ActivatedRoute, private route: Router, public dialog: MatDialog) { }
 
 	ngOnInit() {
 		this.router.params.subscribe(params => {
@@ -52,7 +56,7 @@ export class Profile implements OnInit {
 				this.userProfile.set(profile.user);
 			},
 			error: (error) => {
-				console.error('Failed to load profile', error);
+				// console.error('Failed to load profile', error);
 			}
 		});
 	}
@@ -144,5 +148,33 @@ export class Profile implements OnInit {
 			}
 		})
 		menuTrigger.closeMenu()
+	}
+
+	deleteUser(id: number) {
+		this.admineService.deleteUser(id).subscribe({
+			next: data => {
+				this.route.navigate([""])
+			},
+			error: err => {
+				console.log(err)
+			}
+		})
+	}
+
+	openConfirmDialog(id: number): void {
+		const dialogRef = this.dialog.open(ConfirmDialog, {
+			width: '300px'
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				console.log('User clicked Submit');
+				// Perform submit action
+				this.deleteUser(this.userProfile()!.id)
+			} else {
+				console.log('User clicked Cancel');
+				// Perform cancel action
+			}
+		});
 	}
 }

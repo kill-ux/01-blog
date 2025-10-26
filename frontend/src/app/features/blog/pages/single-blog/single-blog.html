@@ -3,10 +3,10 @@
         <article class="blog-card">
             <!-- Header with user info -->
             <header class="blog-header">
-                <div class="user-info" (click)="$event.stopPropagation(); openUser(blog?.user.id)">
+                <div class="user-info" (click)="$event.stopPropagation(); openUser(blog?.user?.id)">
                     <div class="avatar">
-                        <img [src]="this.blog?.user.avatar ?  apiUrl+this.blog?.user.avatar : '/default-avatar.jpg'"
-                            alt="{{ this.blog?.user.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
+                        <img [src]="this.blog?.user?.avatar ?  apiUrl+this.blog?.user?.avatar : '/default-avatar.jpg'"
+                            alt="{{ this.blog?.user?.nickname }}'s avatar" onerror="this.src='/default-avatar.jpg'">
                     </div>
                     <div class="user-details">
                         <span class="author-name">{{ this.blog?.user?.nickname }}</span>
@@ -15,6 +15,14 @@
                 </div>
 
                 <div class="flex-row">
+                    @if (blog?.hidden) {
+                    <span class="app-badge">
+                        <svg viewBox="0 0 6 6" aria-hidden="true" class="qxn qyn">
+                            <circle r="3" cx="3" cy="3"></circle>
+                        </svg>
+                        <span>HIDDEN</span>
+                    </span>
+                    }
                     <span class="stat">
                         <svg (click)="toggleLike(this.blog); $event.stopPropagation()" width="20" height="20"
                             viewBox="0 0 20 20" [class.liked]="this.blog?.like" [class.not-liked]="!this.blog?.like">
@@ -40,7 +48,22 @@
                         <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                        @if (authService.currentUser?.id == this.blog?.user.id) {
+                        @if (authService.isAdmin()) {
+                        <button mat-menu-item (click)="HideBlog(this.blog?.id)">
+                            @if (this.blog?.hidden) {
+                            <mat-icon>visibility_off</mat-icon>
+                            } @else {
+                            <mat-icon>visibility</mat-icon>
+                            }
+
+                            @if (this.blog?.hidden) {
+                            <span>Unhide</span>
+                            } @else {
+                            <span>Hide</span>
+                            }
+                        </button>
+                        }
+                        @if (authService.currentUser?.id == this.blog?.user?.id) {
                         <button mat-menu-item (click)="DeleteBlog(this.blog?.id)">
                             <mat-icon>delete</mat-icon>
                             <span>Delete</span>
@@ -50,7 +73,6 @@
                             <span>Edit</span>
                         </button>
                         }
-
                         <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
                             #menuTrigger="matMenuTrigger">
                             <mat-icon>report</mat-icon>
@@ -65,11 +87,14 @@
                                             placeholder="Ex. It makes me feel..."></textarea>
                                     </mat-form-field>
                                 </form>
-
+                                @if (this.blog) {
                                 <button (click)="ReportBlog(this.blog.id, textarea ,menuTrigger)"
                                     class="btn btn-primary">submit</button>
+                                }
+
                             </div>
                         </mat-menu>
+
                     </mat-menu>
                 </div>
 
@@ -106,7 +131,7 @@
                 </form>
 
                 @for (item of (this.blog?.children || []); track item.id) {
-                <app-child-blog (emitReport)="EmmitReport($event)"  [thread]="2" [child]="item"></app-child-blog>
+                <app-child-blog (emitReport)="EmmitReport($event)" [thread]="2" [child]="item"></app-child-blog>
                 @if (lastChild == item.id) {
                 <div #loadTrigger></div>
                 @defer (on viewport(loadTrigger),) {

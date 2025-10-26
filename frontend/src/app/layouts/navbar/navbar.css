@@ -319,3 +319,19 @@ app-theme-toggle {
 svg {
     fill: var(--btn--primarey);
 }
+
+
+
+ .notfs {
+    display: none;
+}
+
+@media (max-width: 900px) {
+     .notfs {
+        display: block;
+    }
+
+    ::ng-deep .not {
+        display: none;
+    }
+}

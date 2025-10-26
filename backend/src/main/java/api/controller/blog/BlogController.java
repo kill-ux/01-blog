@@ -29,6 +29,12 @@ public class BlogController {
         return ResponseEntity.ok(savedBlog);
     }
 
+    @GetMapping("/count")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String,Long>> getBlogsCount() {
+        return ResponseEntity.ok(Map.of("count",this.blogService.getBlogsCount()));
+    }
+
     @GetMapping("/networks")
     public ResponseEntity<List<BlogResponse>> getBlogsNetworks(@RequestParam(defaultValue = "0") long cursor) {
         List<BlogResponse> savedBlog = this.blogService.getBlogsNetworks(cursor);
@@ -68,8 +74,8 @@ public class BlogController {
 
     @PatchMapping("{blogId}/hide")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String,Boolean>> hideBlog(@PathVariable long blogId) {
-        return ResponseEntity.ok(Map.of("hide",this.blogService.hideBlog(blogId)));
+    public ResponseEntity<Map<String, Boolean>> hideBlog(@PathVariable long blogId) {
+        return ResponseEntity.ok(Map.of("hide", this.blogService.hideBlog(blogId)));
     }
 
     @DeleteMapping("{blogId}/delete")
@@ -88,7 +94,5 @@ public class BlogController {
     public ResponseEntity<Map<String, Integer>> getLikes(@PathVariable long blogId) {
         return ResponseEntity.ok(this.blogService.getLikes(blogId));
     }
-
-    
 
 }

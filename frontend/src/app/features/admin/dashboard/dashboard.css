@@ -30,8 +30,6 @@
     border-top: 1px solid var(--bg-tertiary);
     /* padding: 30px; */
     margin-inline: -2px;
-    background-color: var(--bg-primary);
-    box-shadow: 0 1px 100px var(--ba);
     max-width: 1100px;
     /* max-height: 520px; */    
 }
@@ -83,6 +81,7 @@ mat-tab-group {
 
 .table {
     padding: 30px;
+    box-shadow: 0 1px 100px var(--ba);
 }
 
 ::ng-deep  .mat-mdc-tab-body-wrapper:has(.table) {
@@ -98,7 +97,7 @@ table {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background-color: var(--back);
+  /* background-color: var(--back); */
 }
 
 .badge-type {
@@ -166,3 +165,17 @@ table {
     height: 100vh;
     display: block;
 } */
+
+.analytics {
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.rep {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

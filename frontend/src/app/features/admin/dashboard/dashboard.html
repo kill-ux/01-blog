@@ -1,5 +1,9 @@
 <div class="dashboard">
     <div class="container">
+        <div class="analytics">
+            <div class="posts">number of posts <span class="num">{{countPosts()}}</span> </div>
+            <div class="rep">most reported users</div>
+        </div>
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)">
             <mat-tab label="Users">
                 <div class="table">
@@ -110,7 +114,6 @@
                                 <div>{{ loadMoreReports() }}</div>
                                 }
                                 }
-
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="type">
@@ -181,11 +184,6 @@
                                             }
                                         </span>
                                     </button>
-                                    <button class="mat-red" mat-menu-item
-                                        (click)="deleteUser(element.reportingUser.id)">
-                                        <mat-icon>delete</mat-icon>
-                                        <span>Delete</span>
-                                    </button>
                                 </mat-menu>
 
                             </td>
@@ -223,10 +221,6 @@
                                             unBan
                                             }
                                         </span>
-                                    </button>
-                                    <button class="mat-red" mat-menu-item (click)="deleteUser(element.reportedUser.id)">
-                                        <mat-icon>delete</mat-icon>
-                                        <span>Delete</span>
                                     </button>
                                 </mat-menu>
 

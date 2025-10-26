@@ -19,6 +19,7 @@ svg {
     margin-right: 0.5rem;
 }
 
+
 .nav-link:hover {
     color: var(--primary);
 }
@@ -26,6 +27,8 @@ svg {
 .nav-link.active {
     color: var(--foreground);
 }
+
+
 
 ::ng-deep .mat-menu-after:has(#desktop) {
     transform: translateX(-30%) !important;
@@ -95,3 +98,4 @@ svg {
 .empty {
     padding: 20px;
 }
+

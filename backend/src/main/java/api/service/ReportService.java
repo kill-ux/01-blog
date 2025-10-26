@@ -11,6 +11,7 @@ import api.model.report.Report;
 import api.model.report.ReportRequests.ReportRequestDto;
 import api.model.report.ReportRequests.ReportResponce;
 import api.model.user.User;
+import api.model.user.UserResponse;
 import api.repository.BlogRepository;
 import api.repository.ReportRepository;
 import api.repository.UserRepository;
@@ -54,6 +55,10 @@ public class ReportService {
         }
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
         return this.reportRepository.findByIdLessThan(cursor, pageable).map(ReportResponce::new).toList();
+    }
+
+    public List<UserResponse> getMostReportedUsers() {
+        this.reportRepository.find
     }
 
     public ReportResponce changeStatus(long reportId) {

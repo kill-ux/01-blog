@@ -16,6 +16,8 @@ export class UserService {
         return this.http.get<User[]>(`${this.apiUrl}/users?cursor=${cursor}`)
     }
 
+    
+
     getSubscribers(userId: number, cursor: number) {
         return this.http.get<User[]>(`${this.apiUrl}/users/${userId}/subscribers?cursor=${cursor}`)
     }
@@ -34,6 +36,10 @@ export class UserService {
 
     getBlogsByUserId(userId: any) {
         return this.http.get<BlogResponce[]>(`${this.apiUrl}/users/${userId}/blogs`)
+    }
+
+    getNumberOfPosts() {
+        return this.http.get<{count: number}>(`${this.apiUrl}/blogs/count`)
     }
 
     updateProfile(file: File) {

@@ -25,7 +25,7 @@ export type dataReport = { id: number, e: HTMLTextAreaElement, menuTrigger: MatM
 	styleUrl: './single-blog.css'
 })
 export class SingleBlog implements OnInit {
-	public blog: any;
+	public blog: BlogResponce | null = null;
 	formCommend: FormGroup
 	lastChild = 0
 	isLoading = false
@@ -48,8 +48,8 @@ export class SingleBlog implements OnInit {
 		});
 	}
 
-	toggleLike(blogResponce: BlogResponce) {
-		if (this.isLoading) return;
+	toggleLike(blogResponce: BlogResponce | null) {
+		if (this.isLoading || !blogResponce) return;
 		this.isLoading = true;
 
 		this.blogService.toggleLike(blogResponce).subscribe({
@@ -119,12 +119,14 @@ export class SingleBlog implements OnInit {
 		this.isLoading = true;
 		this.formCommend.markAllAsTouched();
 
-		if (this.formCommend.valid) {
+		if (this.formCommend.valid && this.blog) {
 			let comment: any = { description: this.formCommend.value.description, parent: this.blog.id }
 			this.blogService.saveBlog(comment).subscribe({
 				next: (res) => {
-					this.blog.children = [res, ...this.blog.children]
-					this.formCommend.reset()
+					if (this.blog) {
+						this.blog.children = [res, ...this.blog.children]
+						this.formCommend.reset()
+					}
 					this.isLoading = false
 				},
 				error: (err) => {
@@ -145,12 +147,15 @@ export class SingleBlog implements OnInit {
 		}
 	}
 
-	DeleteBlog(id: number) {
-		if (this.isLoading) return;
+	DeleteBlog(id?: number) {
+		if (this.isLoading || !id) return;
 		this.isLoading = true;
 		this.blogService.DeleteBlog(id).subscribe({
 			next: res => {
 				this.router.navigate([""])
+				this.snackBar.open('Blog is Deleted succefully', "Close", {
+					duration: 2000,
+				});
 				this.isLoading = false
 			},
 			error: err => {
@@ -165,7 +170,7 @@ export class SingleBlog implements OnInit {
 	}
 
 	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger) {
-		if (this.isLoading) return
+		if (this.isLoading || !id) return
 		this.isLoading = true
 		const value = e.value.trim();
 		if (value.length == 0) return
@@ -185,12 +190,35 @@ export class SingleBlog implements OnInit {
 		menuTrigger.closeMenu()
 	}
 
-	EditBlog(id: number) {
+	EditBlog(id?: number) {
+		if (!id) return
 		this.router.navigate(["edit", id])
 	}
 
-	openUser(id: number) {
-		this.router.navigate(["profile", id])
+	openUser(id?: number) {
+		if (id) {
+			this.router.navigate(["profile", id])
+		}
+	}
+
+	HideBlog(id?: number) {
+		if (this.isLoading || !id) return
+		this.isLoading = true
+		this.blogService.HideBlog(id).subscribe({
+			next: res => {
+				this.snackBar.open('Blog is Hidden succefully', "Close", {
+					duration: 2000,
+				});
+				if (this.blog) {
+					this.blog.hidden = !this.blog.hidden
+				}
+				this.isLoading = false
+			},
+			error: err => {
+				console.log(err)
+				this.isLoading = false
+			}
+		})
 	}
 
 }

@@ -34,6 +34,13 @@
                         <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu" xPosition="before">
+                        @if (userProfile()) {
+                        <button class="mat-red" mat-menu-item  (click)="openConfirmDialog(userProfile()!.id)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                        }
+
                         <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item
                             #menuTrigger="matMenuTrigger">
                             <mat-icon>report</mat-icon>

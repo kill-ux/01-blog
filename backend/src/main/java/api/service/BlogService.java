@@ -32,7 +32,6 @@ public class BlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
@@ -58,6 +57,10 @@ public class BlogService {
                 .stream()
                 .map(b -> new BlogResponse(b, user.getId()))
                 .toList();
+    }
+
+    public long getBlogsCount() {
+        return this.blogRepository.count();
     }
 
     public List<BlogResponse> getBlogsNetworks(long cursor) {
@@ -199,5 +202,4 @@ public class BlogService {
         return Map.of("count", blog.getLikedBy().size());
     }
 
- 
 }
