@@ -56,7 +56,8 @@ export class Profile implements OnInit {
 				this.userProfile.set(profile.user);
 			},
 			error: (error) => {
-				// console.error('Failed to load profile', error);
+					// console.error('Failed to load profile', error);
+					this.route.navigate(["user-not-found"])
 			}
 		});
 	}
@@ -148,33 +149,5 @@ export class Profile implements OnInit {
 			}
 		})
 		menuTrigger.closeMenu()
-	}
-
-	deleteUser(id: number) {
-		this.admineService.deleteUser(id).subscribe({
-			next: data => {
-				this.route.navigate([""])
-			},
-			error: err => {
-				console.log(err)
-			}
-		})
-	}
-
-	openConfirmDialog(id: number): void {
-		const dialogRef = this.dialog.open(ConfirmDialog, {
-			width: '300px'
-		});
-
-		dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				console.log('User clicked Submit');
-				// Perform submit action
-				this.deleteUser(this.userProfile()!.id)
-			} else {
-				console.log('User clicked Cancel');
-				// Perform cancel action
-			}
-		});
 	}
 }

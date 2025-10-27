@@ -4,14 +4,10 @@ import { BlogHome } from "../blog/pages/blog-home/blog-home";
 import { BlogsRoutes } from "../blog/home.routes";
 import { Discover } from "../user/discover/discover";
 import { Profile } from "../user/profile/profile";
-import { Notifications } from "../user/notifications/notifications";
 import { Dashboard } from "../admin/dashboard/dashboard";
+import { NotFound } from "../../errors/not-found/not-found";
 
 export const homeRoutes: Routes = [
-    // {
-    //     path: '',
-    //     component: Home
-    // },
     {
         path: '',
         component: BlogHome,
@@ -19,14 +15,6 @@ export const homeRoutes: Routes = [
     },
     {
         path: 'discover',
-        component: Discover,
-    },
-    {
-        path: 'notifications',
-        component: Notifications,
-    },
-    {
-        path: 'discover/:sub/:id',
         component: Discover,
     },
     {
@@ -38,7 +26,8 @@ export const homeRoutes: Routes = [
         path: 'dashboard',
         component: Dashboard,
     },
-    // {
-    //     path: 'blogs',
-    // }
+    {
+        path: '**',
+        component: NotFound
+    },
 ]

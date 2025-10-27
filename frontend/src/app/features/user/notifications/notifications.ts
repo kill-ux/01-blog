@@ -7,7 +7,7 @@ import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
 import { environment } from '../../../../environments/environment';
 import { MatButtonModule } from "@angular/material/button";
 import { MatBadgeModule } from '@angular/material/badge'
-import { Subscription } from 'rxjs';
+import { first, Subscription } from 'rxjs';
 import { WebSocketApi } from '../services/websocket';
 import { AuthService } from '../../auth/services/auth-api';
 
@@ -35,7 +35,7 @@ export class Notifications implements OnInit {
 
 	ngOnInit(): void {
 		this.getNotifications()
-		this.authService.currentUser$.subscribe((user) => {
+		this.authService.currentUser$.pipe(first(user => !!user)).subscribe((user) => {
 			if (user) {
 				this.setupWebSocket();
 			}
@@ -56,7 +56,7 @@ export class Notifications implements OnInit {
 					if (currentNotfs) {
 						currentNotfs.notfs = newNotfList;
 						currentNotfs.count += 1;
-						return currentNotfs; 
+						return currentNotfs;
 					} else {
 						return {
 							notfs: newNotfList,

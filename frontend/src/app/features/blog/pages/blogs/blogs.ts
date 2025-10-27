@@ -14,6 +14,8 @@ import { environment } from '../../../../../environments/environment';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from "@angular/forms";
 import { MatInputModule } from '@angular/material/input';
+import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-blogs',
@@ -35,7 +37,7 @@ export class Blogs implements OnInit, OnChanges {
 	apiUrl = environment.API_URL;
 
 
-	constructor(private blogService: BlogService, private router: Router) {
+	constructor(private blogService: BlogService, private router: Router, public dialog: MatDialog) {
 	}
 
 	ngOnInit(): void {
@@ -117,30 +119,34 @@ export class Blogs implements OnInit, OnChanges {
 	}
 
 	DeleteBlog(id: number) {
-		this.blogService.DeleteBlog(id).subscribe({
-			next: res => {
-				this.blogs.update(bs => bs.filter(blog => blog.id != id))
-			},
-			error: err => {
-				console.log(err)
-			}
+		this.openConfirmDialog(() => {
+			this.blogService.DeleteBlog(id).subscribe({
+				next: res => {
+					this.blogs.update(bs => bs.filter(blog => blog.id != id))
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
 		})
 	}
 
 	HideBlog(id: number) {
-		this.blogService.HideBlog(id).subscribe({
-			next: res => {
-				this.blogs.update(bs => {
-					const blog = bs.find(blog => blog.id == id)
-					if (blog) {
-						blog.hidden = !blog.hidden
-					}
-					return bs
-				})
-			},
-			error: err => {
-				console.log(err)
-			}
+		this.openConfirmDialog(() => {
+			this.blogService.HideBlog(id).subscribe({
+				next: res => {
+					this.blogs.update(bs => {
+						const blog = bs.find(blog => blog.id == id)
+						if (blog) {
+							blog.hidden = !blog.hidden
+						}
+						return bs
+					})
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
 		})
 	}
 
@@ -149,22 +155,34 @@ export class Blogs implements OnInit, OnChanges {
 	}
 
 	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger, menuTrigger1: MatMenuTrigger) {
-		const value = e.value.trim();
-		if (value.length == 0) return
-		this.blogService.Report({ blogId: id, reason: value }).subscribe({
-			next: res => {
-				e.value = ''
-			},
-			error: err => {
-				console.log(err)
-			}
+		this.openConfirmDialog(() => {
+			const value = e.value.trim();
+			if (value.length == 0) return
+			this.blogService.Report({ blogId: id, reason: value }).subscribe({
+				next: res => {
+					e.value = ''
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
+			menuTrigger.closeMenu()
+			menuTrigger1.closeMenu()
 		})
-		menuTrigger.closeMenu()
-		menuTrigger1.closeMenu()
 	}
 
 	openUser(id: number) {
 		this.router.navigate(["profile", id])
+	}
+
+	openConfirmDialog(callback: (() => void)): void {
+		const dialogRef = this.dialog.open(ConfirmDialog);
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				callback()
+			}
+		});
 	}
 
 }

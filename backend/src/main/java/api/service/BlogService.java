@@ -159,7 +159,7 @@ public class BlogService {
                     .orElseThrow(() -> new IllegalArgumentException("FAILED: there is no post with this ID"));
             blog.setParent(parent);
         } else {
-            if (blogRequest.title() == null) {
+            if (blogRequest.title() == null || blogRequest.title().trim() == "") {
                 throw new IllegalArgumentException("must be to set the title");
             }
             blog.setTitle(blogRequest.title());

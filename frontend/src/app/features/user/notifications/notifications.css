@@ -88,6 +88,8 @@ svg {
     align-items: center;
     gap: 10px;
     margin: 3px;
+    padding: 5px;
+    background-color: var(--bg-hover)
 }
 
 ::ng-deep .flex .mat-mdc-menu-item-text {
@@ -99,3 +101,6 @@ svg {
     padding: 20px;
 }
 
+li,ol,ul {
+    list-style: none;
+}

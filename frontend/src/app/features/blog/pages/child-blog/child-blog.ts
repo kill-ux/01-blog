@@ -12,10 +12,12 @@ import { environment } from '../../../../../environments/environment';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { dataReport } from '../single-blog/single-blog';
 import { MatInputModule } from '@angular/material/input';
+import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-child-blog',
-	imports: [DatePipe, ReactiveFormsModule, MatButtonModule, MatMenuModule, MatIcon, MatFormField, MatLabel,MatInputModule],
+	imports: [DatePipe, ReactiveFormsModule, MatButtonModule, MatMenuModule, MatIcon, MatFormField, MatLabel, MatInputModule],
 	templateUrl: './child-blog.html',
 	styleUrl: './child-blog.css'
 })
@@ -37,7 +39,7 @@ export class ChildBlog implements OnInit {
 
 	public authService = inject(AuthService)
 
-	constructor(private blogService: BlogService, private fb: FormBuilder, private router: Router) {
+	constructor(private blogService: BlogService, private fb: FormBuilder, private router: Router, public dialog: MatDialog) {
 		this.formCommend = fb.group({
 			description: ['', Validators.required],
 			parent: [0]
@@ -65,6 +67,8 @@ export class ChildBlog implements OnInit {
 	submitComment(id?: number) {
 		this.formCommend.markAllAsTouched();
 		if (this.formCommend.valid) {
+			if (this.isLoading) return
+			this.isLoading = true
 			let comment: any = { description: this.formCommend.value.description, parent: id }
 			let obs;
 			if (this.edit && this.child) {
@@ -83,9 +87,11 @@ export class ChildBlog implements OnInit {
 						this.child.childrenCount++
 						this.formCommend.reset()
 					}
+					this.isLoading = false
 				},
 				error: (err) => {
 					console.log(err)
+					this.isLoading = false
 				}
 			})
 		}
@@ -151,13 +157,15 @@ export class ChildBlog implements OnInit {
 	}
 
 	DeleteBlog(id: number) {
-		this.blogService.DeleteBlog(id).subscribe({
-			next: res => {
-				this.child = null
-			},
-			error: err => {
-				console.log(err)
-			}
+		this.openConfirmDialog(() => {
+			this.blogService.DeleteBlog(id).subscribe({
+				next: res => {
+					this.child = null
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
 		})
 	}
 
@@ -167,7 +175,6 @@ export class ChildBlog implements OnInit {
 	}
 
 	changeReply() {
-		// this.reply = !this.reply
 		this.reply = !this.reply
 	}
 
@@ -186,7 +193,13 @@ export class ChildBlog implements OnInit {
 		this.emitReport.emit(data)
 	}
 
-	// EmmitReport(data: dataReport) {
-	// 	this.ReportBlog(data.id, data.e, data.menuTrigger)
-	// }
+	openConfirmDialog(callback: (() => void)): void {
+		const dialogRef = this.dialog.open(ConfirmDialog);
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				callback()
+			}
+		});
+	}
 }

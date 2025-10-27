@@ -1,7 +1,4 @@
-<li><a routerLink="/notifications" class="nav-link" [matMenuTriggerFor]="menu">
-        @if (notfs()?.count) {
-
-        }
+<li><a  class="nav-link" [matMenuTriggerFor]="menu">
         <span [matBadge]="getBadgeText()" matBadgePosition="before">
             <svg width="20" viewBox="0 0 20 20" class="fill-current">
                 <path d="M12 19H8V17H12V19Z"></path>
@@ -15,7 +12,6 @@
                 <path d="M16 11H14V4H16V11Z"></path>
             </svg>
         </span>
-        <span class="not">Notification</span>
     </a></li>
 
 <div>

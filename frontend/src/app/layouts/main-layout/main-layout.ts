@@ -15,7 +15,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
-import { Notifications } from "../../features/user/notifications/notifications";
 
 
 declare var Prism: any;

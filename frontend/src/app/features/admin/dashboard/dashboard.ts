@@ -13,6 +13,8 @@ import { AdminService } from '../services/admin-service';
 import { Blogs } from "../../blog/pages/blogs/blogs";
 import { Report } from '../../blog/model/model';
 import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../layouts/confirm-dialog/confirm-dialog';
 
 @Component({
 	selector: 'app-dashboard',
@@ -36,6 +38,10 @@ export class Dashboard implements OnInit {
 	displayedColumnsReports: string[] = ['id', 'type', 'createdAt', 'reason', 'status', 'reportingUser', 'reportedUser', 'actions'];
 
 	private isLoading = false;
+
+	constructor(public dialog: MatDialog) {
+
+	}
 
 	ngOnInit(): void {
 		if (this.cursorUser == 0) {
@@ -121,17 +127,19 @@ export class Dashboard implements OnInit {
 	}
 
 	deleteUser(id: number) {
-		this.admineService.deleteUser(id).subscribe({
-			next: data => {
-				this.users.update(users => {
-					return users.filter(user => user.id != id)
-				})
-				console.log(data)
-			},
-			error: err => {
-				console.log(err)
-			}
-		})
+		this.openConfirmDialog(() => {
+			this.admineService.deleteUser(id).subscribe({
+				next: data => {
+					this.users.update(users => {
+						return users.filter(user => user.id != id)
+					})
+					console.log(data)
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
+		});
 	}
 
 	openUser(id: number) {
@@ -143,24 +151,26 @@ export class Dashboard implements OnInit {
 	}
 
 	banUser(id: number, userR?: User) {
-		this.admineService.banUser(id).subscribe({
-			next: data => {
-				this.users.update(users => {
-					const user = users.find(user => user.id == id)
-					if (user) {
-						user.bannedUntil = !user.bannedUntil;
-						if (userR) {
-							userR.bannedUntil = user.bannedUntil;
+		this.openConfirmDialog(() => {
+			this.admineService.banUser(id).subscribe({
+				next: data => {
+					this.users.update(users => {
+						const user = users.find(user => user.id == id)
+						if (user) {
+							user.bannedUntil = !user.bannedUntil;
+							if (userR) {
+								userR.bannedUntil = user.bannedUntil;
+							}
 						}
-					}
-					return users
-				})
-				console.log(data)
-			},
-			error: err => {
-				console.log(err)
-			}
-		})
+						return users
+					})
+					console.log(data)
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
+		});
 	}
 
 	loadMoreUsers() {
@@ -176,47 +186,60 @@ export class Dashboard implements OnInit {
 	}
 
 	onTabChange(event: MatTabChangeEvent) {
-		// Check if the label of the selected tab is 'Reports'
 		if (event.tab.textLabel === 'Reports' && this.cursorReport == 0) {
 			this.getReports();
 		}
 	}
 
 	reviewReport(id: number) {
-		this.admineService.reviewReport(id).subscribe({
-			next: data => {
-				this.reports.update(reports => {
-					const report = reports.find(report => report.id == id)
-					if (report) {
-						report.status = !report.status;
-					}
-					return reports
-				})
-			},
-			error: err => {
-				console.log(err)
-			}
+		this.openConfirmDialog(() => {
+			this.admineService.reviewReport(id).subscribe({
+				next: data => {
+					this.reports.update(reports => {
+						const report = reports.find(report => report.id == id)
+						if (report) {
+							report.status = !report.status;
+						}
+						return reports
+					})
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
 		})
 	}
 
-	adminify(id: number, userR?: User) {
-		this.admineService.adminify(id).subscribe({
-			next: data => {
-				this.users.update(users => {
-					const user = users.find(user => user.id == id)
-					if (user) {
-						user.role = data;
-						if (userR) {
-							userR.role = user.role
-						}
-					}
-					return users
-				})
-				console.log(data)
-			},
-			error: err => {
-				console.log(err)
+	openConfirmDialog(callback: (() => void)): void {
+		const dialogRef = this.dialog.open(ConfirmDialog);
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				callback()
 			}
+		});
+	}
+
+	adminify(id: number, userR?: User) {
+		this.openConfirmDialog(() => {
+			this.admineService.adminify(id).subscribe({
+				next: data => {
+					this.users.update(users => {
+						const user = users.find(user => user.id == id)
+						if (user) {
+							user.role = data;
+							if (userR) {
+								userR.role = user.role
+							}
+						}
+						return users
+					})
+					console.log(data)
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
 		})
 	}
 }

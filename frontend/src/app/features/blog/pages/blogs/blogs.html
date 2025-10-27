@@ -49,13 +49,15 @@
                     </button>
                     }
                     @if (authService.currentUser?.id == item.user.id) {
-                    <button mat-menu-item (click)="DeleteBlog(item.id)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Delete</span>
-                    </button>
                     <button mat-menu-item (click)="EditBlog(item.id)">
                         <mat-icon>edit</mat-icon>
                         <span>Edit</span>
+                    </button>
+                    }
+                    @if (authService.isAdmin() || authService.currentUser?.id == item.user.id) {
+                    <button mat-menu-item (click)="DeleteBlog(item.id)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
                     </button>
                     }
                     <button [matMenuTriggerFor]="reportUser" class="mat-red" mat-menu-item

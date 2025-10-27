@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { Signin } from "./signin/signin";
 import { Signup } from "./signup/signup";
+import { NotFound } from "../../errors/not-found/not-found";
 
 export const authRoutes: Routes = [
     {
@@ -15,5 +16,9 @@ export const authRoutes: Routes = [
         path: '',
         redirectTo: 'signin',
         pathMatch: 'full'
+    },
+    {
+        path: '**',
+        component: NotFound
     },
 ]

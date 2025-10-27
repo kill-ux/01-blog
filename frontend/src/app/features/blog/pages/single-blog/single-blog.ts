@@ -15,6 +15,8 @@ import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 export type dataReport = { id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger }
 
@@ -34,7 +36,7 @@ export class SingleBlog implements OnInit {
 	snackBar = inject(MatSnackBar)
 	public authService = inject(AuthService)
 
-	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
+	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router, public dialog: MatDialog) {
 		this.formCommend = fb.group({
 			description: ['', Validators.required],
 			parent: [0]
@@ -76,6 +78,9 @@ export class SingleBlog implements OnInit {
 				this.getBlogChildren(0)
 			},
 			error: (err) => {
+				if (err.status == 400) {
+					this.router.navigate(["blog-not-found"])
+				}
 				console.log(err)
 			}
 		})
@@ -115,11 +120,10 @@ export class SingleBlog implements OnInit {
 	}
 
 	submitComment() {
-		if (this.isLoading) return;
-		this.isLoading = true;
 		this.formCommend.markAllAsTouched();
-
 		if (this.formCommend.valid && this.blog) {
+			if (this.isLoading) return;
+			this.isLoading = true;
 			let comment: any = { description: this.formCommend.value.description, parent: this.blog.id }
 			this.blogService.saveBlog(comment).subscribe({
 				next: (res) => {
@@ -132,6 +136,7 @@ export class SingleBlog implements OnInit {
 				error: (err) => {
 					console.log(err)
 					this.isLoading = false
+					this.formCommend.reset()
 					this.snackBar.open('comment faild', "Close", {
 						duration: 2000,
 					});
@@ -148,20 +153,22 @@ export class SingleBlog implements OnInit {
 	}
 
 	DeleteBlog(id?: number) {
-		if (this.isLoading || !id) return;
-		this.isLoading = true;
-		this.blogService.DeleteBlog(id).subscribe({
-			next: res => {
-				this.router.navigate([""])
-				this.snackBar.open('Blog is Deleted succefully', "Close", {
-					duration: 2000,
-				});
-				this.isLoading = false
-			},
-			error: err => {
-				console.log(err)
-				this.isLoading = false
-			}
+		this.openConfirmDialog(() => {
+			if (this.isLoading || !id) return;
+			this.isLoading = true;
+			this.blogService.DeleteBlog(id).subscribe({
+				next: res => {
+					this.router.navigate([""])
+					this.snackBar.open('Blog is Deleted succefully', "Close", {
+						duration: 2000,
+					});
+					this.isLoading = false
+				},
+				error: err => {
+					console.log(err)
+					this.isLoading = false
+				}
+			})
 		})
 	}
 
@@ -170,24 +177,26 @@ export class SingleBlog implements OnInit {
 	}
 
 	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger) {
-		if (this.isLoading || !id) return
-		this.isLoading = true
-		const value = e.value.trim();
-		if (value.length == 0) return
-		this.blogService.Report({ blogId: id, reason: value }).subscribe({
-			next: res => {
-				e.value = ''
-				this.isLoading = false
-			},
-			error: err => {
-				console.log(err)
-				this.isLoading = false
-				this.snackBar.open("report faild", "Closa", {
-					duration: 2000
-				})
-			}
+		this.openConfirmDialog(() => {
+			const value = e.value.trim();
+			if (value.length == 0) return
+			if (this.isLoading || !id) return
+			this.isLoading = true
+			this.blogService.Report({ blogId: id, reason: value }).subscribe({
+				next: res => {
+					e.value = ''
+					this.isLoading = false
+				},
+				error: err => {
+					console.log(err)
+					this.isLoading = false
+					this.snackBar.open("report faild", "Closa", {
+						duration: 2000
+					})
+				}
+			})
+			menuTrigger.closeMenu()
 		})
-		menuTrigger.closeMenu()
 	}
 
 	EditBlog(id?: number) {
@@ -202,23 +211,35 @@ export class SingleBlog implements OnInit {
 	}
 
 	HideBlog(id?: number) {
-		if (this.isLoading || !id) return
-		this.isLoading = true
-		this.blogService.HideBlog(id).subscribe({
-			next: res => {
-				this.snackBar.open('Blog is Hidden succefully', "Close", {
-					duration: 2000,
-				});
-				if (this.blog) {
-					this.blog.hidden = !this.blog.hidden
+		this.openConfirmDialog(() => {
+			if (this.isLoading || !id) return
+			this.isLoading = true
+			this.blogService.HideBlog(id).subscribe({
+				next: res => {
+					this.snackBar.open('Blog is Hidden succefully', "Close", {
+						duration: 2000,
+					});
+					if (this.blog) {
+						this.blog.hidden = !this.blog.hidden
+					}
+					this.isLoading = false
+				},
+				error: err => {
+					console.log(err)
+					this.isLoading = false
 				}
-				this.isLoading = false
-			},
-			error: err => {
-				console.log(err)
-				this.isLoading = false
-			}
+			})
 		})
+	}
+
+	openConfirmDialog(callback: (() => void)): void {
+		const dialogRef = this.dialog.open(ConfirmDialog);
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				callback()
+			}
+		});
 	}
 
 }

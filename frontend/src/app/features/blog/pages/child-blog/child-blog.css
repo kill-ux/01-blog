@@ -261,3 +261,25 @@ svg {
     /* fill: var(--text-muted); */
     fill: var(--text-primary);
 }
+
+
+
+.report{
+    width: 100%;
+}
+
+
+.report *{
+    width: 100%;
+}
+
+
+::ng-deep .mat-mdc-menu-panel:has(.report) {
+    width: 400px;
+    max-width: 400px;
+    padding: 30px;
+}
+
+::ng-deep .mdc-text-field--filled {
+    background-color: var(--bg-secondary) !important;
+}
