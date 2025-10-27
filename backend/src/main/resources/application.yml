@@ -26,3 +26,9 @@ security:
 app:
   cloudinary:
     cloud-url: cloudinary://642694169257984:rfJHdHX8xcB3gLsKDpYFDI6qLv4@dbwhdxois
+resilience4j.ratelimiter:
+  instances:
+    myApiLimiter:
+      limitForPeriod: 40                    # Number of requests allowed in the period
+      limitRefreshPeriod: 1s                # The time period
+      timeoutDuration: 0                    # How long to wait for permission (0 = fail fast)

@@ -7,6 +7,7 @@ import api.model.user.LoginRequest;
 import api.model.user.LoginResponse;
 import api.model.user.UserRecord;
 import api.service.UserService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/auth")
+@RateLimiter(name = "myApiLimiter")
 public class AuthController {
     private final UserService userService;
 

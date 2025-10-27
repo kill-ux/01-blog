@@ -21,9 +21,11 @@ import api.model.report.ReportRequests.ReportResponce;
 import api.model.user.UserResponse;
 // import api.model.report.ReportRequest;
 import api.service.ReportService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 
 @RestController
+@RateLimiter(name = "myApiLimiter")
 @RequestMapping("/api/reports")
 public class ReportController {
     private final ReportService reportService;

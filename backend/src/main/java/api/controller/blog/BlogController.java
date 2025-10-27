@@ -4,6 +4,7 @@ import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
 import api.model.blog.ChildrenResponse;
 import api.service.BlogService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/blogs")
+@RateLimiter(name = "myApiLimiter")
 public class BlogController {
 
     private final BlogService blogService;
@@ -31,8 +33,8 @@ public class BlogController {
 
     @GetMapping("/count")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String,Long>> getBlogsCount() {
-        return ResponseEntity.ok(Map.of("count",this.blogService.getBlogsCount()));
+    public ResponseEntity<Map<String, Long>> getBlogsCount() {
+        return ResponseEntity.ok(Map.of("count", this.blogService.getBlogsCount()));
     }
 
     @GetMapping("/networks")

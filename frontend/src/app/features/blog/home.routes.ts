@@ -20,9 +20,5 @@ export const BlogsRoutes: Routes = [
     {
         path: 'blog/:id',
         component: SingleBlog,
-    },
-    {
-        path: '**',
-        component: NotFound
-    },
+    }
 ]

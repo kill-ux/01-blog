@@ -44,7 +44,11 @@ export class Profile implements OnInit {
 
 	ngOnInit() {
 		this.router.params.subscribe(params => {
-			const id = params["id"]
+			const id = Number(params["id"]);
+			if (Number.isNaN(id)) {
+				this.route.navigate(["user-not-found"])
+				return
+			}
 			this.currentComponent.set("blogs")
 			this.loadProfile(id);
 		})

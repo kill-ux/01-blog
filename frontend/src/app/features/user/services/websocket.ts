@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import SockJS from 'sockjs-client';
+// import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { Notification } from '../../blog/model/model'; // Assuming NotificationResponce is here
 import { AuthService } from '../../auth/services/auth-api';
@@ -10,33 +10,18 @@ import { Subject } from 'rxjs';
 })
 export class WebSocketApi {
 	private authService = inject(AuthService);
-	stompClient: Client | undefined;
+	stompClient: Client;
 	private notificationSubject = new Subject<Notification>();
 	public notification$ = this.notificationSubject.asObservable();
 
-	constructor() { }
-	
-	connect() {
-		const currentUser = this.authService.currentUser;
-		if (!currentUser) {
-			console.error('Cannot connect to WebSocket, user is not logged in.');
-			return;
-		}
-
-		if (this.stompClient?.active) {
-			console.log('WebSocket client is already active.');
-			return;
-		}
+	constructor() {
 
 		const token = localStorage.getItem('token');
-		const username = currentUser.nickname;
-		const brokerURL = `http://localhost:8080/ws?token=${token}`;
+		const brokerURL = `http://localhost:8080/ws`;
 
 
 		this.stompClient = new Client({
-			webSocketFactory: () => {
-				return new SockJS(brokerURL);
-			},
+			brokerURL,
 			connectHeaders: {
 				"Authorization": "Bearer " + token
 			},
@@ -49,8 +34,7 @@ export class WebSocketApi {
 
 			onConnect: (frame) => {
 				console.log('Connected: ' + frame);
-				// Subscribe with the guaranteed username
-				this.stompClient?.subscribe(`/user/${username}/queue/chat`, (message) => {
+				this.stompClient.subscribe(`/user/queue/new-blog`, (message) => {
 					this.onMessageRecived(message.body);
 				});
 			},

@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import api.service.CloudinaryService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 
 @RestController
 @RequestMapping("/api/upload")
+@RateLimiter(name = "myApiLimiter")
 public class FileUploadController {
 
     private CloudinaryService cloudinaryService;

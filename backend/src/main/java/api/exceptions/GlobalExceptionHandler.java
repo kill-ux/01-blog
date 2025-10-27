@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.jsonwebtoken.JwtException;
 
 import java.util.HashMap;
@@ -28,6 +29,14 @@ public class GlobalExceptionHandler {
             errors.put(error.getField(), error.getDefaultMessage());
         }
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<Map<String, String>> rateLimitFallback(RequestNotPermitted ex) {
+        return new ResponseEntity<>(
+                Map.of("error", "Too many requests. Please try again later."),
+                HttpStatus.TOO_MANY_REQUESTS // This sends the 429 status code
+        );
     }
 
     @ExceptionHandler(ResponseStatusException.class)

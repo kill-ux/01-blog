@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.model.user.UserRequests;
 import api.service.UserService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin")
+@RateLimiter(name = "myApiLimiter")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     private final UserService userService;

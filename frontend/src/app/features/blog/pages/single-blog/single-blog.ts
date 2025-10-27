@@ -44,8 +44,12 @@ export class SingleBlog implements OnInit {
 	}
 
 	ngOnInit(): void {
-		const id = this.route.params.subscribe(params => {
-			const id = params["id"];
+		this.route.params.subscribe(params => {
+			const id = Number(params["id"]);
+			if (Number.isNaN(id)) {
+				this.router.navigate(["blog-not-found"])
+				return
+			}
 			this.getBlog(id)
 		});
 	}

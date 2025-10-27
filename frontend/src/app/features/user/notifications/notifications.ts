@@ -44,7 +44,6 @@ export class Notifications implements OnInit {
 
 	private setupWebSocket(): void {
 		console.log('🔧 Setting up WebSocket listener...');
-		this.websocketService.connect();
 
 		this.notificationSubscription = this.websocketService.notification$.subscribe(
 			(newMessage: Notification) => {

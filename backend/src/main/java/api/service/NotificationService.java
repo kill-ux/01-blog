@@ -49,7 +49,7 @@ public class NotificationService {
         // 2. Define the user's private destination
         // This is the destination your Angular client is subscribed to,
         // *without* the "/user/{username}" prefix.
-        String destination = "/queue/chat";
+        String destination = "/queue/new-blog";
 
         // 3. Send the message
         messagingTemplate.convertAndSendToUser(

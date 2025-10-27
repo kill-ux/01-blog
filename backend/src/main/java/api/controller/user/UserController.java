@@ -15,6 +15,7 @@ import api.model.user.UserResponse;
 import api.service.BlogService;
 import api.service.NotificationService;
 import api.service.UserService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
+@RateLimiter(name = "myApiLimiter")
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
