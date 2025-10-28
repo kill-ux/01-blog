@@ -207,7 +207,7 @@
 <div class="form-child">
     <form [formGroup]="formCommend" class="comments" (submit)="(submitComment(this.child.id))">
         <div class="comment-back cap">
-            <textarea formControlName="description" class="comment-textarea" name="" id=""
+            <textarea maxlength="5000" formControlName="description" class="comment-textarea" name="" id=""
                 placeholder="Add a comment to the discussion" rows="5" (keydown)="onKeyDown($event,btn)"></textarea>
         </div>
         <button #btn type="submit" class="btn btn-primary">Publish</button>

@@ -6,6 +6,7 @@ import { homeRoutes } from './features/home/home.routes';
 import { authGuard } from './core/guards/auth-guard';
 import { noAuthGuard } from './core/guards/no-auth-guard';
 import { NotFound } from './errors/not-found/not-found';
+import { Internal } from './errors/internal/internal';
 
 export const routes: Routes = [
     {
@@ -19,6 +20,10 @@ export const routes: Routes = [
         component: AuthLayout,
         children: authRoutes,
         canActivate: [noAuthGuard]
+    },
+    {
+        path: 'server-error',
+        component: Internal
     },
     {
         path: '**',

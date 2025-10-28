@@ -42,8 +42,9 @@ export class MainLayout {
 
 	constructor(
 		private router: Router,
-		private authService: AuthService,
-	) { }
+		private authService: AuthService
+	) {
+	}
 
 	ngOnInit() {
 		this.authService.initialize()

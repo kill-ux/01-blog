@@ -93,6 +93,9 @@ export class AuthService {
             this.userService.getUserById(id).subscribe({
                 next: data => {
                     this.currentUserSubject.next(data.user)
+                },
+                error: err => {
+                    this.logout()
                 }
             })
 

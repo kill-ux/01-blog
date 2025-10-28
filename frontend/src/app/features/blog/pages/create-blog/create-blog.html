@@ -48,6 +48,13 @@
                         </button>
                         <input #fileInput type="file" accept="image/*,video/*" style="display: none;"
                             (change)="onImageUpload($event,myTextarea)">
+                        <button class="toolbar-btn" type="button" (click)="HidePrevew()">
+                            @if (display()) {
+                            <mat-icon>visibility</mat-icon>
+                            } @else {
+                            <mat-icon>visibility_off</mat-icon>
+                            }
+                        </button>
                     </div>
 
                     <textarea maxlength="5000" #myTextarea (drop)="onDrop($event)" (paste)="onPaste($event)"
@@ -62,7 +69,7 @@
                     </div>
                 </form>
             </div>
-            <div class="preview-panel">
+            <div class="preview-panel" [style]="display() ? 'display: none;' : ''">
                 <h1>{{ this.formBlog.value.title }}</h1>
                 <markdown class="markdown-preview" [data]="this.formBlog.value.description"></markdown>
             </div>

@@ -28,4 +28,18 @@ public class CloudinaryService {
             throw new IllegalArgumentException("Faild: to upload this filed");
         }
     }
+
+    public String DeleteFile(String link, String folderName,String resourceType) {
+        try {
+            HashMap<Object, Object> options = new HashMap<>();
+            options.put("folder", folderName);
+            options.put("resource_type", resourceType);
+            Map<String, Object> uploadedFile = cloudinary.uploader().destroy(link, options);
+            String publicId = (String) uploadedFile.get("public_id");
+            return cloudinary.url().secure(true).resourcType(resourceType).generate(publicId);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new IllegalArgumentException("Faild: to upload this filed");
+        }
+    }
 }

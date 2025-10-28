@@ -26,7 +26,7 @@ export class WebSocketApi {
 				"Authorization": "Bearer " + token
 			},
 			debug: (str) => {
-				console.log(new Date(), str);
+				// console.log(new Date(), str);
 			},
 			reconnectDelay: 5000,
 			heartbeatIncoming: 4000,

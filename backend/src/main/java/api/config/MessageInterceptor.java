@@ -1,6 +1,6 @@
 package api.config;
 
-// import com.example.----.jwt.service.CustomUserDetailsService;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,6 @@ public class MessageInterceptor implements ChannelInterceptor {
             /// a user will not be able to send any frames unless they are connected to a
             /// STOMP protocol
             var authHeaderList = accessor.getNativeHeader("Authorization");
-            log.info("authHeader: {}", authHeaderList);
 
             assert authHeaderList != null;
             /// header returns a list of strings
@@ -52,7 +51,6 @@ public class MessageInterceptor implements ChannelInterceptor {
 
                 String jwt = authHeader.substring(7);
                 String username = jwtService.extractNickname(jwt);
-                log.info("username: {}", username);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(
                         userDetails,

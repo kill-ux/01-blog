@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MarkdownModule } from 'ngx-markdown';
@@ -6,10 +6,11 @@ import { MarkdownModule } from 'ngx-markdown';
 import { BlogService } from '../../services/blog-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-create-blog',
-	imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MarkdownModule],
+	imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MarkdownModule, MatIcon],
 	templateUrl: './create-blog.html',
 	styleUrl: './create-blog.css'
 })
@@ -19,6 +20,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 	isSaving = false;
 	id: string | null = null
 	snackBar = inject(MatSnackBar)
+	display = signal(false)
 
 	private pendingFiles = new Map<string, File>();
 
@@ -94,6 +96,9 @@ export class CreateBlog implements OnInit, OnDestroy {
 
 			// Step 1: Upload all pending files and replace local URLs with remote URLs
 			if (this.pendingFiles.size > 0) {
+				this.snackBar.open('When blog saved we notify you', "Close", {
+					duration: 2000,
+				});
 				const uploadPromises = Array.from(this.pendingFiles.entries()).filter(([localUrl, file]) => {
 					return content.includes(localUrl) && (this.isImage(file.name) || this.isVideo(file.name));
 				}).map(
@@ -117,6 +122,8 @@ export class CreateBlog implements OnInit, OnDestroy {
 				this.pendingFiles.clear();
 			}
 
+
+
 			// Step 2: Save the blog post
 			let obs;
 			if (this.id) {
@@ -126,10 +133,12 @@ export class CreateBlog implements OnInit, OnDestroy {
 			}
 
 			const res = await obs.toPromise();
-			this.router.navigate(['blog', res?.id])
-			this.snackBar.open(this.id ? 'Blog updated' : 'New blog created', "Close", {
-				duration: 2000,
+			this.snackBar.open(this.id ? 'Blog updated' : 'New blog created', "View Blog", {
+				duration: 4000
+			}).onAction().subscribe(() => {
+				this.router.navigate(['blog', res?.id])
 			});
+			this.formBlog.reset()
 
 		} catch (error) {
 			this.snackBar.open('Save failed', "Close", {
@@ -139,6 +148,8 @@ export class CreateBlog implements OnInit, OnDestroy {
 			this.isSaving = false;
 		}
 	}
+
+
 
 	// REVISED: Use handleFileSelection instead of immediate upload
 	async onPaste(event: ClipboardEvent) {
@@ -233,6 +244,10 @@ export class CreateBlog implements OnInit, OnDestroy {
 
 	insertText(pastedText: string) {
 		document.execCommand('insertText', false, pastedText);
+	}
+
+	HidePrevew() {
+		this.display.update(old => !old)
 	}
 }
 

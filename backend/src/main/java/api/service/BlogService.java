@@ -119,7 +119,9 @@ public class BlogService {
     }
 
     public void deleteBlog(long blogId) {
-        this.blogRepository.findById(blogId).get();
+        Blog blog = this.blogRepository.findById(blogId).get();
+        System.out.println(blog.getDescription());
+        String content =  blog.getDescription();
         this.blogRepository.deleteById(blogId);
     }
 

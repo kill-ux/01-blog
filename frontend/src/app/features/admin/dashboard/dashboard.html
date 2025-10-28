@@ -10,7 +10,7 @@
                         @for (item of mostReport(); track $index) {
                         <div class="rep-user">
                             <div>
-                                {{item.user.nickname}}
+                                @{{item.user.nickname}}
                                 <span>{{item.reportCount}}</span>
                             </div>
                         </div>
@@ -28,7 +28,20 @@
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef> No. </th>
                             <td mat-cell *matCellDef="let element">
-                                {{element.id}}
+                                <div>
+                                    <div class="avatar cap">
+                                        @if (element.id == this.authService.currentUser?.id) {
+                                        <img [src]="this.authService.currentUser?.avatar ? apiUrl+this.authService.currentUser?.avatar : '/default-avatar.jpg'"
+                                            alt="{{ element.nickname }}'s avatar"
+                                            onerror="this.src='/default-avatar.jpg'">
+                                        } @else {
+                                        <img [src]="element.avatar ?  apiUrl+element.avatar : '/default-avatar.jpg'"
+                                            alt="{{ element.nickname }}'s avatar"
+                                            onerror="this.src='/default-avatar.jpg'">
+                                        }
+                                    </div>
+                                    <!-- {{element.id}} -->
+                                </div>
                                 @if (cursorUser == element.id) {
                                 <div class="loadTrigger" #loadTrigger>postgress</div>
                                 @defer (on viewport(loadTrigger)) {

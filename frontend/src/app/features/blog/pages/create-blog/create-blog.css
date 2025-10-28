@@ -13,8 +13,10 @@
 }
 
 .editor-layout {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* grid-template-columns: 1fr 1fr; */
 	margin-top: 35px;
 	/* padding-inline: 300px; */
 	/* height: 600px; */
@@ -44,6 +46,10 @@
 	clip-path: polygon(var(--size)0, calc(100% - var(--size))0, calc(100% - var(--size))var(--size), 100% var(--size), 100% calc(100% - var(--size)), calc(100% - var(--size))calc(100% - var(--size)), calc(100% - var(--size))100%, var(--size)100%, var(--size)calc(100% - var(--size)), 0 calc(100% - var(--size)), 0 var(--size), var(--size)var(--size));
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+/* 
+.preview-panel {
+	display: none;
+} */
 
 
 
