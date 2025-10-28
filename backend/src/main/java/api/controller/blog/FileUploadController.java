@@ -51,22 +51,4 @@ public class FileUploadController {
         }
         return ResponseEntity.ok(Map.of("url", cloudinaryService.uploadFile(file, "files", resourceType)));
     }
-
-    // @GetMapping("/images/{filename}")
-    // public ResponseEntity<Resource>getImage(@PathVariable String filename) {
-    //     try {
-    //         Path filePath = Paths.get(uploadDir).resolve(filename);
-    //         Resource resource = new UrlResource(filePath.toUri());
-
-    //         if (resource.exists()) {
-    //             return ResponseEntity.ok()
-    //                     .contentType(MediaType.IMAGE_JPEG)
-    //                     .body(resource);
-    //         } else {
-    //             return ResponseEntity.notFound().build();
-    //         }
-    //     } catch (MalformedURLException e) {
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    //     }
-    // }
 }

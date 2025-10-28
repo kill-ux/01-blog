@@ -109,7 +109,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 							return { localUrl, remoteUrl: response?.url };
 						})
 				);
-
+				
 				const uploadedFiles = await Promise.all(uploadPromises);
 
 				// Replace all local URLs with remote URLs in content
@@ -132,21 +132,33 @@ export class CreateBlog implements OnInit, OnDestroy {
 				obs = this.blogService.saveBlog(this.formBlog.value)
 			}
 
-			const res = await obs.toPromise();
-			this.snackBar.open(this.id ? 'Blog updated' : 'New blog created', "View Blog", {
-				duration: 4000
-			}).onAction().subscribe(() => {
-				this.router.navigate(['blog', res?.id])
+			obs.subscribe({
+				next: res => {
+					this.snackBar.open(this.id ? 'Blog updated' : 'New blog created', "View Blog", {
+						duration: 4000
+					}).onAction().subscribe(() => {
+						this.router.navigate(['blog', res?.id])
+					});
+					this.formBlog.reset()
+					this.isSaving = false;
+				},
+				error: err => {
+					this.snackBar.open('Save failed', "Close", {
+						duration: 2000,
+					});
+					this.isSaving = false;
+				}
 			});
-			this.formBlog.reset()
+
 
 		} catch (error) {
 			this.snackBar.open('Save failed', "Close", {
 				duration: 2000,
 			});
-		} finally {
-			this.isSaving = false;
 		}
+		// finally {
+		// 	this.isSaving = false;
+		// }
 	}
 
 
