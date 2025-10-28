@@ -34,16 +34,18 @@ public class BlogService {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+    private CloudinaryService cloudinaryService;
 
     private final NotificationService notificationService;
     private static final Set<String> VALID_MEDIA_TYPES = Set.of("image", "video");
     private static final String ERROR_USER_NOT_FOUND = "User not found with ID: %d";
 
     public BlogService(BlogRepository blogRepository, UserRepository userRepository,
-            NotificationService notificationService) {
+            NotificationService notificationService, CloudinaryService cloudinaryService) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public List<BlogResponse> getBlogs(long cursor) {
@@ -121,7 +123,20 @@ public class BlogService {
     public void deleteBlog(long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
         System.out.println(blog.getDescription());
-        String content =  blog.getDescription();
+        String content = blog.getDescription();
+
+        // Find all Cloudinary URLs in the content
+        List<String> cloudinaryUrls = cloudinaryService.findCloudinaryUrls(content);
+        System.out.println("Found " + cloudinaryUrls.size() + " Cloudinary files to delete");
+
+        for (String url : cloudinaryUrls) {
+            String publicId = cloudinaryService.getPublicIdFromUrl(url);
+            if (publicId != null) {
+                System.out.println("Deleting file: " + publicId + " from URL: " + url);
+                cloudinaryService.deleteFile(publicId, url.contains("image") ? "image" : "video");
+            }
+        }
+
         this.blogRepository.deleteById(blogId);
     }
 
