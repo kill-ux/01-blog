@@ -27,7 +27,7 @@ export class BlogService {
 	}
 
 	getBlogsByUserId(userId: any, cursor: number) {
-		return this.http.get<BlogResponce[]>(`http://localhost:8080/api/users/${userId}/blogs?cursor=${cursor}`)
+		return this.http.get<BlogResponce[]>(`${this.API_URL}/users/${userId}/blogs?cursor=${cursor}`)
 	}
 
 	getBlog(blogId: any) {

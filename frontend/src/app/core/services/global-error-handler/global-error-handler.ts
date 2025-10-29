@@ -18,7 +18,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 			console.log('Router Error: Cannot match route. Redirecting to 404.', error);
 			router.navigate(['/not-found']);
 		} else {
-			console.error('An unexpected error occurred:', error);
+			console.log('An unexpected error occurred:', error);
 		}
 	}
 }

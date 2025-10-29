@@ -33,7 +33,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                     snackBar.open('Too many requests. Please try again later.', "Close", {
                         duration: 2000,
                     });
-                } else if (err.status == 505) {
+                } else {
                     router.navigate(["server-error"])
                 }
             }

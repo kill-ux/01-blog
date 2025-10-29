@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-internal',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './internal.html',
   styleUrl: './internal.css',
 })

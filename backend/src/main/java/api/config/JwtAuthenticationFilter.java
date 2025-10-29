@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // This will return 'true' for public paths, skipping the filter
         return pathMatcher.match("/api/auth/**", path) ||
                 pathMatcher.match("/api/images/**", path) ||
-                pathMatcher.match("/ws/**", path);
+                pathMatcher.match("/api/ws/**", path);
     }
 
     @Override

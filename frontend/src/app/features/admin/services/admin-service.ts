@@ -13,23 +13,23 @@ export class AdminService {
 	constructor(private http: HttpClient) { }
 
 	deleteUser(id: number) {
-		return this.http.delete(`http://localhost:8080/api/admin/delete`, { body: { userId: id }, responseType: 'text' })
+		return this.http.delete(`${this.apiUrl}/admin/delete`, { body: { userId: id }, responseType: 'text' })
 	}
 
 	banUser(id: number) {
-		return this.http.patch<string>(`http://localhost:8080/api/admin/ban`, { userId: id }, { responseType: 'text' as 'json' })
+		return this.http.patch<string>(`${this.apiUrl}/admin/ban`, { userId: id }, { responseType: 'text' as 'json' })
 	}
 
 	reviewReport(id: number) {
-		return this.http.patch<Report>(`http://localhost:8080/api/reports/${id}/review`, {})
+		return this.http.patch<Report>(`${this.apiUrl}/reports/${id}/review`, {})
 	}
 
 	adminify(id: number) {
-		return this.http.patch<string>(`http://localhost:8080/api/admin/adminify`, { userId: id }, { responseType: 'text' as 'json' })
+		return this.http.patch<string>(`${this.apiUrl}/admin/adminify`, { userId: id }, { responseType: 'text' as 'json' })
 	}
 
 	deadminify(id: number) {
-		return this.http.patch<string>(`http://localhost:8080/api/admin/deadminify`, { userId: id }, { responseType: 'text' as 'json' })
+		return this.http.patch<string>(`${this.apiUrl}/admin/deadminify`, { userId: id }, { responseType: 'text' as 'json' })
 	}
 
 }

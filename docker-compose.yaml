@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres-springboot
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: 01blog_db
+      POSTGRES_USER: muboutoub
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      network: host
+    container_name: spring-boot-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/01blog_db
+      SPRING_DATASOURCE_USERNAME: muboutoub
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      network: host
+    container_name: angular-app
+    ports:
+      - "4200:4200"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start -- --host 0.0.0.0 --poll 500
+
+volumes:
+  postgres_data:

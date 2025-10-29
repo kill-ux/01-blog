@@ -4,6 +4,7 @@ import { Client } from '@stomp/stompjs';
 import { Notification } from '../../blog/model/model'; // Assuming NotificationResponce is here
 import { AuthService } from '../../auth/services/auth-api';
 import { Subject } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,11 +14,12 @@ export class WebSocketApi {
 	stompClient: Client;
 	private notificationSubject = new Subject<Notification>();
 	public notification$ = this.notificationSubject.asObservable();
+	API_URL = environment.API_URL
 
 	constructor() {
 
 		const token = localStorage.getItem('token');
-		const brokerURL = `http://localhost:8080/ws`;
+		const brokerURL = `${this.API_URL}/ws`;
 
 
 		this.stompClient = new Client({
@@ -26,7 +28,7 @@ export class WebSocketApi {
 				"Authorization": "Bearer " + token
 			},
 			debug: (str) => {
-				// console.log(new Date(), str);
+				console.log(new Date(), str);
 			},
 			reconnectDelay: 5000,
 			heartbeatIncoming: 4000,
