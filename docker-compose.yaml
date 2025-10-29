@@ -1,42 +1,53 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgres-springboot
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_DB: 01blog_db
-      POSTGRES_USER: muboutoub
-      POSTGRES_PASSWORD: password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: always
+    postgres:
+        image: postgres:15-alpine
+        container_name: postgres-springboot
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: 01blog_db
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        restart: always
 
-  backend:
-    build:
-      context: ./backend
-      network: host
-    container_name: spring-boot-app
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/01blog_db
-      SPRING_DATASOURCE_USERNAME: muboutoub
-      SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    ports:
-      - "8080:8080"
+    backend:
+        build:
+            context: ./backend
+            network: host
+        network_mode: host
+        container_name: spring-boot-app
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/01blog_db
+            # SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/01blog_db
+            SPRING_DATASOURCE_USERNAME: postgres
+            SPRING_DATASOURCE_PASSWORD: postgres
+            SPRING_JPA_HIBERNATE_DDL_AUTO: update
+            SPRING_PROFILES_ACTIVE: dev
+        # ports:
+        #   - "8080:8080"
+        depends_on:
+            - postgres
+        # --- ADD THESE LINES ---
+			  dns:
+            - 8.8.8.8
+            - 1.1.1.1
+        # -----------------------
 
-  frontend:
-    build:
-      context: ./frontend
-      network: host
-    container_name: angular-app
-    ports:
-      - "4200:4200"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    command: npm start -- --host 0.0.0.0 --poll 500
+    frontend:
+			build:
+				context: ./frontend
+				network: host
+			container_name: angular-app
+			ports:
+				- "4200:80"
+			depends_on:
+				- backend
+			extra_hosts:
+				- "host.docker.internal:host-gateway"
 
 volumes:
-  postgres_data:
+    postgres_data:

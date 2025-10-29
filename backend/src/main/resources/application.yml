@@ -2,14 +2,18 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:postgresql://localhost:5433/01blog_db
-    username: muboutoub
-    password: password
+    # url: jdbc:postgresql://localhost:5433/01blog_db
+    url: jdbc:postgresql://postgres:5432/01blog_db
+    username: postgres
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   ddevtools:
     restart:
       enabled: true
@@ -19,6 +23,10 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  config:
+    activate:
+      on-profile: dev
+      
 security:
   jwt:
     secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
@@ -26,9 +34,17 @@ security:
 app:
   cloudinary:
     cloud-url: cloudinary://642694169257984:rfJHdHX8xcB3gLsKDpYFDI6qLv4@dbwhdxois
+  cors:
+    # We use the port-less addresses because Nginx is serving on port 80
+    allowed-origins: "http://localhost,http://localhost:4200"
+
 resilience4j.ratelimiter:
   instances:
     myApiLimiter:
       limitForPeriod: 40                    # Number of requests allowed in the period
       limitRefreshPeriod: 1s                # The time period
       timeoutDuration: 0                    # How long to wait for permission (0 = fail fast)
+
+  
+
+  
