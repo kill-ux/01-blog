@@ -19,18 +19,23 @@ export class WebSocketApi {
 	constructor() {
 
 		const token = localStorage.getItem('token');
-		const brokerURL = `${this.API_URL}/ws`;
+		const brokerURL = `/ws`;
 
 
 		this.stompClient = new Client({
 			brokerURL,
-			connectHeaders: {
-				"Authorization": "Bearer " + token
+			beforeConnect: () => {
+				if (token) {
+					this.stompClient.connectHeaders = {
+						Authorization: `Bearer ${token}`
+					};
+				}
 			},
+			
 			debug: (str) => {
 				console.log(new Date(), str);
 			},
-			reconnectDelay: 5000,
+			reconnectDelay: 3000,
 			heartbeatIncoming: 4000,
 			heartbeatOutgoing: 4000,
 

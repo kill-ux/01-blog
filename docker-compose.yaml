@@ -18,36 +18,34 @@ services:
         build:
             context: ./backend
             network: host
-        network_mode: host
+        # network_mode: host
         container_name: spring-boot-app
         environment:
-            SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/01blog_db
-            # SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/01blog_db
+            # SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/01blog_db
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/01blog_db
             SPRING_DATASOURCE_USERNAME: postgres
             SPRING_DATASOURCE_PASSWORD: postgres
             SPRING_JPA_HIBERNATE_DDL_AUTO: update
             SPRING_PROFILES_ACTIVE: dev
-        # ports:
-        #   - "8080:8080"
+        ports:
+          - "8080:8080"
         depends_on:
             - postgres
-        # --- ADD THESE LINES ---
-			  dns:
-            - 8.8.8.8
-            - 1.1.1.1
-        # -----------------------
+        # dns:
+        #     - 8.8.8.8
+        #     - 1.1.1.1
 
     frontend:
-			build:
-				context: ./frontend
-				network: host
-			container_name: angular-app
-			ports:
-				- "4200:80"
-			depends_on:
-				- backend
-			extra_hosts:
-				- "host.docker.internal:host-gateway"
+        build:
+            context: ./frontend
+            network: host
+        container_name: angular-app
+        ports:
+            - "4200:80"
+        depends_on:
+            - backend
+        # extra_hosts:
+        #     - "host.docker.internal:host-gateway"
 
 volumes:
     postgres_data:

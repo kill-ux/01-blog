@@ -6,8 +6,8 @@ services:
       - "5433:5432"
     environment:
       POSTGRES_DB: 01blog_db
-      POSTGRES_USER: muboutoub
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
