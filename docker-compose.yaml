@@ -27,10 +27,14 @@ services:
             SPRING_DATASOURCE_PASSWORD: postgres
             SPRING_JPA_HIBERNATE_DDL_AUTO: update
             SPRING_PROFILES_ACTIVE: dev
+            # app.upload.dir=/app/uploads
+            APP.UPLOAD.DIR: /app/uploads
         ports:
           - "8080:8080"
         depends_on:
             - postgres
+        volumes: # <-- 2. ADD THIS MAPPING
+            - app_uploads:/app/uploads
         
 
     frontend:
@@ -45,3 +49,4 @@ services:
 
 volumes:
     postgres_data:
+    app_uploads:

@@ -11,27 +11,29 @@ import { environment } from '../../../../environments/environment';
 })
 export class WebSocketApi {
 	// private authService = inject(AuthService);
-	stompClient: Client;
+	stompClient: Client | null = null;
 	private notificationSubject = new Subject<Notification>();
 	public notification$ = this.notificationSubject.asObservable();
 	API_URL = environment.API_URL
+	WS_URL = environment.WS_URL
 
-	constructor() {
-
+	public connect() {
 		const token = localStorage.getItem('token');
-		const brokerURL = `/ws`;
+		const brokerURL = this.WS_URL;
+
+		console.log("tktk", token)
 
 
 		this.stompClient = new Client({
 			brokerURL,
 			beforeConnect: () => {
 				if (token) {
-					this.stompClient.connectHeaders = {
+					this.stompClient!.connectHeaders = {
 						Authorization: `Bearer ${token}`
 					};
 				}
 			},
-			
+
 			debug: (str) => {
 				console.log(new Date(), str);
 			},
@@ -41,7 +43,7 @@ export class WebSocketApi {
 
 			onConnect: (frame) => {
 				console.log('Connected: ' + frame);
-				this.stompClient.subscribe(`/user/queue/new-blog`, (message) => {
+				this.stompClient!.subscribe(`/user/queue/new-blog`, (message) => {
 					this.onMessageRecived(message.body);
 				});
 			},

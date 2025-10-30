@@ -7,5 +7,6 @@
 
 export const environment = {
   production: false,
-  API_URL: '/api' // <-- This is the fix
+  API_URL: 'http://localhost:8080/api', // <-- This is the fix
+  WS_URL: 'http://localhost:8080/ws'
 };

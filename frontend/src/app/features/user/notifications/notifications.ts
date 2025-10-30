@@ -30,7 +30,7 @@ export class Notifications implements OnInit, OnDestroy {
 
 
 	constructor(private authService: AuthService, private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
-
+		console.log("hhhhhhhhhhhhhhhh")
 	}
 
 
@@ -45,6 +45,7 @@ export class Notifications implements OnInit, OnDestroy {
 
 	private setupWebSocket(): void {
 		console.log('🔧 Setting up WebSocket listener...');
+		this.websocketService.connect()
 
 		this.notificationSubscription = this.websocketService.notification$.subscribe(
 			(newMessage: Notification) => {

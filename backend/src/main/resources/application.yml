@@ -21,8 +21,8 @@ spring:
       quiet-period: 400
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 50MB
+      max-request-size: 50MB
       enabled: true
   # config:
   #   activate:
@@ -35,6 +35,8 @@ security:
 app:
   cloudinary:
     cloud-url: cloudinary://642694169257984:rfJHdHX8xcB3gLsKDpYFDI6qLv4@dbwhdxois
+  upload:
+    dir: ./uploads
 
 resilience4j.ratelimiter:
   instances:

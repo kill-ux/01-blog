@@ -29,7 +29,7 @@ public class CloudinaryService {
             return cloudinary.url().secure(true).resourcType(resourceType).generate(publicId);
         } catch (Exception e) {
             System.out.println(e);
-            throw new IllegalArgumentException("Faild: to upload this filed");
+            throw new InternalError("Failed: to upload this file");
         }
     }
 }

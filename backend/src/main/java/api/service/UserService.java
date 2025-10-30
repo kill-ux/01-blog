@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -36,6 +38,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+
+
+    @Value("${app.upload.dir}")
+    private String uploadDir;
 
     private final AuthUtils authUtils;
 
@@ -100,30 +106,13 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    // public String updateProfile(MultipartFile file, String ext) {
-    // long userId = this.authUtils.getAuthenticatedUser().getId();
-    // User user = this.userRepository.findById(userId).get();
-    // try (FileOutputStream fos = new FileOutputStream(
-    // "images/" + userId + "." + ext)) {
-    // byte[] bytes = file.getBytes();
-    // fos.write(bytes);
-    // // fos.flush(); // Explicit flush
-    // // fos.getFD().sync(); // Force OS to write to disk (Linux/Unix)
-    // user.setAvatar("/images/" + userId + "." + ext);
-    // System.out.println("Data successfully written to the file.");
-    // } catch (Exception e) {
-    // System.out.println("An error occurred: " + e.getMessage());
-    // }
-    // this.userRepository.save(user);
-    // return user.getAvatar();
-    // }
 
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
         User user = this.userRepository.findById(userId).get();
 
         // Define the absolute file system path (from our MvcConfig)
-        String uploadDir = "/app/uploads";
+        // String uploadDir = "/app/uploads";
 
         // --- 1. Delete Old Image Logic ---
         String oldAvatarUrl = user.getAvatar(); // Get URL from DB (e.g., "/images/1.png")
