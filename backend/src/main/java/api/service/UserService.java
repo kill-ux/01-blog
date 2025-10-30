@@ -1,6 +1,10 @@
 package api.service;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
@@ -96,22 +100,83 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    // public String updateProfile(MultipartFile file, String ext) {
+    // long userId = this.authUtils.getAuthenticatedUser().getId();
+    // User user = this.userRepository.findById(userId).get();
+    // try (FileOutputStream fos = new FileOutputStream(
+    // "images/" + userId + "." + ext)) {
+    // byte[] bytes = file.getBytes();
+    // fos.write(bytes);
+    // // fos.flush(); // Explicit flush
+    // // fos.getFD().sync(); // Force OS to write to disk (Linux/Unix)
+    // user.setAvatar("/images/" + userId + "." + ext);
+    // System.out.println("Data successfully written to the file.");
+    // } catch (Exception e) {
+    // System.out.println("An error occurred: " + e.getMessage());
+    // }
+    // this.userRepository.save(user);
+    // return user.getAvatar();
+    // }
+
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
         User user = this.userRepository.findById(userId).get();
-        try (FileOutputStream fos = new FileOutputStream(
-                "images/" + userId + "." + ext)) {
-            byte[] bytes = file.getBytes();
-            fos.write(bytes);
-            // fos.flush(); // Explicit flush
-            // fos.getFD().sync(); // Force OS to write to disk (Linux/Unix)
-            user.setAvatar("/images/" + userId + "." + ext);
-            System.out.println("Data successfully written to the file.");
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+
+        // Define the absolute file system path (from our MvcConfig)
+        String uploadDir = "/app/uploads";
+
+        // --- 1. Delete Old Image Logic ---
+        String oldAvatarUrl = user.getAvatar(); // Get URL from DB (e.g., "/images/1.png")
+
+        // Check if an old avatar URL exists
+        if (oldAvatarUrl != null && !oldAvatarUrl.isEmpty()) {
+            try {
+                // Get just the file name (e.g., "1.png")
+                String oldFileName = Paths.get(oldAvatarUrl).getFileName().toString();
+
+                // Build the full absolute path to the old file
+                Path oldFilePath = Paths.get(uploadDir, oldFileName);
+
+                // Delete the file if it exists
+                Files.deleteIfExists(oldFilePath);
+                System.out.println("Successfully deleted old avatar: " + oldFilePath);
+
+            } catch (IOException e) {
+                // Log the error, but don't stop the upload.
+                // The new file is more important.
+                System.err.println("Error deleting old avatar: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
-        this.userRepository.save(user);
-        return user.getAvatar();
+        // --- End Deletion Logic ---
+
+        // --- 2. Save New Image Logic (Same as before) ---
+        String newFileName = userId + "." + ext;
+        Path newFilePath = Paths.get(uploadDir, newFileName);
+
+        try {
+            // Ensure the directory exists
+            Files.createDirectories(Paths.get(uploadDir));
+
+            // Write the new file
+            try (FileOutputStream fos = new FileOutputStream(newFilePath.toString())) {
+                byte[] bytes = file.getBytes();
+                fos.write(bytes);
+            }
+
+            // Update the user's avatar URL in the database to the new path
+            String newAvatarUrl = "/images/" + newFileName;
+            user.setAvatar(newAvatarUrl);
+            this.userRepository.save(user);
+
+            System.out.println("Data successfully written to: " + newFilePath);
+            return user.getAvatar();
+
+        } catch (Exception e) {
+            // This is a critical error, so we throw an exception
+            e.printStackTrace();
+            throw new RuntimeException("Error uploading new file: " + e.getMessage(), e);
+        }
     }
 
     // @Transactional

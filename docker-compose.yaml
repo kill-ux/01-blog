@@ -31,9 +31,7 @@ services:
           - "8080:8080"
         depends_on:
             - postgres
-        # dns:
-        #     - 8.8.8.8
-        #     - 1.1.1.1
+        
 
     frontend:
         build:
@@ -44,8 +42,6 @@ services:
             - "4200:80"
         depends_on:
             - backend
-        # extra_hosts:
-        #     - "host.docker.internal:host-gateway"
 
 volumes:
     postgres_data:

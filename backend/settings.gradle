@@ -1,9 +1,1 @@
-// pluginManagement {
-//     repositories {
-//         gradlePluginPortal()
-//         mavenCentral()
-//     }
-// }
-
 rootProject.name = 'backend'
-// rootProject.name = '01-blog'

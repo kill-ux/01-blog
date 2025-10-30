@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
 	providedIn: 'root'
 })
 export class WebSocketApi {
-	private authService = inject(AuthService);
+	// private authService = inject(AuthService);
 	stompClient: Client;
 	private notificationSubject = new Subject<Notification>();
 	public notification$ = this.notificationSubject.asObservable();

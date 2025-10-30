@@ -1,4 +1,4 @@
-import { Component, input, OnInit, signal } from '@angular/core';
+import { Component, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { Router } from '@angular/router';
 import { MatMenuModule } from "@angular/material/menu";
@@ -17,7 +17,7 @@ import { AuthService } from '../../auth/services/auth-api';
 	templateUrl: './notifications.html',
 	styleUrl: './notifications.css'
 })
-export class Notifications implements OnInit {
+export class Notifications implements OnInit, OnDestroy {
 	private isLoading = false;
 	private open = false;
 	cursor = 0;
@@ -32,6 +32,7 @@ export class Notifications implements OnInit {
 	constructor(private authService: AuthService, private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
 
 	}
+
 
 	ngOnInit(): void {
 		this.getNotifications()
@@ -71,6 +72,7 @@ export class Notifications implements OnInit {
 	ngOnDestroy(): void {
 		if (this.notificationSubscription) {
 			this.notificationSubscription.unsubscribe();
+			this.websocketService.disconnect()
 		}
 	}
 

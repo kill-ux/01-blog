@@ -2,8 +2,8 @@ spring:
   application:
     name: backend
   datasource:
-    # url: jdbc:postgresql://localhost:5433/01blog_db
-    url: jdbc:postgresql://postgres:5432/01blog_db
+    url: jdbc:postgresql://localhost:5433/01blog_db
+    # url: jdbc:postgresql://postgres:5432/01blog_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -21,11 +21,12 @@ spring:
       quiet-period: 400
   servlet:
     multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
-  config:
-    activate:
-      on-profile: dev
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  # config:
+  #   activate:
+  #     on-profile: dev
       
 security:
   jwt:
@@ -34,9 +35,6 @@ security:
 app:
   cloudinary:
     cloud-url: cloudinary://642694169257984:rfJHdHX8xcB3gLsKDpYFDI6qLv4@dbwhdxois
-  cors:
-    # We use the port-less addresses because Nginx is serving on port 80
-    allowed-origins: "http://localhost,http://localhost:4200"
 
 resilience4j.ratelimiter:
   instances:
