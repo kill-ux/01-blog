@@ -17,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BlogService } from '../../blog/services/blog-service';
 import { AdminService } from '../../admin/services/admin-service';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialog } from '../../../layouts/confirm-dialog/confirm-dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-profile',
@@ -35,6 +35,7 @@ export class Profile implements OnInit {
 	public authService = inject(AuthService)
 	public blogService = inject(BlogService)
 	admineService = inject(AdminService)
+	snackBar = inject(MatSnackBar)
 
 
 
@@ -60,8 +61,12 @@ export class Profile implements OnInit {
 				this.userProfile.set(profile.user);
 			},
 			error: (error) => {
-					// console.error('Failed to load profile', error);
-					this.route.navigate(["user-not-found"])
+				// console.error('Failed to load profile', error);
+				// this.route.navigate(["user-not-found"])
+				// if(this.authService.currentUser?.id == )
+				this.snackBar.open('user not found', "Close", {
+					duration: 2000,
+				});
 			}
 		});
 	}
