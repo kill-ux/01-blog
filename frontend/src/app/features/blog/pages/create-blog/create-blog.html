@@ -2,7 +2,7 @@
     <div class="shadow">
         <div class="editor-layout">
             <div class="editor-panel">
-                <form [formGroup]="formBlog" (submit)="onSubmit()" class="form-blog">
+                <form [formGroup]="formBlog" (submit)="onSubmit(markdown)" class="form-blog">
                     <button #submit style="display: none;" type="submit" class="btn btn-primary with-100">save</button>
 
                     <!-- <label class="panel-label"> -->
@@ -71,7 +71,7 @@
             </div>
             <div class="preview-panel" [style]="display() ? 'display: none;' : ''">
                 <h1>{{ this.formBlog.value.title }}</h1>
-                <markdown class="markdown-preview" [data]="this.formBlog.value.description"></markdown>
+                <markdown #markdown class="markdown-preview" [data]="this.formBlog.value.description"></markdown>
             </div>
         </div>
         <label class="panel-label">

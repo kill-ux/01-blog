@@ -189,6 +189,9 @@ export class SingleBlog implements OnInit {
 			this.blogService.Report({ blogId: id, reason: value }).subscribe({
 				next: res => {
 					e.value = ''
+					this.snackBar.open(`Operation succeced: Report`, "Close", {
+						duration: 2000,
+					});
 					this.isLoading = false
 				},
 				error: err => {

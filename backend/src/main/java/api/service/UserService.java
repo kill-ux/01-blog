@@ -191,7 +191,7 @@ public class UserService {
         User user = new User();
         user.setId(userRecord.id());
         user.setNickname(userRecord.nickname());
-        user.setEmail(userRecord.email());
+        user.setEmail(userRecord.email().toLowerCase());
         user.setPassword(userRecord.password());
         user.setRole(userRecord.role());
         user.setAvatar(userRecord.avatar());

@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, OnInit, ViewChild, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field'
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownComponent, MarkdownModule } from 'ngx-markdown';
 
 import { BlogService } from '../../services/blog-service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -65,6 +65,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 	// REVISED: Handle file selection without immediate upload
 	private handleFileSelection(file: File): void {
 		if (!file || (!file.type.startsWith('image/') && !file.type.startsWith('video/'))) {
+			this.snackBar.open("invalid file", "Close", { duration: 2000 })
 			return;
 		}
 
@@ -81,7 +82,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 		}
 	}
 
-	async onSubmit() {
+	async onSubmit(mark: MarkdownComponent) {
 		if (this.isSaving) return;
 
 		this.formBlog.markAllAsTouched();
@@ -109,7 +110,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 							return { localUrl, remoteUrl: response?.url };
 						})
 				);
-				
+
 				const uploadedFiles = await Promise.all(uploadPromises);
 
 				// Replace all local URLs with remote URLs in content
@@ -140,6 +141,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 						this.router.navigate(['blog', res?.id])
 					});
 					this.formBlog.reset()
+					mark.element.nativeElement.innerHTML = ""
 					this.isSaving = false;
 				},
 				error: err => {
@@ -155,6 +157,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 			this.snackBar.open('Save failed', "Close", {
 				duration: 2000,
 			});
+			this.isSaving = false
 		}
 		// finally {
 		// 	this.isSaving = false;
@@ -263,5 +266,5 @@ export class CreateBlog implements OnInit, OnDestroy {
 	}
 }
 
-const imageExtensions = new Set(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp', 'svg']);
+const imageExtensions = new Set(["jpg", "jpeg", "png", "gif"]);
 const videoExtensions = new Set(['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'm4v']);

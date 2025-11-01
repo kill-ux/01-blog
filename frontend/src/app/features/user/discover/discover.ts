@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth-api';
 import { environment } from '../../../../environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-discover',
@@ -20,6 +21,7 @@ export class Discover implements OnInit {
 	setSubscribtions = output<number>()
 	setSubscribers = output<number>()
 	cursor = 0
+	snackBar = inject(MatSnackBar)
 
 	apiUrl = environment.API_URL
 
@@ -86,6 +88,9 @@ export class Discover implements OnInit {
 						// this.users.update(us => us.filter(user => user.sub))
 						this.setSubscribtions.emit(res.operation == "subscribed" ? 1 : -1)
 					}
+					this.snackBar.open(`Operation succeced: ${res.operation}`, "Close", {
+						duration: 2000,
+					});
 				}
 
 			},

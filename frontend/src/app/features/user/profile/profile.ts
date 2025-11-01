@@ -61,9 +61,6 @@ export class Profile implements OnInit {
 				this.userProfile.set(profile.user);
 			},
 			error: (error) => {
-				// console.error('Failed to load profile', error);
-				// this.route.navigate(["user-not-found"])
-				// if(this.authService.currentUser?.id == )
 				this.snackBar.open('user not found', "Close", {
 					duration: 2000,
 				});
@@ -83,12 +80,18 @@ export class Profile implements OnInit {
 					}
 					return user
 				})
+				this.snackBar.open(`Operation succeced: ${res.operation}`, "Close", {
+					duration: 2000,
+				});
 				this.isLoading = false
 
 
 			},
 			error: err => {
 				console.log(err)
+				this.snackBar.open(`Faild Operation: Subscribe`, "Close", {
+					duration: 2000,
+				});
 				this.isLoading = false
 			}
 		})
@@ -138,9 +141,15 @@ export class Profile implements OnInit {
 								return user
 							})
 						}
+						this.snackBar.open(`Operation succeced: Upload Image`, "Close", {
+							duration: 2000,
+						});
 					},
 					error: err => {
 						console.log(err)
+						this.snackBar.open(`Faild Operation: Uploads`, "Close", {
+							duration: 2000,
+						});
 					}
 				})
 			}
@@ -152,9 +161,15 @@ export class Profile implements OnInit {
 		if (reason.length == 0 || !id) return
 		this.blogService.Report({ userId: id, reason }).subscribe({
 			next: res => {
+				this.snackBar.open(`Operation succeced: Report`, "Close", {
+					duration: 2000,
+				});
 			},
 			error: err => {
 				console.log(err)
+				this.snackBar.open(`Faild Operation: Report`, "Close", {
+					duration: 2000,
+				});
 			}
 		})
 		menuTrigger.closeMenu()

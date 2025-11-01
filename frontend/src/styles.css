@@ -11,6 +11,14 @@
 
 @import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-twilight.css') (prefers-color-scheme: dark);
 
+@font-face {
+	font-family: berkeleyMono;
+	src: url(https://r2cdn.perplexity.ai/fonts/BerkeleyMono-Regular.woff2) format("woff2");
+	font-display: swap;
+	font-weight: 900;
+}
+
+
 
 :root,
 :host {
@@ -199,7 +207,7 @@ body {
 
 body {
 	margin: 0;
-	font-family: Roboto, "Helvetica Neue", sans-serif;
+	font-family: 'berkeleyMono', Roboto, "Helvetica Neue", sans-serif;
 }
 
 

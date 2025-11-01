@@ -22,10 +22,6 @@ export const routes: Routes = [
         canActivate: [noAuthGuard]
     },
     {
-        path: 'server-error',
-        component: Internal
-    },
-    {
         path: '**',
         component: NotFound
     },

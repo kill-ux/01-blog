@@ -16,6 +16,7 @@ import { FormsModule } from "@angular/forms";
 import { MatInputModule } from '@angular/material/input';
 import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-blogs',
@@ -33,6 +34,7 @@ export class Blogs implements OnInit, OnChanges {
 	private isLoading = false;
 	public authService = inject(AuthService)
 	@Input() args: { user: User | null } | null = null
+	snackBar = inject(MatSnackBar)
 
 	apiUrl = environment.API_URL;
 
@@ -161,6 +163,9 @@ export class Blogs implements OnInit, OnChanges {
 			this.blogService.Report({ blogId: id, reason: value }).subscribe({
 				next: res => {
 					e.value = ''
+					this.snackBar.open(`Operation succeced: Report`, "Close", {
+						duration: 2000,
+					});
 				},
 				error: err => {
 					console.log(err)
