@@ -34,7 +34,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                         duration: 2000,
                     });
                 } else {
-                    snackBar.open('Thers is an error or Faild an action', "Close", {
+                    snackBar.open(err.error.error ? err.error.error : err.error, "Close", {
                         duration: 2000,
                     });
                 }

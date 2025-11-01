@@ -44,10 +44,10 @@ export class Signin {
 					this.isLoading = false;
 				},
 				error: (err) => {
-					let message = 'Login faild'
-					if (err.status == 423) {
-						message += ` ${err.error.error}`
-					}
+					let message = `Login faild: ${err.error.error}`
+					// if (err.status == 423) {
+					// 	message += ` ${err.error.error}`
+					// }
 					this.snackBar.open(message, "Close", {
 						duration: 2000,
 					});

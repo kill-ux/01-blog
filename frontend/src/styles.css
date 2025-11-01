@@ -210,6 +210,9 @@ body {
 	font-family: 'berkeleyMono', Roboto, "Helvetica Neue", sans-serif;
 }
 
+app-signin {
+    height: 100%;
+}
 
 /* Smooth transitions for theme changes */
 .theme-transition {

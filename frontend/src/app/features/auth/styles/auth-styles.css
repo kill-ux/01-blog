@@ -7,7 +7,7 @@ h1 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh;
+	/* min-height: 100vh; */
 	padding: 20px;
 }
 
@@ -84,8 +84,6 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh;
-	height: 100vh;
 	padding: 20px;
 }
 
@@ -356,10 +354,12 @@ body {
 }
 
 .toggle {
-	/* width: 95%; */
-	margin: 10px 20px;
-	text-align: end;
-
-	/* display: flex;
-	justify-content: end */
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background-color: var(--bg-tertiary);
+	padding: 2px;
+	padding-left: 30px;
+	border-radius: 0 50px 50px 0;
+	z-index: 200;
 }

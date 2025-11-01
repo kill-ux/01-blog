@@ -1,2 +1,8 @@
 @import url(../styles/auth-styles.css);
 
+:host {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

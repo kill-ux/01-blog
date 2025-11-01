@@ -1,0 +1,9 @@
+.auth-layout {
+	min-height: 100vh;
+	height: 100vh;
+}
+
+.auth-content {
+    height: 100%;
+}
+
