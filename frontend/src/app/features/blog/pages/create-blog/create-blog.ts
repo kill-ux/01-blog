@@ -145,7 +145,8 @@ export class CreateBlog implements OnInit, OnDestroy {
 					this.isSaving = false;
 				},
 				error: err => {
-					this.snackBar.open('Save failed', "Close", {
+                    let message = Object.values(err.error)[0] || err.error
+					this.snackBar.open(`Save failed: ${message}`, "Close", {
 						duration: 2000,
 					});
 					this.isSaving = false;

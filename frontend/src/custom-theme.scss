@@ -51,7 +51,7 @@ $light-theme: mat.define-theme((color: (theme-type: light,
       density: (scale: 0,
       )));
 
-// Dark theme  
+// Dark theme
 $dark-theme: mat.define-theme((color: (theme-type: dark,
         primary: $primary-palette,
         tertiary: $tertiary-palette,
@@ -65,6 +65,7 @@ $dark-theme: mat.define-theme((color: (theme-type: dark,
 // Apply light theme by default to Material components
 html {
   @include mat.all-component-themes($light-theme);
+  overflow: hidden;
 }
 
 // Dark theme class - this is crucial!
@@ -83,13 +84,13 @@ html.dark-theme {
   --bg-secondary: #f8f9fa;
   --bg-tertiary: #e9ecef;
   --bg-card: #ffffff;
-  --bg-hover: #f8f9fa; 
+  --bg-hover: #f8f9fa;
   --bg-back: #1a202c11;
   --btn--primarey : #030213;
   --outline: rgba(0, 0, 0, 0.1);
   --color-black: black;
 	--color-white: white;
-  --color-current-taxonomy: #030213;  
+  --color-current-taxonomy: #030213;
 
   --text-primary: #1a202c;
   --text-black: rgba(0, 0, 0, 0.034);
@@ -111,7 +112,7 @@ html.dark-theme {
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  
+
 }
 
 .dark-theme {
@@ -129,7 +130,7 @@ html.dark-theme {
   --outline: rgba(255, 255, 255, 0.1);
   --color-black: white;
 	--color-white: black;
-  --color-current-taxonomy: #e4e3e7;  
+  --color-current-taxonomy: #e4e3e7;
   --ba : rgba(255, 255, 255, 0.123);
   --bared : rgba(255, 0, 0, 0.144);
 
@@ -137,7 +138,7 @@ html.dark-theme {
   --badge: #1e2535;
   --badge--color: #c2c7ce;
 
-  
+
   --btn--primarey : #e9ecef;
 
   --text-black: rgba(255, 255, 255, 0.034);

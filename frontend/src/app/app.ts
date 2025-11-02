@@ -12,7 +12,5 @@ import { ThemeService } from './Theme/services/theme';
 })
 
 export class App {
-  protected readonly title = 'frontend';
-
   themeService = inject(ThemeService)
 }

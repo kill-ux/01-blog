@@ -37,7 +37,7 @@
                     <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
                         placeholder="Enter your password" autocomplete="current-password">
                     <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
-                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" >
                         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
 
