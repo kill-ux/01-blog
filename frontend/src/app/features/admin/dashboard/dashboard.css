@@ -600,8 +600,8 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .posts .num {
-        font-size: 48px;
+    .posts {
+        font-size: 18px;
     }
 }
 
