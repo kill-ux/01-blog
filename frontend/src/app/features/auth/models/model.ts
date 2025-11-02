@@ -29,7 +29,6 @@ export interface SignupCredentials {
 }
 
 export interface MostReport {
-    user: User,
+    nickname: string,
     reportCount: number
-
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import api.model.report.MostRportUser.MostReport;
+import api.model.report.MostRportUser.MostReportedUnit;
 import api.model.report.ReportRequests.ReportRequestDto;
 import api.model.report.ReportRequests.ReportResponce;
 import api.model.user.UserResponse;
@@ -51,7 +52,7 @@ public class ReportController {
 
     @GetMapping("/mostreported")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<MostReport>> getMostReportedUsers() {
+    public ResponseEntity<List<MostReportedUnit>> getMostReportedUsers() {
         return ResponseEntity.ok(this.reportService.getMostReportedUsers());
     }
 

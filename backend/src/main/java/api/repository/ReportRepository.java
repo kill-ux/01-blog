@@ -8,15 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import api.model.report.MostRportUser.MostReportedUnit;
 import api.model.report.Report;
-
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
     Page<Report> findByIdLessThan(long cursor, Pageable pageable);
 
-    @Query("SELECT auth , COUNT(*) as reportCount from Report r JOIN r.reportedUser auth GROUP BY auth ORDER BY reportCount DESC LIMIT 3")
-    List<Object[]> getMostReportedUsers();
+    @Query("SELECT r.reportedUser.nickname , COUNT(*) as reportCount from Report r GROUP BY r.reportedUser.nickname ORDER BY COUNT(*) DESC LIMIT 3")
+    List<MostReportedUnit> getMostReportedUsers();
 }
-
-

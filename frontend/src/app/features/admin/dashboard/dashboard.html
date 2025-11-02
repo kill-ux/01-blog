@@ -1,20 +1,27 @@
 <div class="dashboard">
     <div class="container">
-        <div class="analytics">
-            <div class="posts">number of posts : <span class="num">{{countPosts()}}</span> </div>
-
-            <div class="most">
-                <h2>Most reported users </h2>
-                <div class="rep">
+        <div class="analytics-pere">
+            <div class="analytics">
+                <div class="posts" >
                     <div>
-                        @for (item of mostReport(); track $index) {
-                        <div class="rep-user">
-                            <div>
-                                @{{item.user.nickname}}
-                                <span>{{item.reportCount}}</span>
+                        NUMBER OF BLOGS : <span class="num">{{countPosts()}}</span>
+                    </div>
+                </div>
+
+
+                <div class="most">
+                    <h2>Most reported users </h2>
+                    <div class="rep">
+                        <div>
+                            @for (item of mostReport(); track $index) {
+                            <div class="rep-user">
+                                <div>
+                                    @{{item.nickname}}
+                                    <span>{{item.reportCount}}</span>
+                                </div>
                             </div>
+                            }
                         </div>
-                        }
                     </div>
                 </div>
             </div>
@@ -68,9 +75,9 @@
                             <th mat-header-cell *matHeaderCellDef> Statue </th>
                             <td mat-cell *matCellDef="let element">
                                 @if(isCurrentlyBanned(element.bannedUntil)){
-                                <span class="badge cap">banned</span>
+                                <span class="badge cap cap-size-2">banned</span>
                                 }@else {
-                                <span class="warning cap">active</span>
+                                <span class="warning cap cap-size-2">active</span>
                                 }
                             </td>
                         </ng-container>

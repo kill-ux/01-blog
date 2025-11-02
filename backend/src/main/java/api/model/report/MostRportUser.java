@@ -10,14 +10,17 @@ import lombok.Data;
 
 public class MostRportUser {
 
-    public record MostReport(
-            UserResponse user,
-            long reportCount) {
-    }
+        public record MostReport(
+                        UserResponse user,
+                        long reportCount) {
+        }
 
-    public record MostReportU(
-            User user,
-            long reportCount) {
-    }
+        public record MostReportU(
+                        User user,
+                        long reportCount) {
+        }
+
+        public record MostReportedUnit(String nickname, Long reportCount) {
+        }
 
 }
