@@ -8,13 +8,10 @@ import org.springframework.stereotype.Service;
 
 import api.model.blog.Blog;
 import api.model.report.Report;
-import api.model.report.MostRportUser.MostReport;
-import api.model.report.MostRportUser.MostReportU;
 import api.model.report.MostRportUser.MostReportedUnit;
 import api.model.report.ReportRequests.ReportRequestDto;
 import api.model.report.ReportRequests.ReportResponce;
 import api.model.user.User;
-import api.model.user.UserResponse;
 import api.repository.BlogRepository;
 import api.repository.ReportRepository;
 import api.repository.UserRepository;

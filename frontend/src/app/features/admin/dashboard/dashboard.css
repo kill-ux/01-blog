@@ -314,18 +314,18 @@ body {
     height: 10px;
     background: #ff0000;
     /* border-radius: 50%; */
-    box-shadow: 0 0 20px #ff0000;
+    box-shadow: 0 0 20px var(--bg-hover);
     animation: blink 1s infinite;
 }
 
 /* Posts Card */
 .posts {
-    background: #0d1117;
+    background: var(--bg-primary);
     border: 2px solid #00ff41;
     padding: 25px;
     position: relative;
     box-shadow: 0 0 20px rgba(0, 255, 65, 0.3),
-        inset 0 0 20px rgba(0, 255, 65, 0.05);
+        inset 0 0 20px var(--bg-primary);
     overflow: hidden;
     font-size: 32px;
     display: flex;
@@ -391,12 +391,12 @@ body {
 
 /* Most Reported Users */
 .most {
-    background: #0d1117;
+    background: var(--bg-primary);
     border: 2px solid #ff0055;
     padding: 25px;
     position: relative;
     box-shadow: 0 0 20px rgba(255, 0, 85, 0.3),
-        inset 0 0 20px rgba(255, 0, 85, 0.05);
+        inset 0 0 20px var(--bg-primary);
     overflow: hidden;
 }
 
@@ -428,7 +428,7 @@ body {
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 10px #ff0055;
+    text-shadow: 0 0 10px #ff005552;
 }
 
 .most h2::before {
