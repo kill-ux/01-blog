@@ -54,27 +54,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
 
-
             final String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 final String jwt = authHeader.substring(7);
                 final String nickname = jwtService.extractNickname(jwt);
 
-                if (nickname != null) { // SecurityContextHolder.getContext().getAuthentication() == null
+                if (nickname != null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(nickname);
 
                     if (((User) userDetails).isBannedUntil()) {
                         throw new LockedException(String.format("Account is banned"));
                     }
 
-                    if (jwtService.isTokenValid(jwt, userDetails)) {
-                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities());
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+
                 }
             }
             filterChain.doFilter(request, response);

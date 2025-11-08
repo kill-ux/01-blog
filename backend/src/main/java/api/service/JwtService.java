@@ -79,13 +79,4 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        try {
-            final String nickname = extractNickname(token);
-            return (nickname != null && nickname.equals(userDetails.getUsername()));
-        } catch (Exception e) {
-            return false; // Token is invalid due to any JWT parsing issue
-        }
-    }
-
 }

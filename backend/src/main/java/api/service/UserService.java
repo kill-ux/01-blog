@@ -214,10 +214,6 @@ public class UserService {
                     new UsernamePasswordAuthenticationToken(loginRequest.nickname(), loginRequest.password()));
             // Load the full user details after successful authentication
             User user = (User) authentication.getPrincipal();
-
-            if (user.isBannedUntil()) {
-                throw new LockedException(String.format("Account is banned"));
-            }
             // Generate token with user details (not just nickname)
             String jwtToken = jwtService.generateToken(user);
             LoginResponse loginResponse = new LoginResponse();
