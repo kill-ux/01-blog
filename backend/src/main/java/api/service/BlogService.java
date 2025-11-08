@@ -15,13 +15,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import api.model.blog.Blog;
 import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
 import api.model.blog.ChildrenResponse;
-import api.model.notification.NotificationResponse;
 import api.model.user.User;
 import api.repository.BlogRepository;
 import api.repository.UserRepository;
@@ -32,12 +32,7 @@ public class BlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
-    private CloudinaryService cloudinaryService;
-
     private final NotificationService notificationService;
-    private static final Set<String> VALID_MEDIA_TYPES = Set.of("image", "video");
     private static final String ERROR_USER_NOT_FOUND = "User not found with ID: %d";
 
     public BlogService(BlogRepository blogRepository, UserRepository userRepository,
@@ -45,7 +40,6 @@ public class BlogService {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
-        this.cloudinaryService = cloudinaryService;
     }
 
     public List<BlogResponse> getBlogs(long cursor) {
@@ -91,6 +85,7 @@ public class BlogService {
                 .toList();
     }
 
+    @Transactional
     public BlogResponse saveBlog(BlogRequest blogRequest) {
         User user = getAuthenticatedUser();
         // validateMediaType(blogRequest.mediaType());
@@ -140,9 +135,9 @@ public class BlogService {
         return children;
     }
 
+    @Transactional
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
-        validateMediaType(blogRequest.mediaType());
         updateBlogEntity(blog, blogRequest);
         return new BlogResponse(this.blogRepository.save(blog), blog.getUser().getId());
     }
@@ -169,12 +164,6 @@ public class BlogService {
         blog.setCreatedAt(LocalDateTime.now());
         blog.setDescription(blogRequest.description());
         return blog;
-    }
-
-    private void validateMediaType(String mediaType) {
-        if (mediaType != null && !VALID_MEDIA_TYPES.contains(mediaType.toLowerCase())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Media type must be 'image' or 'video'");
-        }
     }
 
     private void updateBlogEntity(Blog blog, BlogRequest blogRequest) {

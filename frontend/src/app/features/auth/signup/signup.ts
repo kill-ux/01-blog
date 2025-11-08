@@ -41,8 +41,9 @@ export class Signup {
 				},
 				error: (err) => {
 					this.isLoading = false
-					console.log('Signup faild', err)
-					this.snackBar.open('Login faild', "Close", {
+					console.log('Signup faild', err);
+                    const message = err.error.error ? err.error.error : "Login faild"
+					this.snackBar.open(message, "Close", {
 						duration: 2000,
 					});
 				}

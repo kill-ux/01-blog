@@ -10,7 +10,5 @@ public record BlogRequest(
         @NotBlank(message = "description is required")
         String description,
 
-        Long parent,
-        String mediaUrl,
-        String mediaType) {
+        Long parent) {
 }

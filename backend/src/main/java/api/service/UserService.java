@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import api.model.subscription.SubscribeRequest;
@@ -38,7 +39,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-
 
     @Value("${app.upload.dir}")
     private String uploadDir;
@@ -93,10 +93,8 @@ public class UserService {
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             String err = "Data conflict - please check your input";
-            if (errorMessage.contains("nickname") && errorMessage.contains("unique")) {
-                err = "Username already exists";
-            } else if (errorMessage.contains("email") && errorMessage.contains("unique")) {
-                err = "Email already registered";
+            if ((errorMessage.contains("nickname") || errorMessage.contains("email")) && errorMessage.contains("unique")) {
+                err = "Email or Username already exists";
             }
             throw new IllegalStateException(err);
         }
@@ -106,7 +104,7 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-
+    @Transactional
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
         User user = this.userRepository.findById(userId).get();

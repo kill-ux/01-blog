@@ -50,7 +50,7 @@
 
     .avatar {
         width: 200px;
-        height: 100%;
+        /* height: 100%; */
     }
 
     .flex-row {
