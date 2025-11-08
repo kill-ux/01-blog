@@ -500,7 +500,6 @@ p:has(img) {
 
 p img {
 	margin-block: 16px;
-	border: 1px solid var(--btn--primarey);
 }
 
 
