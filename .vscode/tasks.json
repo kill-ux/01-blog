@@ -50,6 +50,16 @@
         "Frontend"
       ],
       "dependsOrder": "parallel"
+    },
+    {
+      "label": "Shutdown",
+      "type": "shell",
+      "command": "cd db && docker-compose down",
+      "isBackground": false, // This is a quick command, not a background process
+      "presentation": {
+        "panel": "dedicated",
+        "echo": true
+      }
     }
   ]
 }

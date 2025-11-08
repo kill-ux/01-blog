@@ -5,7 +5,7 @@ spring:
     url: ${DATABASE_URL}
     # url: jdbc:postgresql://postgres:5432/01blog_db
     username: ${DATABASE_USERNAME}
-    password: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

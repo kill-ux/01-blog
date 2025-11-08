@@ -21,14 +21,17 @@ services:
         # network_mode: host
         container_name: spring-boot-app
         environment:
-            # SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/01blog_db
-            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/01blog_db
-            SPRING_DATASOURCE_USERNAME: postgres
-            SPRING_DATASOURCE_PASSWORD: postgres
+
+            SPRING_DATASOURCE_URL: ${DATABASE_URL_DOCKER}
+            SPRING_DATASOURCE_USERNAME: ${DATABASE_USERNAME}
+            SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+
+            JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+            CLOUDINARY_URL: ${CLOUDINARY_URL}
             SPRING_JPA_HIBERNATE_DDL_AUTO: update
             SPRING_PROFILES_ACTIVE: dev
-            # app.upload.dir=/app/uploads
             APP.UPLOAD.DIR: /app/uploads
+
         ports:
           - "8080:8080"
         depends_on:
