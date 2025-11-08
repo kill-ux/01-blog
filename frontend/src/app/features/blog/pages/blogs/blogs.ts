@@ -28,7 +28,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	}
 })
 export class Blogs implements OnInit, OnChanges {
-	// private 
+	// private
 	public blogs = signal<BlogResponce[]>([]);
 	public lastBlog = 0;
 	private isLoading = false;

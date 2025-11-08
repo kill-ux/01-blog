@@ -44,6 +44,8 @@ dependencies {
 
     implementation 'com.cloudinary:cloudinary-http5:2.0.0'
     implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+
+    annotationProcessor "org.springframework:spring-context-indexer"
 }
 
 tasks.named('test') {
@@ -54,4 +56,8 @@ tasks.named('test') {
 
 bootRun {
     systemProperties = System.properties
+}
+
+javadoc {
+    options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PRIVATE
 }

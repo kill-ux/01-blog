@@ -3,6 +3,14 @@ import { BehaviorSubject, Observable } from "rxjs";
 
 export type Theme = 'light' | 'dark';
 
+const prismThemeLink = document.getElementById('prismTheme');
+
+const themesCode = {
+  light: 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-coy.css',
+  dark: 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-funky.css'
+};
+
+
 @Injectable({
     providedIn: 'root'
 })
@@ -49,6 +57,7 @@ export class ThemeService {
         document.documentElement.setAttribute('data-theme', theme)
         document.documentElement.classList.remove('light-theme', 'dark-theme');
         document.documentElement.classList.add(`${theme}-theme`);
+        prismThemeLink?.setAttribute('href', themesCode[theme]);
 
         // Update meta theme-color for mobile browsers
         this.updateMetaThemeColor(theme);

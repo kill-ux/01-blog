@@ -2,15 +2,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 
-/* @import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css'); */
-/* @import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-coy.css'); //themes/prism-atom-dark.css */
-/* @import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-twilight.css');  */
-
-/* Import Prism Coy theme for light mode */
-@import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-coy.css') (prefers-color-scheme: light);
-
-@import url('https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-twilight.css') (prefers-color-scheme: dark);
-
 @font-face {
 	font-family: berkeleyMono;
 	src: url(https://r2cdn.perplexity.ai/fonts/BerkeleyMono-Regular.woff2) format("woff2");

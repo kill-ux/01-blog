@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.cloudinary.Cloudinary;
-
+/**
+ * dfsdfsd
+ */
 @Configuration
 public class CloudinaryConfig {
     @Value("${app.cloudinary.cloud-url}")
