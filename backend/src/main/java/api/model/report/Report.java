@@ -27,5 +27,7 @@ public class Report {
     private User reportedUser;
 
     private Long blogId;
+    private Long commentId;
+    private Long commentIddfsdf;
 }
 
