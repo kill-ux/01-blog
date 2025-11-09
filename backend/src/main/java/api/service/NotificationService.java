@@ -1,5 +1,6 @@
 package api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,10 @@ public class NotificationService {
 
     public void saveNotification(Blog blog) {
         User user = blog.getUser();
-        for (User subscriber : user.getSubscribers()) {
+        List<User> recipients = new ArrayList<>(user.getSubscribers());
+        recipients.add(user);
+        
+        for (User subscriber : recipients) {
             Notification notification = new Notification();
             notification.setBlog(blog);
             notification.setUser(subscriber);

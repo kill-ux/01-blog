@@ -78,7 +78,7 @@ public class User implements UserDetails {
     private Set<User> subscribers = new HashSet<>();
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToMany(mappedBy = "subscribers", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "subscribers")
     @JsonIgnore
     private Set<User> subscribed_to = new HashSet<>();
 

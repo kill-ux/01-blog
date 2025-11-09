@@ -207,6 +207,9 @@ public class UserService {
 
     public LoginResponse login(@Valid LoginRequest loginRequest) {
         try {
+            System.out.println("jjjjjjjjj");
+            System.out.println("#################################");
+            System.out.println("#################################");
             // Authenticate credentials
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.nickname(), loginRequest.password()));
@@ -222,6 +225,8 @@ public class UserService {
         } catch (LockedException e) {
             throw e;
         } catch (Exception e) {
+            System.out.println("#################################");
+            System.out.println("#################################");
             throw new BadCredentialsException("Invalid username or password");
         }
     }

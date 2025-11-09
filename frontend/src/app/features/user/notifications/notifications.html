@@ -1,4 +1,4 @@
-<li><a  class="nav-link" [matMenuTriggerFor]="menu">
+<li><a class="nav-link" [matMenuTriggerFor]="menu">
         <span [matBadge]="getBadgeText()" matBadgePosition="before">
             <svg width="20" viewBox="0 0 20 20" class="fill-current">
                 <path d="M12 19H8V17H12V19Z"></path>
@@ -38,7 +38,11 @@
                 </div>
             </div>
             <div>
+                @if (not.sender.id == authService.currentUser?.id) {
+                <p>Your post are available (-_*) </p>
+                } @else {
                 <p>new post created by @{{not.sender.nickname}} </p>
+                }
                 <p class="post-date">{{ not.createdAt | timeAgo}}</p>
             </div>
             @if (!not.read) {

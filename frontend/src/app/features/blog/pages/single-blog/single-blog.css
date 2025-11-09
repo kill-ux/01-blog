@@ -93,13 +93,14 @@
 }
 
 .comment-textarea {
-    width: 95%;
+    border-block: red 1px solid;
+    /* width: 95%; */
     resize: none;
     border: 1px solid var(--bg-hover);
     padding: 10px;
     /* padding-right: 50px; */
     box-sizing: border-box;
-    margin: 5px;
+    /* margin: 5px; */
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
@@ -158,6 +159,7 @@
     background-color: var(--shadow-sm);
     width: 100%;
     margin-left: 5px;
+    border-block: 1px solid var(--bg-back);
 }
 
 .cap {

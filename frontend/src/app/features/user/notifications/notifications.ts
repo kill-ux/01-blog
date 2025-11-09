@@ -29,8 +29,7 @@ export class Notifications implements OnInit, OnDestroy {
 	apiUrl = environment.API_URL
 
 
-	constructor(private authService: AuthService, private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
-		console.log("hhhhhhhhhhhhhhhh")
+	constructor(public authService: AuthService, private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
 	}
 
 

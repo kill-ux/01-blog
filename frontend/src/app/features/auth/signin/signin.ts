@@ -44,7 +44,7 @@ export class Signin {
 					this.isLoading = false;
 				},
 				error: (err) => {
-					let message = `Login faild: ${err.error.error}`
+					 const message = err.error.error ? err.error.error : "Login faild"
 					// if (err.status == 423) {
 					// 	message += ` ${err.error.error}`
 					// }

@@ -290,6 +290,7 @@ body {
     flex-direction: column;
     justify-content: start;
     align-items: start;
+    margin-block: 20px !important;
 }
 
 ::ng-deep .mat-mdc-menu-item-text {

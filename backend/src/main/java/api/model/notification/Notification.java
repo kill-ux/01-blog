@@ -28,8 +28,4 @@ public class Notification {
     public String getRecipient(){
         return user.getNickname();
     }
-
-    public String content() {
-        return "fff";
-    }
 }

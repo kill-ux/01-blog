@@ -136,7 +136,7 @@ export class CreateBlog implements OnInit, OnDestroy {
 			obs.subscribe({
 				next: res => {
 					this.snackBar.open(this.id ? 'Blog updated' : 'New blog created', "View Blog", {
-						duration: 4000
+						duration: 6000
 					}).onAction().subscribe(() => {
 						this.router.navigate(['blog', res?.id])
 					});
