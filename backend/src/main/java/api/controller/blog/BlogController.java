@@ -81,7 +81,7 @@ public class BlogController {
     }
 
     @DeleteMapping("{blogId}/delete")
-    @PreAuthorize("hasRole('ADMIN') or (@blogService.getBlog(#blogId).user.id == authentication.principal.id and @blogService.getBlog(#blogId).isHidden == false)")
+    @PreAuthorize("hasRole('ADMIN') or @blogService.getBlog(#blogId).user.id == authentication.principal.id")
     public ResponseEntity<String> deleteBlog(@PathVariable long blogId) {
         this.blogService.deleteBlog(blogId);
         return ResponseEntity.ok("success deleted of BLOG");

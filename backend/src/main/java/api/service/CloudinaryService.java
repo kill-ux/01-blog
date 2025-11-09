@@ -1,11 +1,7 @@
 package api.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,9 +20,10 @@ public class CloudinaryService {
             HashMap<Object, Object> options = new HashMap<>();
             options.put("folder", folderName);
             options.put("resource_type", resourceType);
+            // remove warning of th row map witout tpe
+            @SuppressWarnings("unchecked")
             Map<String, Object> uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
-            String publicId = (String) uploadedFile.get("public_id");
-            return cloudinary.url().secure(true).resourcType(resourceType).generate(publicId);
+            return (String) uploadedFile.get("secure_url");
         } catch (Exception e) {
             System.out.println(e);
             throw new InternalError("Failed: to upload this file");

@@ -38,16 +38,20 @@ public class FileUploadController {
     public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
         String resourceType = "";
-        if (fileName != null) {
-            String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-            if (ALLOWED_TYPES_IMAGES.contains(ext)) {
-                resourceType = "image";
-            } else if (ALLOWED_TYPES_VEDIOS.contains(ext)) {
-                resourceType = "video";
-            } else {
-                throw new IllegalArgumentException("type not allowed");
-            }
+
+        if (fileName == null || fileName.isBlank()) {
+            throw new IllegalArgumentException("File must have a name");
         }
+
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        if (ALLOWED_TYPES_IMAGES.contains(ext)) {
+            resourceType = "image";
+        } else if (ALLOWED_TYPES_VEDIOS.contains(ext)) {
+            resourceType = "video";
+        } else {
+            throw new IllegalArgumentException("type not allowed");
+        }
+
         return ResponseEntity.ok(Map.of("url", cloudinaryService.uploadFile(file, "files", resourceType)));
     }
 }

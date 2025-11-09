@@ -1,6 +1,7 @@
 package api.model.user;
 
+import jakarta.validation.constraints.NotNull;
+
 public class UserRequests {
-    public record UserId(long userId) {
-    }
+    public record UserId(@NotNull Long userId) {}
 }

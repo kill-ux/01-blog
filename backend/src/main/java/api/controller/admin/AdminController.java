@@ -25,7 +25,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteUser(@RequestBody UserRequests.UserId request) {
+    public ResponseEntity<String> deleteUser(@Valid @RequestBody UserRequests.UserId request) {
         this.userService.deleteUser(request.userId());
         return ResponseEntity.ok("success delete");
     }
@@ -37,7 +37,7 @@ public class AdminController {
     }
 
     @PatchMapping("/adminify")
-    public ResponseEntity<String> adminify(@RequestBody UserRequests.UserId request) {
+    public ResponseEntity<String> adminify(@Valid @RequestBody UserRequests.UserId request) {
         return ResponseEntity.ok(this.userService.adminify(request.userId()));
     }
 

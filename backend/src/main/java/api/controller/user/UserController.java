@@ -9,8 +9,6 @@ import api.model.blog.BlogResponse;
 import api.model.notification.NotificationResponse;
 import api.model.subscription.SubscribeRequest;
 import api.model.user.User;
-import api.model.user.UserDto;
-import api.model.user.UserRecord;
 import api.model.user.UserResponse;
 import api.service.BlogService;
 import api.service.NotificationService;
@@ -22,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
