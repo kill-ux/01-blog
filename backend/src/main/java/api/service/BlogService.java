@@ -24,6 +24,7 @@ import api.model.blog.BlogResponse;
 import api.model.blog.ChildrenResponse;
 import api.model.user.User;
 import api.repository.BlogRepository;
+import api.repository.ReportRepository;
 import api.repository.UserRepository;
 
 @Service
@@ -31,15 +32,18 @@ public class BlogService {
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
+    private final ReportRepository reportRepository;
 
     private final NotificationService notificationService;
     private static final String ERROR_USER_NOT_FOUND = "User not found with ID: %d";
 
     public BlogService(BlogRepository blogRepository, UserRepository userRepository,
-            NotificationService notificationService, CloudinaryService cloudinaryService) {
+            NotificationService notificationService, CloudinaryService cloudinaryService,
+            ReportRepository reportRepository) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
+        this.reportRepository = reportRepository;
     }
 
     public List<BlogResponse> getBlogs(long cursor) {
@@ -117,6 +121,10 @@ public class BlogService {
 
     public void deleteBlog(long blogId) {
         this.blogRepository.findById(blogId).get();
+        this.reportRepository.findByBlogId(blogId).forEach(report -> {
+            report.setBlogId(0L);
+            this.reportRepository.save(report);
+        });
         this.blogRepository.deleteById(blogId);
     }
 
@@ -194,4 +202,3 @@ public class BlogService {
     }
 
 }
-

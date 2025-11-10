@@ -2,12 +2,17 @@ package api.model.report;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import api.model.user.User;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +25,15 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "reporter_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User reportingUser;
 
     @ManyToOne
     @JoinColumn(name = "reported_user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User reportedUser;
 
     private Long blogId;
-    private Long commentId;
-    private Long commentIddfsdf;
 }
+
 

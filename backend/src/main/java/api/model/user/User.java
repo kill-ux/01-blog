@@ -9,20 +9,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import api.model.blog.Blog;
 import api.model.notification.Notification;
 import api.model.report.Report;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+// @Data
+@Getter
+@Setter
 @Table(name = "users")
-@EqualsAndHashCode(exclude = { "subscribers", "subscribed_to" }) // Also exclude from equals and hashCode
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +43,6 @@ public class User implements UserDetails {
     private String avatar;
     private boolean bannedUntil;
 
-    // @Past(message = "Birth date must be in the past")
     private LocalDateTime birthDate;
 
     @Column(nullable = false)
@@ -67,29 +65,28 @@ public class User implements UserDetails {
     }
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonIgnore
+    @OneToMany(mappedBy = "user")
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToMany
-    @JsonIgnore
     private Set<User> subscribers = new HashSet<>();
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "subscribers")
-    @JsonIgnore
     private Set<User> subscribed_to = new HashSet<>();
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "likedBy")
     private List<Blog> likedBlogs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reportingUser", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "reportingUser")
     private List<Report> submittedReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reportedUser" , cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "reportedUser" )
     private List<Report> reportsAboutMe = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
 }
+
+

@@ -27,7 +27,7 @@ export class Signin {
 		this.myForm = this.fb.group({
 			nickname: ['', [
 				Validators.required,
-				Validators.minLength(3),
+				Validators.minLength(1),
 				Validators.maxLength(20),
 				Validators.pattern(/^[a-zA-Z0-9_-]+$/)
 			]],

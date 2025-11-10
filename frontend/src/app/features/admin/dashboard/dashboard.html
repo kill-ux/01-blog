@@ -154,7 +154,7 @@
                         <ng-container matColumnDef="type">
                             <th mat-header-cell *matHeaderCellDef> Type </th>
                             <td mat-cell *matCellDef="let element">
-                                @if (element.blogId) {
+                                @if (element.blogId != null) {
                                 <span class="badge badge-type post">POST</span>
 
                                 } @else {
@@ -284,11 +284,19 @@
                                         <span>Review (Closed)</span>
                                         }
                                     </button>
-                                    @if (element.blogId) {
-                                    <button mat-menu-item (click)="openBlog(element.blogId)">
-                                        <mat-icon>open_in_new</mat-icon>
-                                        <span>Open Blog</span>
-                                    </button>
+                                    @if (element.blogId != null) {
+                                        @if (element.blogId == 0) {
+                                            <button mat-menu-item >
+                                                <mat-icon>block</mat-icon>
+                                                <span>Blog has been deleted</span>
+                                            </button>
+                                        }@else {
+                                            <button mat-menu-item (click)="openBlog(element.blogId)">
+                                                <mat-icon>open_in_new</mat-icon>
+                                                <span>Open Blog</span>
+                                            </button>
+                                        }
+
 
                                     }
                                 </mat-menu>

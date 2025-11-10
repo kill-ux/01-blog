@@ -15,6 +15,8 @@ import api.model.report.Report;
 public interface ReportRepository extends JpaRepository<Report, Long> {
     Page<Report> findByIdLessThan(long cursor, Pageable pageable);
 
+    List<Report> findByBlogId(Long blogId);
+
     @Query("SELECT r.reportedUser.nickname , COUNT(*) as reportCount from Report r GROUP BY r.reportedUser.nickname ORDER BY COUNT(*) DESC LIMIT 3")
     List<MostReportedUnit> getMostReportedUsers();
 }

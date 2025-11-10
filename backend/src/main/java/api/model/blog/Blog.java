@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import api.model.notification.Notification;
 import api.model.user.User;
 import jakarta.persistence.CascadeType;
@@ -20,11 +23,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "blogs")
-@Data
+@Getter
+@Setter
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,12 +44,14 @@ public class Blog {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent")
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Blog parent;
 
     private boolean hidden;
@@ -53,9 +60,12 @@ public class Blog {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    // @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany
+    // @OnDelete(action = OnDeleteAction.CASCADE)
     private List<User> likedBy = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "blog")
     private List<Notification> notifications;
 }
+

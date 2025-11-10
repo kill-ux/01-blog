@@ -2,13 +2,18 @@ package api.model.notification;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import api.model.blog.Blog;
 import api.model.user.User;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "notifications")
 public class Notification {
     @Id
@@ -17,9 +22,11 @@ public class Notification {
     private boolean read;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Blog blog;
 
     private LocalDateTime createdAt = LocalDateTime.now();
