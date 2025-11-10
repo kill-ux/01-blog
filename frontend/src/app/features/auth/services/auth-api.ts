@@ -121,7 +121,7 @@ export class AuthService {
             };
             this.currentUserSubject.next(user);
         } catch (error) {
-            console.error('Invalid token', error);
+            console.log('Invalid token', error);
             this.removeAuthToken();
         }
     }
@@ -131,7 +131,7 @@ export class AuthService {
             const decoded: any = jwtDecode(token);
             return decoded.id
         } catch (error) {
-            console.error('Invalid token', error);
+            console.log('Invalid token', error);
             this.removeAuthToken();
         }
     }

@@ -21,9 +21,6 @@ export class WebSocketApi {
 		const token = localStorage.getItem('token');
 		const brokerURL = this.WS_URL;
 
-		console.log("tktk", token)
-
-
 		this.stompClient = new Client({
 			brokerURL,
 			beforeConnect: () => {
@@ -33,26 +30,22 @@ export class WebSocketApi {
 					};
 				}
 			},
-
-			debug: (str) => {
-				console.log(new Date(), str);
-			},
 			reconnectDelay: 3000,
 			heartbeatIncoming: 4000,
 			heartbeatOutgoing: 4000,
 
 			onConnect: (frame) => {
-				console.log('Connected: ' + frame);
+				console.log('Connected: ');
 				this.stompClient!.subscribe(`/user/queue/new-blog`, (message) => {
 					this.onMessageRecived(message.body);
 				});
 			},
 			onStompError: (frame) => {
-				console.error('Broker reported error: ' + frame.headers['message']);
-				console.error('Additional details: ' + frame.body);
+				console.log('Broker reported error: ' + frame.headers['message']);
+				console.log('Additional details: ' + frame.body);
 			},
 			onWebSocketError: (error) => {
-				console.error('WebSocket Error: ', error);
+				console.log('WebSocket Error: ', error);
 			}
 		});
 

@@ -116,7 +116,7 @@ export class Blogs implements OnInit, OnChanges {
 				blogResponce.isCopied = false;
 			}, 1000)
 		}).catch(err => {
-			console.error('Failed to copy link:', err);
+			console.log('Failed to copy link:', err);
 		});
 	}
 
