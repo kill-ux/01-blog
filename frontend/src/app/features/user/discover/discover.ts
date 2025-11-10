@@ -19,7 +19,7 @@ export class Discover implements OnInit {
 	authService = inject(AuthService);
 	sub = input();
 	setSubscribtions = output<number>()
-	setSubscribers = output<number>()
+	// setSubscribers = output<number>()
 	cursor = 0
 	snackBar = inject(MatSnackBar)
 
@@ -84,7 +84,9 @@ export class Discover implements OnInit {
 							return user
 						})
 					})
-					if (this.sub() == "subscribtions" && this.user()?.id == this.authService.currentUser?.id) {
+                    // this.sub() == "subscribtions" &&
+					if ( this.user()?.id == this.authService.currentUser?.id) {
+                        console.log("emitting subscribtions change")
 						// this.users.update(us => us.filter(user => user.sub))
 						this.setSubscribtions.emit(res.operation == "subscribed" ? 1 : -1)
 					}

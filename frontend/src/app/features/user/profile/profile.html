@@ -108,7 +108,7 @@
         All Blogs
     </div>
     @if (currentComponent() == "subscribers") {
-    <app-discover [user]="userProfile()" sub="subscribers"></app-discover>
+    <app-discover [user]="userProfile()" sub="subscribers" (setSubscribtions)="setSubscribtions($event)"></app-discover>
     } @else if (currentComponent() == "subscribtions") {
     <app-discover [user]="userProfile()" sub="subscribtions"
         (setSubscribtions)="setSubscribtions($event)"></app-discover>

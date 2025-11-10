@@ -110,6 +110,7 @@ export class Profile implements OnInit {
 	}
 
 	setSubscribtions(num: number) {
+        console.log("setSubscribtions called with", num)
 		let currentUser = this.userProfile();
 		if (currentUser)
 			currentUser.subscribtions += num

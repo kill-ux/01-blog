@@ -54,11 +54,6 @@ public class Blog {
     private LocalDateTime updatedAt;
 
     @ManyToMany
-    @JoinTable(
-        name = "likes", 
-        joinColumns = @JoinColumn(name = "user_id"), 
-        inverseJoinColumns = @JoinColumn(name = "blog_id"), 
-        uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "blog_id" }))
     private List<User> likedBy = new ArrayList<>();
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE, orphanRemoval = true)

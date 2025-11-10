@@ -72,8 +72,6 @@ public class User implements UserDetails {
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "subscription", joinColumns = @JoinColumn(name = "subscriber_to_id"), inverseJoinColumns = @JoinColumn(name = "subscriber_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
-            "subscriber_id", "subscriber_to_id" }))
     @JsonIgnore
     private Set<User> subscribers = new HashSet<>();
 

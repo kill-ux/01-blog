@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> rateLimitFallback(RequestNotPermitted ex) {
         return new ResponseEntity<>(
                 Map.of("error", "Too many requests. Please try again later."),
-                HttpStatus.TOO_MANY_REQUESTS // This sends the 429 status code
+                HttpStatus.TOO_MANY_REQUESTS 
         );
     }
 
