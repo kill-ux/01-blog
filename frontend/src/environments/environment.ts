@@ -1,12 +1,7 @@
-// console.log("#####################",location.hostname)
-
-// export const environment = {
-//     API_URL : `${location.hostname}:8080/api`
-// };
 
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost:8080/api', // <-- This is the fix
-  WS_URL: 'http://localhost:8080/ws'
+  API_URL: `${location.protocol + "//" + location.hostname}:8080/api`, // <-- This is the fix
+  WS_URL: `${location.protocol + "//" + location.hostname}:8080/ws`
 };

@@ -54,11 +54,6 @@ tasks.named('test') {
 }
 
 
-
 bootRun {
     systemProperties = System.properties
-}
-
-javadoc {
-    options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PRIVATE
 }

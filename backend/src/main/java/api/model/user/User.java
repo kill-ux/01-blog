@@ -65,7 +65,7 @@ public class User implements UserDetails {
     }
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToMany
@@ -75,9 +75,9 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "subscribers")
     private Set<User> subscribed_to = new HashSet<>();
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "likedBy")
     private List<Blog> likedBlogs = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "reportingUser")
     private List<Report> submittedReports = new ArrayList<>();
@@ -88,6 +88,4 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
 }
-
-
 

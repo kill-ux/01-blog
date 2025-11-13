@@ -1,9 +1,8 @@
 spring:
   application:
-    name: backend
+    name: backend-01-blog
   datasource:
     url: ${DATABASE_URL}
-    # url: jdbc:postgresql://postgres:5432/01blog_db
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -14,20 +13,17 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  ddevtools:
-    restart:
-      enabled: true
-      poll-interval: 1000
-      quiet-period: 400
   servlet:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
       enabled: true
-  # config:
-  #   activate:
-  #     on-profile: dev
-      
+
+  ddevtools:
+    restart:
+      enabled: true
+      poll-interval: 1000
+      quiet-period: 400
 security:
   jwt:
     secret-key: ${JWT_SECRET_KEY} 

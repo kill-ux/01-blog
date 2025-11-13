@@ -34,10 +34,8 @@ public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
 
-
-    @Column(nullable = false,length = 5000)
+    @Column(nullable = false, length = 5000)
     private String description;
 
     private String title;
@@ -51,6 +49,7 @@ public class Blog {
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Blog parent;
 
@@ -60,12 +59,16 @@ public class Blog {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    
     // @OnDelete(action = OnDeleteAction.CASCADE)
+    // @JoinTable(name = "likes",
+    //         // CORRECT: joinColumns points to the current entity (Blog)
+    //         joinColumns = @JoinColumn(name = "blog_id"),
+    //         // CORRECT: inverseJoinColumns points to the target entity (User)
+    //         inverseJoinColumns = @JoinColumn(name = "user_id"))
     @ManyToMany
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     private List<User> likedBy = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blog")
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications;
 }
-

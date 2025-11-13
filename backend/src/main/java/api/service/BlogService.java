@@ -119,14 +119,22 @@ public class BlogService {
                 .get();
     }
 
+    @Transactional
     public void deleteBlog(long blogId) {
-        this.blogRepository.findById(blogId).get();
-        this.reportRepository.findByBlogId(blogId).forEach(report -> {
+        Blog blog = this.blogRepository.findById(blogId).get();
+        this.reportRepository.findByBlogId(blog.getId()).forEach(report -> {
             report.setBlogId(0L);
             this.reportRepository.save(report);
         });
-        this.blogRepository.deleteById(blogId);
+        blog.getLikedBy().clear();
+        blog.getBlogs().forEach(child -> {
+            System.out.println("jjjjjjjjjjjjjjjjjjj");
+            deleteBlog(child.getId());
+        });
+        // this.blogRepository.save(blog);
+        this.blogRepository.deleteById(blog.getId());
     }
+
 
     public ChildrenResponse getBlogChildren(long blogId, long cursor) {
         User user = getAuthenticatedUser();

@@ -42,20 +42,10 @@ public class NotificationService {
         }
     }
 
-    /**
-     * Sends a notification to a specific user.
-     * * @param username The user's ID or name to send to
-     * 
-     * @param notification The message payload
-     */
-    public void sendPrivateNotification(String username, Notification notification) {
 
-        // 2. Define the user's private destination
-        // This is the destination your Angular client is subscribed to,
-        // *without* the "/user/{username}" prefix.
+    public void sendPrivateNotification(String username, Notification notification) {
         String destination = "/queue/new-blog";
 
-        // 3. Send the message
         messagingTemplate.convertAndSendToUser(
                 username, 
                 destination, 

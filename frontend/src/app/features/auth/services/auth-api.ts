@@ -31,6 +31,7 @@ export class AuthService {
     }
 
     signin(credentials: SigninCredentials): Observable<{ token: string }> {
+        console.log("hhhhhhhh",this.apiUrl)
         return this.http.post<{ token: string }>(`${this.apiUrl}/auth/login`, credentials)
             .pipe(
                 tap(response => {

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import api.model.blog.Blog;
 import api.model.subscription.SubscribeRequest;
 import api.model.user.LoginRequest;
 import api.model.user.LoginResponse;
@@ -36,6 +37,7 @@ import jakarta.validation.Valid;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BlogService blogService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -46,12 +48,13 @@ public class UserService {
     private final AuthUtils authUtils;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager, JwtService jwtService, AuthUtils authUtils) {
+            AuthenticationManager authenticationManager, JwtService jwtService, AuthUtils authUtils,BlogService blogService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.authUtils = authUtils;
+        this.blogService = blogService;
     }
 
     public UserRepository getUserRepository() {
@@ -101,6 +104,10 @@ public class UserService {
     }
 
     public void deleteUser(long id) {
+        User user = this.userRepository.findById(id).get();
+        user.getBlogs().forEach(blog -> {
+            this.blogService.deleteBlog(blog.getId());
+        });
         this.userRepository.deleteById(id);
     }
 
