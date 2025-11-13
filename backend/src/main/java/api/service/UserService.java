@@ -105,6 +105,8 @@ public class UserService {
 
     public void deleteUser(long id) {
         User user = this.userRepository.findById(id).get();
+        // we need to remove all likes of this user
+        user.getLikedBlogs().clear();
         user.getBlogs().forEach(blog -> {
             this.blogService.deleteBlog(blog.getId());
         });
