@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import api.model.like.Like;
 import api.model.notification.Notification;
 import api.model.user.User;
 import jakarta.persistence.CascadeType;
@@ -66,9 +67,10 @@ public class Blog {
     //         joinColumns = @JoinColumn(name = "blog_id"),
     //         // CORRECT: inverseJoinColumns points to the target entity (User)
     //         inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @ManyToMany
-    private List<User> likedBy = new ArrayList<>();
+    // likes
+    @OneToMany(mappedBy = "blog")
+    private List<Like> Likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "blog")
     private List<Notification> notifications;
 }

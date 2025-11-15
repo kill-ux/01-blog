@@ -3,16 +3,13 @@ package api.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +19,10 @@ import api.model.blog.Blog;
 import api.model.blog.BlogRequest;
 import api.model.blog.BlogResponse;
 import api.model.blog.ChildrenResponse;
+import api.model.like.Like;
 import api.model.user.User;
 import api.repository.BlogRepository;
+import api.repository.LikesRepository;
 import api.repository.ReportRepository;
 import api.repository.UserRepository;
 
@@ -31,6 +30,7 @@ import api.repository.UserRepository;
 public class BlogService {
 
     private final BlogRepository blogRepository;
+    private final LikesRepository likesRepository;
     private final UserRepository userRepository;
     private final ReportRepository reportRepository;
 
@@ -39,11 +39,12 @@ public class BlogService {
 
     public BlogService(BlogRepository blogRepository, UserRepository userRepository,
             NotificationService notificationService, CloudinaryService cloudinaryService,
-            ReportRepository reportRepository) {
+            ReportRepository reportRepository, LikesRepository likesRepository) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
         this.reportRepository = reportRepository;
+        this.likesRepository = likesRepository;
     }
 
     public List<BlogResponse> getBlogs(long cursor) {
@@ -126,15 +127,8 @@ public class BlogService {
             report.setBlogId(0L);
             this.reportRepository.save(report);
         });
-        blog.getLikedBy().clear();
-        blog.getBlogs().forEach(child -> {
-            System.out.println("jjjjjjjjjjjjjjjjjjj");
-            deleteBlog(child.getId());
-        });
-        // this.blogRepository.save(blog);
         this.blogRepository.deleteById(blog.getId());
     }
-
 
     public ChildrenResponse getBlogChildren(long blogId, long cursor) {
         User user = getAuthenticatedUser();
@@ -192,21 +186,23 @@ public class BlogService {
     public Map<String, Integer> likeBlog(long blogId) {
         User user = getAuthenticatedUser();
         Blog blog = this.blogRepository.findById(blogId).get();
-        boolean isLiked = user.getLikedBlogs().contains(blog);
-        if (!isLiked) {
-            blog.getLikedBy().add(user);
-            this.blogRepository.save(blog);
+        Like like = this.likesRepository.findByBlogIdAndUserId(blogId, user.getId()).orElse(null);
+        if (like == null) {
+            like = new Like();
+            like.setBlog(blog);
+            like.setUser(user);
+            this.likesRepository.save(like);
             return Map.of("like", 1);
         } else {
-            blog.getLikedBy().remove(user);
-            this.blogRepository.save(blog);
+            System.out.println(like.getId());
+            this.likesRepository.delete(like);
             return Map.of("like", -1);
         }
     }
 
     public Map<String, Integer> getLikes(long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
-        return Map.of("count", blog.getLikedBy().size());
+        return Map.of("count", blog.getLikes().size());
     }
 
 }

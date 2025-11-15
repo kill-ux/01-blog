@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import api.model.blog.Blog;
+import api.model.like.Like;
 import api.model.notification.Notification;
 import api.model.report.Report;
 import jakarta.persistence.*;
@@ -64,7 +65,6 @@ public class User implements UserDetails {
         return !bannedUntil;
     }
 
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Blog> blogs = new ArrayList<>();
 
@@ -75,17 +75,16 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "subscribers")
     private Set<User> subscribed_to = new HashSet<>();
 
-    @ManyToMany(mappedBy = "likedBy")
-    private List<Blog> likedBlogs = new ArrayList<>();
-
+    // likes
+    @OneToMany(mappedBy = "user")
+    private List<Like> Likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "reportingUser")
     private List<Report> submittedReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reportedUser" )
+    @OneToMany(mappedBy = "reportedUser")
     private List<Report> reportsAboutMe = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
 }
-

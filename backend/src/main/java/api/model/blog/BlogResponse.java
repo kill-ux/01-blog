@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import api.model.like.Like;
 import api.model.user.User;
 import api.model.user.UserResponse;
 import lombok.Data;
@@ -30,11 +31,11 @@ public class BlogResponse {
         this.hidden = blog.isHidden();
         this.createdAt = blog.getCreatedAt();
         this.updatedAt = blog.getUpdatedAt();
-        this.likes = blog.getLikedBy().size();
+        this.likes = blog.getLikes().size();
         this.childrenCount = blog.getBlogs().size();
 
-        for (User user : blog.getLikedBy()) {
-            if (user.getId() == idd) {
+        for (Like like : blog.getLikes()) {
+            if (like.getUser().getId() == idd) {
                 this.isLike = true;
                 break;
             }
@@ -53,16 +54,14 @@ public class BlogResponse {
         this.hidden = blog.isHidden();
         this.createdAt = blog.getCreatedAt();
         this.updatedAt = blog.getUpdatedAt();
-        this.likes = blog.getLikedBy().size();
+        this.likes = blog.getLikes().size();
         this.childrenCount = blog.getBlogs().size();
-        for (User user : blog.getLikedBy()) {
-            if (user.getId() == idd) {
+        for (Like like : blog.getLikes()) {
+            if (like.getUser().getId() == idd) {
                 this.isLike = true;
                 break;
             }
         }
     }
 }
-
-
 
