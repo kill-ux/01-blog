@@ -57,3 +57,7 @@ tasks.named('test') {
 bootRun {
     systemProperties = System.properties
 }
+
+bootJar {
+    archiveFileName = 'app.jar'
+}

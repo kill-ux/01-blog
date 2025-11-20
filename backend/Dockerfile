@@ -10,7 +10,7 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 # Copy only the main JAR file (the one without -plain.jar)
-COPY --from=build /app/build/libs/*-SNAPSHOT.jar app.jar
+COPY --from=build /app/build/libs/app.jar .
 
 EXPOSE 8080
 
