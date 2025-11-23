@@ -31,12 +31,12 @@ app:
   upload:
     dir: ./uploads
 
-resilience4j.ratelimiter:
-  instances:
-    myApiLimiter:
-      limitForPeriod: 40                    # Number of requests allowed in the period
-      limitRefreshPeriod: 1s                # The time period
-      timeoutDuration: 0                    # How long to wait for permission (0 = fail fast)
+# resilience4j.ratelimiter:
+#   instances:
+#     myApiLimiter:
+#       limitForPeriod: 40                    # Number of requests allowed in the period
+#       limitRefreshPeriod: 1s                # The time period
+#       timeoutDuration: 0                    # How long to wait for permission (0 = fail fast)
 
   
 

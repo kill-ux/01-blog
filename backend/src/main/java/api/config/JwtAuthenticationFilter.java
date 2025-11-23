@@ -1,7 +1,6 @@
 package api.config;
 
 import java.io.IOException;
-
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +13,9 @@ import org.springframework.util.AntPathMatcher;
 
 import api.model.user.User;
 import api.service.JwtService;
+import io.github.resilience4j.ratelimiter.RateLimiter;
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,22 +26,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final HandlerExceptionResolver handlerExceptionResolver;
-    // Inside public class JwtAuthenticationFilter ...
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    public RateLimiterRegistry rateLimiterRegistry;
+
+    public RateLimiter isAllowedForUser(String IP) {
+        return rateLimiterRegistry.rateLimiter(IP);
+    }
 
     public JwtAuthenticationFilter(
             HandlerExceptionResolver handlerExceptionResolver,
             JwtService jwtService,
-            UserDetailsService userDetailsService) {
+            UserDetailsService userDetailsService,
+            RateLimiterRegistry rateLimiterRegistry) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
         this.handlerExceptionResolver = handlerExceptionResolver;
+        this.rateLimiterRegistry = rateLimiterRegistry;
     }
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        // This will return 'true' for public paths, skipping the filter
         return pathMatcher.match("/api/auth/**", path) ||
                 pathMatcher.match("/api/images/**", path) ||
                 pathMatcher.match("/api/ws/**", path);
@@ -52,6 +59,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         try {
+
+            var userLimiter = isAllowedForUser(request.getRemoteAddr());
+            if (!userLimiter.acquirePermission()) {
+                throw RequestNotPermitted.createRequestNotPermitted(userLimiter);
+            }
 
             final String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {

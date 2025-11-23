@@ -1,6 +1,10 @@
 
 package api.config;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +26,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import api.repository.UserRepository;
 import api.service.JwtService;
+import io.github.resilience4j.ratelimiter.RateLimiterConfig;
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 
 @EnableMethodSecurity
 @Configuration
@@ -57,9 +63,16 @@ public class SecurityConfig {
 
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter(UserDetailsService userDetailsService) {
-        return new JwtAuthenticationFilter(handlerExceptionResolver, jwtService, userDetailsService);
-    }
+        RateLimiterConfig customConfig = RateLimiterConfig.custom()
+                .limitForPeriod(10)
+                .limitRefreshPeriod(Duration.ofSeconds(10)) 
+                .timeoutDuration(Duration.ZERO)
+                .build();
 
+        RateLimiterRegistry registry = RateLimiterRegistry.of(customConfig);
+        return new JwtAuthenticationFilter(handlerExceptionResolver, jwtService, userDetailsService,
+                registry);
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
