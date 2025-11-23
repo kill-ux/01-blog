@@ -60,10 +60,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
 
-            var userLimiter = isAllowedForUser(request.getRemoteAddr());
-            if (!userLimiter.acquirePermission()) {
-                throw RequestNotPermitted.createRequestNotPermitted(userLimiter);
-            }
+            // if (custemShouldNotFilter(request)) {
+            //     filterChain.doFilter(request, response);
+            //     return;
+            // }
 
             final String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -72,6 +72,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (nickname != null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(nickname);
+
+                    var userLimiter = isAllowedForUser(userDetails.getUsername());
+                    if (!userLimiter.acquirePermission()) {
+                        throw RequestNotPermitted.createRequestNotPermitted(userLimiter);
+                    }
 
                     if (((User) userDetails).isBannedUntil()) {
                         throw new LockedException(String.format("Account is banned"));

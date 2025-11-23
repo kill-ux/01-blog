@@ -1,12 +1,13 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AuthState, SigninCredentials, SignupCredentials, User } from '../models/model';
 import { environment } from '../../../../environments/environment';
 import { UserService } from '../../user/services/user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthService {
 
     public currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
+    public snackBar = inject(MatSnackBar);
 
     constructor(
         private http: HttpClient,
@@ -96,7 +98,9 @@ export class AuthService {
                     this.currentUserSubject.next(data.user)
                 },
                 error: err => {
-                    this.logout()
+                    this.snackBar.open('Failed itialize user.', "Close", {
+                        duration: 2000,
+                    });
                 }
             })
 

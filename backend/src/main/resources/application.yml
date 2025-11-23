@@ -15,12 +15,6 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
       enabled: true
-
-  ddevtools:
-    restart:
-      enabled: true
-      poll-interval: 1000
-      quiet-period: 400
 security:
   jwt:
     secret-key: ${JWT_SECRET_KEY} 
@@ -30,14 +24,3 @@ app:
     cloud-url: ${CLOUDINARY_URL}
   upload:
     dir: ./uploads
-
-# resilience4j.ratelimiter:
-#   instances:
-#     myApiLimiter:
-#       limitForPeriod: 40                    # Number of requests allowed in the period
-#       limitRefreshPeriod: 1s                # The time period
-#       timeoutDuration: 0                    # How long to wait for permission (0 = fail fast)
-
-  
-
-  

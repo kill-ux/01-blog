@@ -64,8 +64,8 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter(UserDetailsService userDetailsService) {
         RateLimiterConfig customConfig = RateLimiterConfig.custom()
-                .limitForPeriod(10)
-                .limitRefreshPeriod(Duration.ofSeconds(10)) 
+                .limitForPeriod(40)
+                .limitRefreshPeriod(Duration.ofSeconds(1)) 
                 .timeoutDuration(Duration.ZERO)
                 .build();
 

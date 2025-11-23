@@ -19,7 +19,6 @@ services:
         build:
             context: ./backend
             network: host
-        # network_mode: host
         container_name: spring-boot-app
         environment:
 
@@ -37,7 +36,7 @@ services:
           - "8080:8080"
         depends_on:
             - postgres
-        volumes: # <-- 2. ADD THIS MAPPING
+        volumes: 
             - app_uploads:/app/uploads
         
 
@@ -54,3 +53,4 @@ services:
 volumes:
     postgres_data:
     app_uploads:
+

@@ -13,7 +13,7 @@ export class AdminService {
 	constructor(private http: HttpClient) { }
 
 	deleteUser(id: number) {
-		return this.http.delete(`${this.apiUrl}/admin/delete`, { body: { userId: id }, responseType: 'text' })
+		return this.http.delete(`${this.apiUrl}/admin/delete`, { body: { userId: id }, responseType: 'text' as 'json' })
 	}
 
 	banUser(id: number) {
