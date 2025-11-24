@@ -134,7 +134,7 @@
     justify-content: space-between;
     /* width: 150px; */
     margin-inline: 10px;
-    background-color: var(--bg-hover);
+    /* background-color: var(--bg-hover); */
     padding: 3px;
     border-radius: 2px;
 }
@@ -205,7 +205,7 @@
 .user-info {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .user-info svg {
