@@ -1,5 +1,4 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Injectable, signal } from "@angular/core";
 
 export type Theme = 'light' | 'dark';
 
@@ -15,12 +14,8 @@ const themesCode = {
     providedIn: 'root'
 })
 export class ThemeService {
-    private currentThemeSubject: BehaviorSubject<Theme>;
-    public currentTheme$: Observable<Theme>;
-
+    currentTheme = signal<Theme>('light');
     constructor() {
-        this.currentThemeSubject = new BehaviorSubject<Theme>('light')
-        this.currentTheme$ = this.currentThemeSubject.asObservable()
         this.initializeTheme()
     }
 
@@ -30,27 +25,12 @@ export class ThemeService {
         const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light')
 
         this.setTheme(initialTheme)
-        this.watchSystemTheme();
     }
 
     setTheme(theme: Theme) {
-        this.currentThemeSubject.next(theme)
+        this.currentTheme.set(theme);
         this.applyTheme(theme);
-
-        // if (theme === 'light') {
-        //     localStorage.removeItem('theme'); // Remove to use system preference
-        // } else {
         localStorage.setItem('theme', theme);
-        // }
-    }
-
-    watchSystemTheme() {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", (e) => {
-            if (!localStorage.getItem('theme')) {
-                const newTheme = e.matches ? 'dark' : 'light';
-                this.setTheme(newTheme);
-            }
-        })
     }
 
     applyTheme(theme: Theme) {
@@ -77,11 +57,7 @@ export class ThemeService {
     }
 
     toggleTheme(): void {
-        const newTheme = this.currentThemeSubject.value === 'light' ? 'dark' : 'light';
+        const newTheme = this.currentTheme() === 'light' ? 'dark' : 'light';
         this.setTheme(newTheme);
-    }
-
-    getCurrentTheme(): Theme {
-        return this.currentThemeSubject.value;
     }
 }

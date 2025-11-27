@@ -8,32 +8,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './theme-toggle.html',
   styleUrl: './theme-toggle.css'
 })
-export class ThemeToggle implements OnInit, OnDestroy {
-  currentTheme = signal<Theme>('light');
-  private themeSubscription: Subscription | null = null;
+export class ThemeToggle {
   themeService = inject(ThemeService)
-  
-
-  ngOnInit(): void {
-    this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
-      this.currentTheme.set(theme);
-    });
-  }
-
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
-
-  setTheme(theme: Theme): void {
-    this.themeService.setTheme(theme);
-  }
-
-  ngOnDestroy(): void {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
-  }
-
-
 }

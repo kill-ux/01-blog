@@ -2,7 +2,6 @@ import { Routes } from "@angular/router";
 import { Signin } from "./signin/signin";
 import { Signup } from "./signup/signup";
 import { NotFound } from "../../errors/not-found/not-found";
-import { Internal } from "../../errors/internal/internal";
 
 export const authRoutes: Routes = [
     {

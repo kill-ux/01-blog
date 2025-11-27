@@ -1,6 +1,6 @@
 
 <div class="d-l">
-    @if(currentTheme() == "light") {
+    @if(themeService.currentTheme() == "light") {
     <svg (click)="toggleTheme()" width="20" height="20" viewBox="0 0 20 20" class="fill-current text-icon hover:text-current-taxonomy dark-icon"
         >
         <path d="M14 6H6V14H14V6Z"></path>

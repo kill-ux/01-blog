@@ -14,26 +14,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AuthService {
     private tokenKey: string = "token";
-    public apiUrl;
+    public apiUrl = environment.API_URL;
 
     public currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
     public snackBar = inject(MatSnackBar);
-
-    constructor(
-        private http: HttpClient,
-        private router: Router,
-        private userService: UserService
-    ) {
-        this.apiUrl = environment.API_URL
-    }
+    private http = inject(HttpClient)
+    private router = inject(Router)
+    private userService = inject(UserService)
 
     initialize(): void {
         this.initializeUserFromToken();
     }
 
-    signin(credentials: SigninCredentials): Observable<{ token: string }> {
-        console.log("hhhhhhhh",this.apiUrl)
+    signin(credentials: SigninCredentials) {
         return this.http.post<{ token: string }>(`${this.apiUrl}/auth/login`, credentials)
             .pipe(
                 tap(response => {
@@ -43,7 +37,7 @@ export class AuthService {
             );
     }
 
-    signup(credentials: SignupCredentials): Observable<AuthState> {
+    signup(credentials: SignupCredentials) {
         return this.http.post<AuthState>(`${this.apiUrl}/auth/signup`, credentials);
     }
 
@@ -83,13 +77,13 @@ export class AuthService {
         return this.hasRole('ROLE_ADMIN');
     }
 
-    hasRole(role: string): boolean {
+    hasRole(role: string) {
         const user = this.currentUser;
         return user?.role == role || false;
     }
 
     // Private methods
-    private initializeUserFromToken(): void {
+    private initializeUserFromToken() {
         const token = this.getAuthToken();
         if (token && !this.isTokenExpired(token)) {
             const id = this.getUserIdFromToken(token)
@@ -107,7 +101,7 @@ export class AuthService {
         }
     }
 
-    private setUserFromToken(token: string): void {
+    private setUserFromToken(token: string) {
         try {
             const decoded: any = jwtDecode(token);
             const user: User = {
@@ -141,7 +135,7 @@ export class AuthService {
         }
     }
 
-    private isTokenExpired(token: string): boolean {
+    private isTokenExpired(token: string) {
         try {
             const decoded: any = jwtDecode(token);
             return Date.now() >= decoded.exp * 1000;

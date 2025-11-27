@@ -23,9 +23,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, FormsModule, MatFormFieldModule, MatInputModule],
 	templateUrl: './blogs.html',
 	styleUrl: './blogs.css',
-	host: {
-		'[class.my-custom-class]': 'true' // Static class
-	}
 })
 export class Blogs implements OnInit, OnChanges {
 	// private
@@ -191,5 +188,3 @@ export class Blogs implements OnInit, OnChanges {
 	}
 
 }
-
-// const ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'style']

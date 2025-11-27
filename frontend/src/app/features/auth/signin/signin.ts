@@ -45,9 +45,6 @@ export class Signin {
 				},
 				error: (err) => {
 					 const message = err.error.error ? err.error.error : "Login faild"
-					// if (err.status == 423) {
-					// 	message += ` ${err.error.error}`
-					// }
 					this.snackBar.open(message, "Close", {
 						duration: 2000,
 					});

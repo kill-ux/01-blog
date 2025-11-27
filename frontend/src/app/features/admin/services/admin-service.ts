@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthState, User } from '../../auth/models/model';
-import { BlogResponce, Notification, NotificationResponce, Report } from '../../blog/model/model';
+import { inject, Injectable } from '@angular/core';
+import { Report } from '../../blog/model/model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -9,8 +8,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class AdminService {
 	private apiUrl = environment.API_URL
-
-	constructor(private http: HttpClient) { }
+    private http = inject(HttpClient)
 
 	deleteUser(id: number) {
 		return this.http.delete(`${this.apiUrl}/admin/delete`, { body: { userId: id }, responseType: 'text' as 'json' })
