@@ -131,7 +131,7 @@
                 </form>
 
                 @for (item of (this.blog?.children || []); track item.id) {
-                <app-child-blog (emitReport)="EmmitReport($event)" [thread]="2" [child]="item"></app-child-blog>
+                <app-child-blog (emitReport)="EmmitReport($event)" [thread]="2" [child]="item" ></app-child-blog>
                 @if (lastChild == item.id) {
                 <div #loadTrigger></div>
                 @defer (on viewport(loadTrigger),) {

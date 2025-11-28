@@ -217,7 +217,7 @@
 
 <div [className]="this.thread != null && this.thread != 0 ? 'replays' : ''">
     @for (item of (this.child.children); track item.id) {
-    <app-child-blog (emitReport)="ReportBlog($event)" [thread]="this.thread != null && this.thread != 0 ? this.thread-1 : null"
+    <app-child-blog (emitReport)="ReportBlog($event)" (deleteChild)="DeleteChildFrom($event)" [thread]="this.thread != null && this.thread != 0 ? this.thread-1 : null"
         [child]="item"></app-child-blog>
     @if (lastChild == item.id && this.child.childrenCount > this.child.children.length) {
     <div class="fle" (click)="loadMoreChildren()"><span>Load More</span> <svg width="16" height="20" viewBox="0 0 20 20"

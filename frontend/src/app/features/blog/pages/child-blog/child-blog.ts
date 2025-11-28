@@ -16,190 +16,202 @@ import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-	selector: 'app-child-blog',
-	imports: [DatePipe, ReactiveFormsModule, MatButtonModule, MatMenuModule, MatIcon, MatFormField, MatLabel, MatInputModule],
-	templateUrl: './child-blog.html',
-	styleUrl: './child-blog.css'
+    selector: 'app-child-blog',
+    imports: [DatePipe, ReactiveFormsModule, MatButtonModule, MatMenuModule, MatIcon, MatFormField, MatLabel, MatInputModule],
+    templateUrl: './child-blog.html',
+    styleUrl: './child-blog.css'
 })
 export class ChildBlog implements OnInit {
-	formCommend: FormGroup
-	@Input() child: BlogResponce | null = null;
-	@Input() thread: number | null = null
+    formCommend: FormGroup
+    @Input() child: BlogResponce | null = null;
+    @Input() thread: number | null = null
 
 
-	emitReport = output<dataReport>()
+    emitReport = output<dataReport>()
+    deleteChild = output<number>()
 
-	apiUrl = environment.API_URL
+    apiUrl = environment.API_URL
 
-	hidden = false
-	reply = false
-	edit = false
-	isLoading = false
-	lastChild = 0;
+    hidden = false
+    reply = false
+    edit = false
+    isLoading = false
+    lastChild = 0;
 
-	public authService = inject(AuthService)
+    public authService = inject(AuthService)
 
-	constructor(private blogService: BlogService, private fb: FormBuilder, private router: Router, public dialog: MatDialog) {
-		this.formCommend = fb.group({
-			description: ['', Validators.required],
-			parent: [0]
-		})
-	}
+    constructor(private blogService: BlogService, private fb: FormBuilder, private router: Router, public dialog: MatDialog) {
+        this.formCommend = fb.group({
+            description: ['', Validators.required],
+            parent: [0]
+        })
+    }
 
-	ngOnInit(): void {
-		if (this.child) {
-			this.child.children = []
-		}
-	}
+    ngOnInit(): void {
+        if (this.child) {
+            this.child.children = []
+        }
+    }
 
-	toggleLike(blogResponce: BlogResponce) {
-		this.blogService.toggleLike(blogResponce).subscribe({
-			next: res => {
-				blogResponce.like = res.like == 1
-				blogResponce.likes += res.like;
-			},
-			error: err => {
-				console.log(err)
-			}
-		})
-	}
+    toggleLike(blogResponce: BlogResponce) {
+        this.blogService.toggleLike(blogResponce).subscribe({
+            next: res => {
+                blogResponce.like = res.like == 1
+                blogResponce.likes += res.like;
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
 
-	submitComment(id?: number) {
-		this.formCommend.markAllAsTouched();
-		if (this.formCommend.valid) {
-			if (this.isLoading) return
-			this.isLoading = true
-			let comment: any = { description: this.formCommend.value.description, parent: id }
-			let obs;
-			if (this.edit && this.child) {
-				obs = this.blogService.updateBlog(comment, this.child.id.toString())
-			} else {
-				obs = this.blogService.saveBlog(comment)
-			}
-			obs.subscribe({
-				next: (res) => {
-					if (this.edit) {
-						this.child = res
-						this.child.children = []
-						this.edit = false
-					} else if (this.child) {
-						this.child.children = [res, ...this.child.children]
-						this.child.childrenCount++
-						this.formCommend.reset()
-					}
-					this.isLoading = false
-				},
-				error: (err) => {
-					console.log(err)
-					this.isLoading = false
-				}
-			})
-		}
-	}
+    DeleteChildFrom(id: number) {
+        console.log("hello")
+        if (this.child) {
+            this.child.children = this.child.children.filter(ch => ch.id != id)
+            this.child.childrenCount--
+        }
+    }
 
-	onKeyDown(e: KeyboardEvent, btn: HTMLButtonElement) {
-		if (!e.shiftKey && e.key == "Enter") {
-			btn.click()
-		}
-	}
+    submitComment(id?: number) {
+        this.formCommend.markAllAsTouched();
+        if (this.formCommend.valid) {
+            if (this.isLoading) return
+            this.isLoading = true
+            let comment: any = { description: this.formCommend.value.description, parent: id }
+            let obs;
+            if (this.edit && this.child) {
+                obs = this.blogService.updateBlog(comment, this.child.id.toString())
+            } else {
+                obs = this.blogService.saveBlog(comment)
+            }
+            obs.subscribe({
+                next: (res) => {
+                    if (this.edit) {
+                        this.child = res
+                        this.child.children = []
+                        this.edit = false
+                    } else if (this.child) {
+                        this.child.children = [res, ...this.child.children]
+                        this.child.childrenCount++
+                    }
+                    this.formCommend.reset()
+                    this.isLoading = false
+                },
+                error: (err) => {
+                    console.log(err)
+                    this.isLoading = false
+                }
+            })
+        }
+    }
 
-	updateParent(p: { childrenCount: number }) {
-		if (this.child) {
-			this.child.childrenCount = p.childrenCount
-		}
-	}
+    onKeyDown(e: KeyboardEvent, btn: HTMLButtonElement) {
+        if (!e.shiftKey && e.key == "Enter") {
+            btn.click()
+        }
+    }
 
-	showReply(toggle?: boolean) {
-		if (this.child?.children.length == 0) {
-			this.hidden = true
-			this.getBlogChildren(0)
-		} else if (toggle == undefined) {
-			this.hidden = !this.hidden
-			if (this.hidden == false) {
-				this.reply = false
-			}
-		} else {
-			this.hidden = true
-		}
-	}
+    updateParent(p: { childrenCount: number }) {
+        if (this.child) {
+            this.child.childrenCount = p.childrenCount
+        }
+    }
 
-	toggelReply() {
-		this.hidden = !this.hidden
-	}
+    showReply(toggle?: boolean) {
+        if (this.child?.children.length == 0) {
+            this.hidden = true
+            this.getBlogChildren(0)
+        } else if (toggle == undefined) {
+            this.hidden = !this.hidden
+            if (this.hidden == false) {
+                this.reply = false
+            }
+        } else {
+            this.hidden = true
+        }
+    }
 
-	getBlogChildren(cursor: number) {
-		if (this.child) {
-			if (this.isLoading) return;
-			this.isLoading = true;
-			this.blogService.getBlogChildren(this.child.id, cursor).subscribe({
-				next: (res) => {
-					if (this.child && res.children.length > 0) {
-						res.children = res.children.map(child => {
-							if (child) {
-								child.parent = this.child
-							}
-							return child
-						})
-						this.child.children = [...this.child.children, ...res.children]
-						this.lastChild = res.children[res.children.length - 1].id
-					} else {
-						this.lastChild = 0;
-					}
-					this.isLoading = false;
-				},
-				error: (err) => {
-					console.log(err)
-					this.isLoading = false;
-				}
-			})
-		}
+    toggelReply() {
+        this.hidden = !this.hidden
+    }
 
-	}
+    getBlogChildren(cursor: number) {
+        if (this.child) {
+            if (this.isLoading) return;
+            this.isLoading = true;
+            this.blogService.getBlogChildren(this.child.id, cursor).subscribe({
+                next: (res) => {
+                    if (this.child && res.children.length > 0) {
+                        res.children = res.children.map(child => {
+                            if (child) {
+                                child.parent = this.child
+                            }
+                            return child
+                        })
+                        this.child.children = [...this.child.children, ...res.children]
+                        this.lastChild = res.children[res.children.length - 1].id
+                    } else {
+                        this.lastChild = 0;
+                    }
+                    this.isLoading = false;
+                },
+                error: (err) => {
+                    console.log(err)
+                    this.isLoading = false;
+                }
+            })
+        }
 
-	DeleteBlog(id: number) {
-		this.openConfirmDialog(() => {
-			this.blogService.DeleteBlog(id).subscribe({
-				next: res => {
-					this.child = null
-				},
-				error: err => {
-					console.log(err)
-				}
-			})
-		})
-	}
+    }
 
-	EditBlog(id: number) {
-		this.edit = true
-		this.formCommend.patchValue({ description: this.child?.description })
-	}
+    DeleteBlog(id: number) {
+        this.openConfirmDialog(() => {
+            this.blogService.DeleteBlog(id).subscribe({
+                next: res => {
+                    if (this.child) {
+                        this.deleteChild.emit(this.child?.id)
+                        this.child = null;
+                    }
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+        })
+    }
 
-	changeReply() {
-		this.reply = !this.reply
-	}
+    EditBlog(id: number) {
+        this.edit = true
+        this.formCommend.patchValue({ description: this.child?.description })
+    }
+
+    changeReply() {
+        this.reply = !this.reply
+    }
 
 
-	loadMoreChildren() {
-		if (this.lastChild != 0 && !this.isLoading) {
-			this.getBlogChildren(this.lastChild);
-		}
-	}
+    loadMoreChildren() {
+        if (this.lastChild != 0 && !this.isLoading) {
+            this.getBlogChildren(this.lastChild);
+        }
+    }
 
-	openBlog(id: number) {
-		this.router.navigate(["blog", id])
-	}
+    openBlog(id: number) {
+        this.router.navigate(["blog", id])
+    }
 
-	ReportBlog(data: dataReport) {
-		this.emitReport.emit(data)
-	}
+    ReportBlog(data: dataReport) {
+        this.emitReport.emit(data)
+    }
 
-	openConfirmDialog(callback: (() => void)): void {
-		const dialogRef = this.dialog.open(ConfirmDialog);
+    openConfirmDialog(callback: (() => void)): void {
+        const dialogRef = this.dialog.open(ConfirmDialog);
 
-		dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				callback()
-			}
-		});
-	}
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                callback()
+            }
+        });
+    }
 }
