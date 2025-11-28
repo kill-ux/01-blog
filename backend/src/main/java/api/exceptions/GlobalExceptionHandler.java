@@ -44,14 +44,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Map.of("error", ex.getReason()), ex.getStatusCode());
     }
 
-    @ExceptionHandler({ BadCredentialsException.class })
+    @ExceptionHandler({ BadCredentialsException.class , AuthenticationException.class})
     public ResponseEntity<Map<String, String>> handleBadCredentials(Exception ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @ExceptionHandler({ AuthenticationException.class, AccessDeniedException.class })
+    @ExceptionHandler({  AccessDeniedException.class })
     public ResponseEntity<Map<String, String>> handleDisabledException(Exception ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    @ExceptionHandler({ JwtException.class }) // For invalid JWT signature
+    @ExceptionHandler({ JwtException.class })
     public ResponseEntity<Map<String, String>> handleSignatureException(JwtException ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", "Invalid JWT");
