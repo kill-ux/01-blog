@@ -8,5 +8,4 @@ import { MatDialogRef, MatDialogClose } from '@angular/material/dialog';
   styleUrl: './confirm-dialog.css',
 })
 export class ConfirmDialog {
-  constructor(public dialogRef: MatDialogRef<ConfirmDialog>) { }
 }
