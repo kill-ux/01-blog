@@ -41,12 +41,12 @@ public class Blog {
 
     private String title;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent",  cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Blog> blogs = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
