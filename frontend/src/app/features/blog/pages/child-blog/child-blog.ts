@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, output, Output } from '@angular/core';
+import { Component, inject, Input, OnInit, output } from '@angular/core';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 import { BlogService } from '../../services/blog-service';

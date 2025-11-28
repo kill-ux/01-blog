@@ -1,4 +1,4 @@
-import { Component, input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { Router } from '@angular/router';
 import { MatMenuModule } from "@angular/material/menu";
@@ -27,11 +27,10 @@ export class Notifications implements OnInit, OnDestroy {
 	connectionStatus = signal<string>('disconnected');
 
 	apiUrl = environment.API_URL
-
-
-	constructor(public authService: AuthService, private userService: UserService, private router: Router, private websocketService: WebSocketApi) {
-	}
-
+    authService = inject(AuthService)
+    userService = inject(UserService)
+    router = inject(Router)
+    websocketService = inject(WebSocketApi)
 
 	ngOnInit(): void {
 		this.getNotifications()

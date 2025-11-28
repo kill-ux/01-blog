@@ -137,7 +137,7 @@ public class BlogService {
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
         }
-        page = this.blogRepository.findByParentIdAndIdLessThan(blogId, cursor, pageable);
+        page = this.blogRepository.findByParentIdAndIdLessThanAndHiddenFalse(blogId, cursor, pageable);
 
         ChildrenResponse children = new ChildrenResponse();
         children.setChildren(page.stream().map(blog -> new BlogResponse(blog, false, user.getId())).toList());

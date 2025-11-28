@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 // import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-import { Notification } from '../../blog/model/model'; // Assuming NotificationResponce is here
-import { AuthService } from '../../auth/services/auth-api';
+import { Notification } from '../../blog/model/model';
 import { Subject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
@@ -10,7 +9,6 @@ import { environment } from '../../../../environments/environment';
 	providedIn: 'root'
 })
 export class WebSocketApi {
-	// private authService = inject(AuthService);
 	stompClient: Client | null = null;
 	private notificationSubject = new Subject<Notification>();
 	public notification$ = this.notificationSubject.asObservable();

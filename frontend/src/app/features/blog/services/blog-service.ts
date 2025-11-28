@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { BlogRequest, BlogResponce, Report } from '../model/model';
 
@@ -8,7 +8,7 @@ import { BlogRequest, BlogResponce, Report } from '../model/model';
 })
 export class BlogService {
 	private API_URL = environment.API_URL;
-	constructor(private http: HttpClient) { }
+    private http = inject(HttpClient)
 
 	saveBlog(blogRequest: BlogRequest) {
 		return this.http.post<BlogResponce>(`${this.API_URL}/blogs/store`, blogRequest)

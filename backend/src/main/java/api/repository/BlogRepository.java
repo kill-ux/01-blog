@@ -21,7 +21,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     Page<Blog> findByUserIdAndParentIsNullAndIdLessThanAndHiddenFalse(Long userId, long cursor, Pageable pageable);
 
-    Page<Blog> findByParentIdAndIdLessThan(Long parentId, long cursor, Pageable pageable);
+    Page<Blog> findByParentIdAndIdLessThanAndHiddenFalse(Long parentId, long cursor, Pageable pageable);
 
     long countByParentId(Long parentId);
 }

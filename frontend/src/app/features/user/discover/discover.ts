@@ -22,14 +22,12 @@ export class Discover implements OnInit {
 	// setSubscribers = output<number>()
 	cursor = 0
 	snackBar = inject(MatSnackBar)
+    userService = inject(UserService)
+    router = inject(Router)
 
 	apiUrl = environment.API_URL
 
 	private isLoading = false;
-
-	constructor(private userService: UserService, private router: Router) {
-
-	}
 
 	ngOnInit(): void {
 		if (this.cursor == 0) {

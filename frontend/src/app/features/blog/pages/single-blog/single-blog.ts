@@ -1,11 +1,11 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BlogService } from '../../services/blog-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogResponce } from '../../model/model';
 import { DatePipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,6 @@ import { AuthService } from '../../../auth/services/auth-api';
 import { ChildBlog } from "../child-blog/child-blog";
 import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog';
 import { MatDialog } from '@angular/material/dialog';
