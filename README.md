@@ -37,13 +37,13 @@ docker-compose up --build
 if you don't have docker you can tab (Ctr+shift+P) check "Tasks: Run task" and "run all"
 
 #### Prerequisites
--  Java, Node js
+-  Java, Node js (npm), ng
 
 # Other Method Manual
 
 ## Quick Start
 1. Backend: `cd backend && ./gradlew bootRun`
-2. Frontend: `cd frontend && ng serve`
+2. Frontend: `cd frontend && npm i && npm i -g @angular/cli && ng serve`
 3. Open in browser: `http://localhost:4200`
 
 ## Usage
