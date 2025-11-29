@@ -148,7 +148,9 @@ public class BlogService {
     @Transactional
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
-        updateBlogEntity(blog, blogRequest);
+        blog.setDescription(blogRequest.description());
+        blog.setTitle(blogRequest.title());
+        blog.setUpdatedAt(LocalDateTime.now());
         return new BlogResponse(this.blogRepository.save(blog), blog.getUser().getId());
     }
 
