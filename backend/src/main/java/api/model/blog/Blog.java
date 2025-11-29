@@ -46,10 +46,10 @@ public class Blog {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToMany(mappedBy = "parent",  cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "parent") // ,  cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     private List<Blog> blogs = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY) // cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}
     @JoinColumn(name = "parent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Blog parent;
