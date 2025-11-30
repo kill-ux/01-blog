@@ -122,12 +122,14 @@ public class BlogService {
 
     @Transactional
     public void deleteBlog(long blogId) {
-        Blog blog = this.blogRepository.findById(blogId).get();
-        this.reportRepository.findByBlogId(blog.getId()).forEach(report -> {
+        this.reportRepository.findByBlogId(blogId).forEach(report -> {
             report.setBlogId(0L);
             this.reportRepository.save(report);
         });
-        this.blogRepository.deleteById(blog.getId());
+
+        Blog blog = blogRepository.findById(blogId)
+        .orElseThrow(() -> new RuntimeException("Blog not found"));
+        this.blogRepository.delete(blog);
     }
 
     public ChildrenResponse getBlogChildren(long blogId, long cursor) {
@@ -145,13 +147,14 @@ public class BlogService {
         return children;
     }
 
-    @Transactional
+    // @Transactional
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
         blog.setDescription(blogRequest.description());
         blog.setTitle(blogRequest.title());
         blog.setUpdatedAt(LocalDateTime.now());
-        return new BlogResponse(this.blogRepository.save(blog), blog.getUser().getId());
+        Blog savedBlog = this.blogRepository.save(blog);
+        return new BlogResponse(savedBlog, blog.getUser().getId());
     }
 
     public boolean hideBlog(long blogId) {
@@ -208,3 +211,4 @@ public class BlogService {
     }
 
 }
+

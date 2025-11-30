@@ -41,15 +41,15 @@ public class Blog {
 
     private String title;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToMany(mappedBy = "parent") // ,  cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Blog> blogs = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY) // cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "parent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Blog parent;
@@ -60,17 +60,15 @@ public class Blog {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    // @JoinTable(name = "likes",
-    //         // CORRECT: joinColumns points to the current entity (Blog)
-    //         joinColumns = @JoinColumn(name = "blog_id"),
-    //         // CORRECT: inverseJoinColumns points to the target entity (User)
-    //         inverseJoinColumns = @JoinColumn(name = "user_id"))
-    // likes
-    @OneToMany(mappedBy = "blog")
-    private List<Like> Likes = new ArrayList<>();
+    // @OneToMany(mappedBy = "blog")
+    // private List<Like> Likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blog")
-    private List<Notification> notifications;
+    // @OneToMany(mappedBy = "blog")
+    // private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Notification> notifications = new ArrayList<>();
 }
