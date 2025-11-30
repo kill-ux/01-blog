@@ -7,7 +7,7 @@
     <mat-card class="signin-card">
         <mat-card-header class="signin-header">
             <mat-card-title class="signin-title">Hi there!</mat-card-title>
-    
+
             <mat-card-subtitle class="signin-subtitle">Sign in to your account</mat-card-subtitle>
         </mat-card-header>
 
@@ -35,7 +35,7 @@
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Password</mat-label>
                     <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
-                        placeholder="Enter your password" autocomplete="current-password">
+                        placeholder="Enter your password">
                     <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" >
                         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>

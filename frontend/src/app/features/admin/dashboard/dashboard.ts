@@ -15,6 +15,7 @@ import { Report } from '../../blog/model/model';
 import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../layouts/confirm-dialog/confirm-dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-dashboard',
@@ -37,6 +38,7 @@ export class Dashboard implements OnInit {
     displayedColumns: string[] = ['id', 'nickname', 'email', 'statue', 'actions'];
     displayedColumnsReports: string[] = ['id', 'type', 'createdAt', 'reason', 'status', 'reportingUser', 'reportedUser', 'actions'];
     gitRep = false;
+    snackBar = inject(MatSnackBar)
 
     private isLoading = false;
 
@@ -135,9 +137,13 @@ export class Dashboard implements OnInit {
                         return users.filter(user => user.id != id)
                     })
                     console.log(data)
+                    this.snackBar.open("success operation", "Close", { duration: 2000 })
+
                 },
                 error: err => {
                     console.log(err)
+                    this.snackBar.open("faild operation", "Close", { duration: 2000 })
+
                 }
             })
         });
@@ -162,6 +168,7 @@ export class Dashboard implements OnInit {
                             if (userR) {
                                 userR.bannedUntil = user.bannedUntil;
                             }
+                            this.snackBar.open("success operation", "Close", { duration: 2000 })
                         }
                         return users
                     })
@@ -169,6 +176,8 @@ export class Dashboard implements OnInit {
                 },
                 error: err => {
                     console.log(err)
+                    this.snackBar.open("faild operation", "Close", { duration: 2000 })
+
                 }
             })
         });
@@ -201,12 +210,15 @@ export class Dashboard implements OnInit {
                         const report = reports.find(report => report.id == id)
                         if (report) {
                             report.status = !report.status;
+                            this.snackBar.open("success operation", "Close", { duration: 2000 })
                         }
                         return reports
                     })
                 },
                 error: err => {
                     console.log(err)
+                    this.snackBar.open("faild operation", "Close", { duration: 2000 })
+
                 }
             })
         })
@@ -233,6 +245,7 @@ export class Dashboard implements OnInit {
                             if (userR) {
                                 userR.role = user.role
                             }
+                            this.snackBar.open("success operation", "Close", { duration: 2000 })
                         }
                         return users
                     })
@@ -240,6 +253,8 @@ export class Dashboard implements OnInit {
                 },
                 error: err => {
                     console.log(err)
+                    this.snackBar.open("faild operation", "Close", { duration: 2000 })
+
                 }
             })
         })

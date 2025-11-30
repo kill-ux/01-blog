@@ -3,9 +3,9 @@
   width: 100%;
   height: 100%;
   z-index: 1;
-  font-family: Roboto, sans-serif;
   background: #000000;
   overflow: hidden;
+  font-family: "Pixelify Sans", sans-serif;
 }
 
 a {
@@ -20,7 +20,7 @@ a {
 }
 .content h1 {
   font-weight: 900;
-  font-size: 165px;
+  font-size: 200px;
   line-height: 1;
   margin-bottom: -10px;
 }

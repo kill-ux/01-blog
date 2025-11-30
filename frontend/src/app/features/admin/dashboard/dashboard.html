@@ -2,7 +2,7 @@
     <div class="container">
         <div class="analytics-pere">
             <div class="analytics">
-                <div class="posts" >
+                <div class="posts">
                     <div>
                         NUMBER OF BLOGS : <span class="num">{{countPosts()}}</span>
                     </div>
@@ -188,7 +188,7 @@
                             <th mat-header-cell *matHeaderCellDef> reporting User </th>
 
                             <td mat-cell *matCellDef="let element"> <span class="veiw-user"
-                                    [matMenuTriggerFor]="menu2">{{element.reportingUser.nickname}}</span>
+                                    [matMenuTriggerFor]=" element.reportingUser.id != this.authService.currentUser?.id ? menu2 : null">{{element.reportingUser.nickname}}</span>
                                 <mat-menu #menu2="matMenu">
                                     <button mat-menu-item (click)="openUser(element.reportingUser.id)">
                                         <mat-icon>open_in_new</mat-icon>
@@ -226,7 +226,7 @@
                         <ng-container matColumnDef="reportedUser">
                             <th mat-header-cell *matHeaderCellDef> reported User </th>
                             <td mat-cell *matCellDef="let element"> <span class="veiw-user"
-                                    [matMenuTriggerFor]="menu3">{{element.reportedUser.nickname}}</span>
+                                    [matMenuTriggerFor]=" element.reportedUser.id != this.authService.currentUser?.id ? menu3 : null">{{element.reportedUser.nickname}}</span>
                                 <mat-menu #menu3="matMenu">
                                     <button mat-menu-item (click)="openUser(element.reportedUser.id)">
                                         <mat-icon>open_in_new</mat-icon>
@@ -285,17 +285,17 @@
                                         }
                                     </button>
                                     @if (element.blogId != null) {
-                                        @if (element.blogId == 0) {
-                                            <button mat-menu-item >
-                                                <mat-icon>block</mat-icon>
-                                                <span>Blog has been deleted</span>
-                                            </button>
-                                        }@else {
-                                            <button mat-menu-item (click)="openBlog(element.blogId)">
-                                                <mat-icon>open_in_new</mat-icon>
-                                                <span>Open Blog</span>
-                                            </button>
-                                        }
+                                    @if (element.blogId == 0) {
+                                    <button mat-menu-item>
+                                        <mat-icon>block</mat-icon>
+                                        <span>Blog has been deleted</span>
+                                    </button>
+                                    }@else {
+                                    <button mat-menu-item (click)="openBlog(element.blogId)">
+                                        <mat-icon>open_in_new</mat-icon>
+                                        <span>Open Blog</span>
+                                    </button>
+                                    }
 
 
                                     }
