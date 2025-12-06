@@ -29,8 +29,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         catchError(err => {
             if (err instanceof HttpErrorResponse) {
-                if (err.status === 423 || err.status === 401 || err.status === 403) {
+                if (err.status === 423 || err.status === 401) {
                     authService.logout()
+                } else if (err.status == 403) {
+                    if (authService.currentUser) {
+                        authService.currentUser.role = "ROLE_USER";
+                        router.navigate([""])
+                    }
                 } else if (err.status == 429) {
                     snackBar.open('Too many requests. Please try again later.', "Close", {
                         duration: 2000,

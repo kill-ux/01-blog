@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import api.model.blog.Blog;
 import api.model.user.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class Like {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "blog_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Blog blog;

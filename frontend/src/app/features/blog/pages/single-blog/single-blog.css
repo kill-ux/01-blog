@@ -134,6 +134,14 @@
     border-radius: 2px;
 }
 
+
+
+@media (max-width: 400px) {
+    .media {
+        flex-direction: column;
+    }
+}
+
 .comment-description {
     /* background-color: #5a6fd8; */
     /* width: 100%; */

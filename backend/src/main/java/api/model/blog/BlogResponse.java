@@ -2,10 +2,7 @@ package api.model.blog;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import api.model.like.Like;
-import api.model.user.User;
 import api.model.user.UserResponse;
 import lombok.Data;
 

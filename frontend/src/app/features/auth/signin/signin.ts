@@ -40,7 +40,6 @@ export class Signin {
 				Validators.required,
 				Validators.minLength(1),
 				Validators.maxLength(20),
-				Validators.pattern(/^[a-zA-Z0-9_-]+$/)
 			]],
 			password: ['', Validators.required]
 		})

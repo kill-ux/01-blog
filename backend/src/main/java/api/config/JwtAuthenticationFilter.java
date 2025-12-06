@@ -44,9 +44,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.rateLimiterRegistry = rateLimiterRegistry;
     }
 
-    @Override
-    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
+    // @Override
+    protected boolean custemShouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
+        if (path == null) {
+            return false;
+        }
         return pathMatcher.match("/api/auth/**", path) ||
                 pathMatcher.match("/api/images/**", path) ||
                 pathMatcher.match("/api/ws/**", path);
@@ -60,10 +63,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
 
-            // if (custemShouldNotFilter(request)) {
-            //     filterChain.doFilter(request, response);
-            //     return;
-            // }
+            var userLimiter = isAllowedForUser(request.getRemoteAddr());
+            if (!userLimiter.acquirePermission()) {
+                throw RequestNotPermitted.createRequestNotPermitted(userLimiter);
+            }
+
+            if (custemShouldNotFilter(request)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             final String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -73,10 +81,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (nickname != null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(nickname);
 
-                    var userLimiter = isAllowedForUser(userDetails.getUsername());
-                    if (!userLimiter.acquirePermission()) {
-                        throw RequestNotPermitted.createRequestNotPermitted(userLimiter);
-                    }
+                    // var userLimiter = isAllowedForUser(userDetails.getUsername());
+                    // if (!userLimiter.acquirePermission()) {
+                    // throw RequestNotPermitted.createRequestNotPermitted(userLimiter);
+                    // }
 
                     if (((User) userDetails).isBannedUntil()) {
                         throw new LockedException(String.format("Account is banned"));

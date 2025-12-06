@@ -16,16 +16,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
  * Handles new user registration, form validation, and navigation after successful sign-up.
  */
 @Component({
-	selector: 'app-signup',
-	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon, ThemeToggle],
-	templateUrl: './signup.html',
-	styleUrl: './signup.css'
+    selector: 'app-signup',
+    imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon, ThemeToggle],
+    templateUrl: './signup.html',
+    styleUrl: './signup.css'
 })
 export class Signup {
-	myForm: FormGroup;
-	hidePassword = true;
-	isLoading = false;
-	snackBar = inject(MatSnackBar)
+    myForm: FormGroup;
+    hidePassword = true;
+    isLoading = false;
+    snackBar = inject(MatSnackBar)
 
 	/**
 	 * Constructs the Signup component.
@@ -47,26 +47,26 @@ export class Signup {
 	 * Attempts to sign up the user if the form is valid.
 	 * Navigates to the sign-in page on success, displays an error message on failure.
 	 */
-	onSubmit() {
-		if (this.myForm.valid) {
-			this.isLoading = true;
-			this.authService.signup(this.myForm.value).subscribe({
-				next: (res) => {
-					this.isLoading = false;
-					this.router.navigate(["/auth/signin"])
-				},
-				error: (err) => {
-					this.isLoading = false
-					console.log('Signup faild', err);
+    onSubmit() {
+        if (this.myForm.valid) {
+            this.isLoading = true;
+            this.authService.signup(this.myForm.value).subscribe({
+                next: (res) => {
+                    this.isLoading = false;
+                    this.router.navigate(["/auth/signin"])
+                },
+                error: (err) => {
+                    this.isLoading = false
+                    console.log('Signup faild', err);
                     const message = err.error.error ? err.error.error : "Login faild"
-					this.snackBar.open(message, "Close", {
-						duration: 2000,
-					});
-				}
+                    this.snackBar.open(message, "Close", {
+                        duration: 2000,
+                    });
+                }
 
-			})
-		}
-	}
+            })
+        }
+    }
 
 	/**
 	 * Getter for the nickname form control.
