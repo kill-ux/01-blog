@@ -1,10 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * A custom Angular pipe that transforms a date or timestamp into a human-readable "time ago" string.
+ * For example, "just now", "5m ago", "2h ago", "3d ago", etc.
+ */
 @Pipe({
   name: 'timeAgo',
 })
 export class TimeAgoPipe implements PipeTransform {
 
+  /**
+   * Transforms a given date, string, or number into a "time ago" format.
+   * @param value The input value, which can be a Date object, a date string, or a timestamp number.
+   * @returns A string representing the time elapsed since the input value.
+   */
   transform(value: Date | string | number): string {
     if (!value) return '';
 

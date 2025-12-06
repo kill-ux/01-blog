@@ -8,6 +8,10 @@ import { Notifications } from "../../features/user/notifications/notifications";
 
 import {MatSidenavModule} from '@angular/material/sidenav';
 
+/**
+ * Component for the application's navigation bar.
+ * Displays navigation links, user authentication status, theme toggle, and notifications.
+ */
 @Component({
 	selector: 'app-navbar',
 	imports: [RouterLink, MatMenu, MatMenuModule, ThemeToggle, Notifications, RouterLinkActive, MatSidenavModule],
@@ -21,18 +25,30 @@ export class Navbar {
 	
 	apiUrl = environment.API_URL;
 
+	/**
+	 * Logs out the current user by calling the authentication service.
+	 */
 	logout() {
 		this.authService.logout()
 	}
 
+	/**
+	 * Navigates to the blog creation page.
+	 */
 	createBlog() {
 		this.router.navigate(["create"])
 	}
 
+	/**
+	 * Navigates to the admin dashboard.
+	 */
 	dashboard() {
 		this.router.navigate(["dashboard"])
 	}
 
+	/**
+	 * Emits an event to toggle the mobile menu.
+	 */
 	toggleMobileMenu(){
 		this.opened.emit()
 	}

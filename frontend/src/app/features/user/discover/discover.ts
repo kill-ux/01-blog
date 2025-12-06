@@ -7,6 +7,10 @@ import { AuthService } from '../../auth/services/auth-api';
 import { environment } from '../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+ * Component for discovering and interacting with other users.
+ * Allows viewing lists of users, subscribers, and subscriptions, and managing subscriptions.
+ */
 @Component({
 	selector: 'app-discover',
 	imports: [DatePipe],
@@ -29,6 +33,9 @@ export class Discover implements OnInit {
 
 	private isLoading = false;
 
+	/**
+	 * Initializes the component and loads initial user data.
+	 */
 	ngOnInit(): void {
 		if (this.cursor == 0) {
 			this.getUsers()
@@ -36,7 +43,10 @@ export class Discover implements OnInit {
 	}
 
 
-
+	/**
+	 * Fetches a list of users, subscribers, or subscriptions based on component inputs.
+	 * Supports pagination.
+	 */
 	getUsers() {
 		if (this.isLoading) return;
 		this.isLoading = true;
@@ -69,6 +79,11 @@ export class Discover implements OnInit {
 		})
 	}
 
+	/**
+	 * Subscribes to or unsubscribes from a user.
+	 * Updates the local state and emits a change for subscriptions.
+	 * @param id The ID of the user to subscribe to/unsubscribe from.
+	 */
 	subscribe(id: number) {
 		this.userService.subscribe(id).subscribe({
 			next: res => {
@@ -100,12 +115,19 @@ export class Discover implements OnInit {
 		})
 	}
 
+	/**
+	 * Loads more users if not currently loading and more users are available.
+	 */
 	loadMoreBlogs() {
 		if (!this.isLoading && this.cursor != 0) {
 			this.getUsers()
 		}
 	}
 
+	/**
+	 * Navigates to the profile page of a specific user.
+	 * @param id The ID of the user to navigate to.
+	 */
 	navigateUser(id: number) {
 		this.router.navigate(['profile', id])
 	}

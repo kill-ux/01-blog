@@ -16,6 +16,10 @@ import api.repository.BlogRepository;
 import api.repository.ReportRepository;
 import api.repository.UserRepository;
 
+/**
+ * Service for handling user and blog reports.
+ * Provides methods for creating, retrieving, and managing reports.
+ */
 @Service
 public class ReportService {
     private final ReportRepository reportRepository;
@@ -31,6 +35,11 @@ public class ReportService {
         this.authUtils = authUtils;
     }
 
+    /**
+     * Creates a new report for a user or a blog.
+     * @param request The report request data.
+     * @return The created report.
+     */
     public ReportResponce reportUser(ReportRequestDto request) {
         User user;
         Report report = new Report();
@@ -49,6 +58,11 @@ public class ReportService {
         return new ReportResponce(this.reportRepository.save(report));
     }
 
+    /**
+     * Retrieves a paginated list of all reports.
+     * @param cursor The pagination cursor.
+     * @return A list of reports.
+     */
     public List<ReportResponce> getReports(long cursor) {
         if (cursor == 0) {
             cursor = Long.MAX_VALUE;
@@ -57,16 +71,30 @@ public class ReportService {
         return this.reportRepository.findByIdLessThan(cursor, pageable).map(ReportResponce::new).toList();
     }
 
+    /**
+     * Retrieves a list of the most reported users.
+     * @return A list of the most reported users.
+     */
     public List<MostReportedUnit> getMostReportedUsers() {
         return this.reportRepository.getMostReportedUsers();
     }
 
+    /**
+     * Changes the status of a report.
+     * @param reportId The ID of the report to update.
+     * @return The updated report.
+     */
     public ReportResponce changeStatus(long reportId) {
         Report report = this.reportRepository.findById(reportId).get();
         report.setStatus(!report.isStatus());
         return new ReportResponce(this.reportRepository.save(report));
     }
 
+    /**
+     * Retrieves a single report by its ID.
+     * @param reportId The ID of the report to retrieve.
+     * @return The requested report.
+     */
     public ReportResponce getReport(long reportId) {
         return new ReportResponce(this.reportRepository.findById(reportId).get());
     }

@@ -34,6 +34,10 @@ import api.model.user.UserResponse;
 import api.repository.UserRepository;
 import jakarta.validation.Valid;
 
+/**
+ * Service for user-related business logic.
+ * Provides methods for user registration, authentication, profile management, and social features.
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -57,10 +61,19 @@ public class UserService {
         this.blogService = blogService;
     }
 
+    /**
+     * Returns the UserRepository instance.
+     * @return The UserRepository instance.
+     */
     public UserRepository getUserRepository() {
         return this.userRepository;
     }
 
+    /**
+     * Retrieves a paginated list of all users.
+     * @param cursor The pagination cursor.
+     * @return A list of users.
+     */
     public List<UserResponse> getAllUsers(long cursor) {
         long id = this.authUtils.getAuthenticatedUser().getId();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
@@ -75,6 +88,11 @@ public class UserService {
                 .toList();
     }
 
+    /**
+     * Retrieves a user's profile by their ID.
+     * @param id The ID of the user to retrieve.
+     * @return The user's profile information.
+     */
     public UserResponse getUserById(long id) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
 
@@ -83,6 +101,12 @@ public class UserService {
                 .map(user -> new UserResponse(user, userId)).get();
     }
 
+    /**
+     * Saves a new user to the database.
+     * @param userRecord The user data for registration.
+     * @return The saved user record.
+     * @throws IllegalStateException if the email or username already exists.
+     */
     public UserRecord saveUser(@Valid UserRecord userRecord) {
 
         User user = convertToEntity(userRecord);
@@ -103,6 +127,10 @@ public class UserService {
         }
     }
 
+    /**
+     * Deletes a user by their ID.
+     * @param id The ID of the user to delete.
+     */
     public void deleteUser(long id) {
         // User user = this.userRepository.findById(id).get();
         // we need to remove all likes of this user
@@ -113,6 +141,12 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    /**
+     * Updates the current user's profile picture.
+     * @param file The image file to upload.
+     * @param ext The file extension.
+     * @return The URL of the uploaded image.
+     */
     @Transactional
     public String updateProfile(MultipartFile file, String ext) {
         long userId = this.authUtils.getAuthenticatedUser().getId();
@@ -175,6 +209,10 @@ public class UserService {
         }
     }
 
+    /**
+     * Bans or un-bans a user.
+     * @param id The ID of the user to ban/un-ban.
+     */
     // @Transactional
     public void banUser(long id) {
         User user = this.userRepository.findById(id).get();
@@ -182,6 +220,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Grants or revokes admin privileges for a user.
+     * @param id The ID of the user.
+     * @return The new role of the user.
+     */
     public String adminify(long id) {
         System.out.println(id);
         User user = this.userRepository.findById(id).get();
@@ -194,6 +237,11 @@ public class UserService {
         return user.getRole();
     }
 
+    /**
+     * Converts a UserRecord DTO to a User entity.
+     * @param userRecord The UserRecord DTO.
+     * @return The converted User entity.
+     */
     private User convertToEntity(UserRecord userRecord) {
         User user = new User();
         user.setId(userRecord.id());
@@ -209,11 +257,22 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Converts a User entity to a UserRecord DTO.
+     * @param user The User entity.
+     * @return The converted UserRecord DTO.
+     */
     private UserRecord convertToDTO(User user) {
         return new UserRecord(user.getId(), user.getNickname(), user.getEmail(), user.getPassword(), user.getRole(),
                 user.getAvatar(), user.isBannedUntil(), user.getBirthDate(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
+    /**
+     * Authenticates a user and returns a JWT token upon successful login.
+     * @param loginRequest The login credentials.
+     * @return A response containing the JWT token and expiration time.
+     * @throws BadCredentialsException if the credentials are invalid.
+     */
     public LoginResponse login(@Valid LoginRequest loginRequest) {
         try {
             // Authenticate credentials
@@ -235,6 +294,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Subscribes the current user to another user.
+     * @param subscribeRequest The request containing the ID of the user to subscribe to.
+     * @return A string indicating the operation performed ("subscribed" or "unsubscribed").
+     */
     public String subscribe(SubscribeRequest subscribeRequest) {
         long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
@@ -258,6 +322,12 @@ public class UserService {
         return operation;
     }
 
+    /**
+     * Retrieves a list of a user's subscribers.
+     * @param userId The ID of the user.
+     * @param cursor The pagination cursor.
+     * @return A list of the user's subscribers.
+     */
     public List<UserResponse> getSubscribers(long userId, long cursor) {
         long id = this.authUtils.getAuthenticatedUser().getId();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
@@ -271,6 +341,12 @@ public class UserService {
                 .toList();
     }
 
+    /**
+     * Retrieves a list of a user's subscriptions.
+     * @param userId The ID of the user.
+     * @param cursor The pagination cursor.
+     * @return A list of the user's subscriptions.
+     */
     public List<UserResponse> getSubscriptions(long userId, long cursor) {
         long id = this.authUtils.getAuthenticatedUser().getId();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");

@@ -16,6 +16,10 @@ import { TimeAgoPipe } from '../../../pipe/time-ago-pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../layouts/confirm-dialog/confirm-dialog';
 
+/**
+ * Component for the admin dashboard.
+ * Allows admins to manage users, reports, and view statistics.
+ */
 @Component({
     selector: 'app-dashboard',
     imports: [MatTabGroup, MatTab, MatTableModule, MatButtonModule, MatMenuModule, MatIcon, Blogs, TimeAgoPipe],
@@ -44,6 +48,9 @@ export class Dashboard implements OnInit {
 
     }
 
+    /**
+     * Initializes the component, fetching initial user data, number of posts, and most reported users.
+     */
     ngOnInit(): void {
         if (this.cursorUser == 0) {
             this.getUsers()
@@ -52,6 +59,10 @@ export class Dashboard implements OnInit {
         }
     }
 
+    /**
+     * Fetches reports from the server.
+     * Paginates through reports using a cursor.
+     */
     getReports() {
         if (this.isLoading) return;
         this.isLoading = true;
@@ -72,6 +83,10 @@ export class Dashboard implements OnInit {
         })
     }
 
+    /**
+     * Fetches users from the server.
+     * Paginates through users using a cursor.
+     */
     getUsers() {
         if (this.isLoading) return;
         this.isLoading = true;
@@ -91,6 +106,9 @@ export class Dashboard implements OnInit {
         })
     }
 
+    /**
+     * Fetches the total number of posts.
+     */
     getNumberOfPosts() {
         this.userService.getNumberOfPosts().subscribe({
             next: c => {
@@ -103,6 +121,9 @@ export class Dashboard implements OnInit {
         })
     }
 
+    /**
+     * Fetches the most reported users.
+     */
     getMostReportedUsers() {
         console.log("hh")
         this.userService.getMostReportedUsers().subscribe({
@@ -116,6 +137,11 @@ export class Dashboard implements OnInit {
         })
     }
 
+    /**
+     * Checks if a user is currently banned.
+     * @param bannedUntil The date until which the user is banned.
+     * @returns True if the user is currently banned, false otherwise.
+     */
     isCurrentlyBanned(bannedUntil: string | null) {
         if (!bannedUntil) {
             return false;
@@ -127,6 +153,10 @@ export class Dashboard implements OnInit {
         return now > bandDate
     }
 
+    /**
+     * Deletes a user after confirmation.
+     * @param id The ID of the user to delete.
+     */
     deleteUser(id: number) {
         this.openConfirmDialog(() => {
             this.admineService.deleteUser(id).subscribe({
@@ -143,14 +173,27 @@ export class Dashboard implements OnInit {
         });
     }
 
+    /**
+     * Navigates to a user's profile page.
+     * @param id The ID of the user.
+     */
     openUser(id: number) {
         this.router.navigate(["profile", id])
     }
 
+    /**
+     * Navigates to a blog post page.
+     * @param id The ID of the blog post.
+     */
     openBlog(id: number) {
         this.router.navigate(["blog", id])
     }
 
+    /**
+     * Bans or unbans a user after confirmation.
+     * @param id The ID of the user.
+     * @param userR Optional user object to update its banned status.
+     */
     banUser(id: number, userR?: User) {
         this.openConfirmDialog(() => {
             this.admineService.banUser(id).subscribe({
@@ -174,18 +217,28 @@ export class Dashboard implements OnInit {
         });
     }
 
+    /**
+     * Loads more users if not already loading and there are more users to load.
+     */
     loadMoreUsers() {
         if (!this.isLoading && this.cursorUser != 0) {
             this.getUsers()
         }
     }
 
+    /**
+     * Loads more reports if not already loading and there are more reports to load.
+     */
     loadMoreReports() {
         if (!this.isLoading && this.cursorReport != 0) {
             this.getReports()
         }
     }
 
+    /**
+     * Handles tab changes, fetching reports when the "Reports" tab is selected.
+     * @param event The tab change event.
+     */
     onTabChange(event: MatTabChangeEvent) {
         if (event.tab.textLabel === 'Reports' && this.cursorReport == 0 && !this.gitRep) {
             this.getReports();
@@ -193,6 +246,10 @@ export class Dashboard implements OnInit {
         }
     }
 
+    /**
+     * Reviews a report after confirmation.
+     * @param id The ID of the report to review.
+     */
     reviewReport(id: number) {
         this.openConfirmDialog(() => {
             this.admineService.reviewReport(id).subscribe({
@@ -212,6 +269,10 @@ export class Dashboard implements OnInit {
         })
     }
 
+    /**
+     * Opens a confirmation dialog.
+     * @param callback The function to execute if the user confirms.
+     */
     openConfirmDialog(callback: (() => void)): void {
         const dialogRef = this.dialog.open(ConfirmDialog);
 
@@ -222,6 +283,11 @@ export class Dashboard implements OnInit {
         });
     }
 
+    /**
+     * Grants or revokes admin privileges for a user after confirmation.
+     * @param id The ID of the user.
+     * @param userR Optional user object to update its role.
+     */
     adminify(id: number, userR?: User) {
         this.openConfirmDialog(() => {
             this.admineService.adminify(id).subscribe({

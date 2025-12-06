@@ -15,6 +15,10 @@ import { MatInputModule } from '@angular/material/input';
 import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog';
 import { MatDialog } from '@angular/material/dialog';
 
+/**
+ * Component for displaying and interacting with a child blog post (comment or reply).
+ * Supports liking, replying, editing, deleting, and reporting child blogs.
+ */
 @Component({
     selector: 'app-child-blog',
     imports: [DatePipe, ReactiveFormsModule, MatButtonModule, MatMenuModule, MatIcon, MatFormField, MatLabel, MatInputModule],
@@ -40,6 +44,14 @@ export class ChildBlog implements OnInit {
 
     public authService = inject(AuthService)
 
+    /**
+     * Constructs the ChildBlog component.
+     * Initializes the comment form with validation rules.
+     * @param blogService Service for handling blog-related API calls.
+     * @param fb FormBuilder for creating the form group.
+     * @param router Router for navigation.
+     * @param dialog MatDialog for opening confirmation dialogs.
+     */
     constructor(private blogService: BlogService, private fb: FormBuilder, private router: Router, public dialog: MatDialog) {
         this.formCommend = fb.group({
             description: ['', Validators.required],
@@ -47,12 +59,19 @@ export class ChildBlog implements OnInit {
         })
     }
 
+    /**
+     * Initializes the component.
+     */
     ngOnInit(): void {
         if (this.child) {
             this.child.children = []
         }
     }
 
+    /**
+     * Toggles the like status of a child blog post.
+     * @param blogResponce The child blog post to like/unlike.
+     */
     toggleLike(blogResponce: BlogResponce) {
         this.blogService.toggleLike(blogResponce).subscribe({
             next: res => {
@@ -65,6 +84,10 @@ export class ChildBlog implements OnInit {
         })
     }
 
+    /**
+     * Deletes a child blog post from the current list of children.
+     * @param id The ID of the child blog post to delete.
+     */
     DeleteChildFrom(id: number) {
         console.log("hello")
         if (this.child) {
@@ -73,6 +96,10 @@ export class ChildBlog implements OnInit {
         }
     }
 
+    /**
+     * Submits a comment or updates an existing child blog.
+     * @param id Optional: The ID of the parent blog for a new comment.
+     */
     submitComment(id?: number) {
         this.formCommend.markAllAsTouched();
         if (this.formCommend.valid) {
@@ -106,18 +133,32 @@ export class ChildBlog implements OnInit {
         }
     }
 
+    /**
+     * Handles keydown events on the comment input.
+     * Submits the comment if Enter is pressed without Shift.
+     * @param e KeyboardEvent.
+     * @param btn The submit button element.
+     */
     onKeyDown(e: KeyboardEvent, btn: HTMLButtonElement) {
         if (!e.shiftKey && e.key == "Enter") {
             btn.click()
         }
     }
 
+    /**
+     * Updates the children count of the current child blog.
+     * @param p An object containing the new children count.
+     */
     updateParent(p: { childrenCount: number }) {
         if (this.child) {
             this.child.childrenCount = p.childrenCount
         }
     }
 
+    /**
+     * Toggles the visibility of replies or loads initial replies if none are loaded.
+     * @param toggle Optional: Forces the reply section to be shown.
+     */
     showReply(toggle?: boolean) {
         if (this.child?.children.length == 0) {
             this.hidden = true
@@ -132,10 +173,18 @@ export class ChildBlog implements OnInit {
         }
     }
 
+    /**
+     * Toggles the reply input form visibility.
+     */
     toggelReply() {
         this.hidden = !this.hidden
     }
 
+    /**
+     * Loads children (replies) for the current blog post.
+     * Supports pagination.
+     * @param cursor The ID of the last child loaded, used for pagination.
+     */
     getBlogChildren(cursor: number) {
         if (this.child) {
             if (this.isLoading) return;
@@ -165,6 +214,11 @@ export class ChildBlog implements OnInit {
 
     }
 
+    /**
+     * Deletes the current child blog post after user confirmation.
+     * Emits an event to the parent component upon successful deletion.
+     * @param id The ID of the child blog post to delete.
+     */
     DeleteBlog(id: number) {
         this.openConfirmDialog(() => {
             this.blogService.DeleteBlog(id).subscribe({
@@ -181,30 +235,53 @@ export class ChildBlog implements OnInit {
         })
     }
 
+    /**
+     * Enables editing mode for the current child blog and populates the form.
+     * @param id The ID of the child blog to edit.
+     */
     EditBlog(id: number) {
         this.edit = true
         this.formCommend.patchValue({ description: this.child?.description })
     }
 
+    /**
+     * Toggles the reply input form visibility.
+     */
     changeReply() {
         this.reply = !this.reply
     }
 
 
+    /**
+     * Loads more children (replies) for the current blog post.
+     * Only loads if not already loading and there are more children to load.
+     */
     loadMoreChildren() {
         if (this.lastChild != 0 && !this.isLoading) {
             this.getBlogChildren(this.lastChild);
         }
     }
 
+    /**
+     * Navigates to the detailed view of a blog post.
+     * @param id The ID of the blog post to view.
+     */
     openBlog(id: number) {
         this.router.navigate(["blog", id])
     }
 
+    /**
+     * Emits a report event to the parent component.
+     * @param data The data related to the report.
+     */
     ReportBlog(data: dataReport) {
         this.emitReport.emit(data)
     }
 
+    /**
+     * Opens a confirmation dialog and executes a callback function if confirmed.
+     * @param callback The function to execute upon confirmation.
+     */
     openConfirmDialog(callback: (() => void)): void {
         const dialogRef = this.dialog.open(ConfirmDialog);
 

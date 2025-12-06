@@ -11,6 +11,10 @@ import { first, Subscription } from 'rxjs';
 import { WebSocketApi } from '../services/websocket';
 import { AuthService } from '../../auth/services/auth-api';
 
+/**
+ * Component for displaying and managing user notifications.
+ * Connects to a WebSocket for real-time notification updates.
+ */
 @Component({
 	selector: 'app-notifications',
 	imports: [MatMenuModule, TimeAgoPipe, MatButtonModule, MatBadgeModule],
@@ -32,6 +36,9 @@ export class Notifications implements OnInit, OnDestroy {
     router = inject(Router)
     websocketService = inject(WebSocketApi)
 
+	/**
+	 * Initializes the component. Fetches initial notifications and sets up WebSocket listening.
+	 */
 	ngOnInit(): void {
 		this.getNotifications()
 		this.authService.currentUser$.pipe(first(user => !!user)).subscribe((user) => {
@@ -41,6 +48,9 @@ export class Notifications implements OnInit, OnDestroy {
 		})
 	}
 
+	/**
+	 * Sets up the WebSocket connection and subscribes to real-time notification updates.
+	 */
 	private setupWebSocket(): void {
 		console.log('🔧 Setting up WebSocket listener...');
 		this.websocketService.connect()
@@ -67,7 +77,9 @@ export class Notifications implements OnInit, OnDestroy {
 		);
 	}
 
-
+	/**
+	 * Cleans up the WebSocket subscription when the component is destroyed.
+	 */
 	ngOnDestroy(): void {
 		if (this.notificationSubscription) {
 			this.notificationSubscription.unsubscribe();
@@ -75,6 +87,9 @@ export class Notifications implements OnInit, OnDestroy {
 		}
 	}
 
+	/**
+	 * Fetches notifications from the server with pagination.
+	 */
 	getNotifications() {
 		if (this.isLoading) return
 		this.isLoading = true
@@ -103,17 +118,29 @@ export class Notifications implements OnInit, OnDestroy {
 		})
 	}
 
+	/**
+	 * Loads more notifications if available and not currently loading.
+	 */
 	loadMoreNotifications() {
 		if (this.cursor != 0) {
 			this.getNotifications()
 		}
 	}
 
+	/**
+	 * Navigates to a blog post and marks the corresponding notification as read.
+	 * @param id The ID of the blog post.
+	 * @param idNot The ID of the notification.
+	 */
 	navigateToPost(id: number, idNot: number) {
 		this.markRead(idNot)
 		this.router.navigate(["blog", id])
 	}
 
+	/**
+	 * Marks a single notification as read on the server and updates the local state.
+	 * @param id The ID of the notification to mark as read.
+	 */
 	markRead(id: number) {
 		const ntfs = this.notfs()
 		if (!ntfs || ntfs.count < 1) return
@@ -139,6 +166,9 @@ export class Notifications implements OnInit, OnDestroy {
 		})
 	}
 
+	/**
+	 * Marks all notifications as read on the server and updates the local state.
+	 */
 	markAll() {
 		this.userService.markAll().subscribe({
 			next: res => {
@@ -153,6 +183,11 @@ export class Notifications implements OnInit, OnDestroy {
 		})
 	}
 
+	/**
+	 * Returns the text to display in the notification badge.
+	 * Shows '+99' if the count exceeds 99.
+	 * @returns The badge text.
+	 */
 	getBadgeText(): string {
 		let count = this.notfs()?.count;
 		if (!count) return '';

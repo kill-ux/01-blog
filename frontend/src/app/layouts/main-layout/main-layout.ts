@@ -19,7 +19,10 @@ import { CommonModule } from '@angular/common';
 
 declare var Prism: any;
 
-
+/**
+ * Component for the main application layout.
+ * This component provides a common layout including navigation, sidebar, and handles authentication state.
+ */
 @Component({
     selector: 'app-main-layout',
     imports: [RouterOutlet, MatToolbarModule, Navbar, CommonModule, RouterLink,
@@ -41,12 +44,21 @@ export class MainLayout {
     currentUser: any;
     opened = false
 
+    /**
+     * Constructs the MainLayout component.
+     * @param router The Angular Router service for navigation.
+     * @param authService The authentication service for managing user sessions.
+     */
     constructor(
         private router: Router,
         private authService: AuthService
     ) {
     }
 
+    /**
+     * Initializes the component.
+     * Calls authService.initialize() to set up authentication and highlights code blocks if Prism is available.
+     */
     ngOnInit() {
         this.authService.initialize()
         setTimeout(() => {
@@ -57,6 +69,9 @@ export class MainLayout {
         }, 0);
     }
 
+    /**
+     * Logs out the current user by calling the authentication service's logout method.
+     */
     logout() {
         this.authService.logout()
     }

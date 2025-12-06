@@ -4,6 +4,10 @@ import { Navbar } from './layouts/navbar/navbar';
 import { ThemeService } from './Theme/services/theme';
 
 
+/**
+ * Root component of the Angular application.
+ * Handles the main application layout and theme management.
+ */
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],

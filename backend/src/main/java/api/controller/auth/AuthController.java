@@ -16,6 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Controller for handling user authentication.
+ * Provides endpoints for user registration (signup) and login.
+ */
 @RestController
 @RequestMapping("/api/auth")
 @RateLimiter(name = "myApiLimiter")
@@ -26,12 +30,24 @@ public class AuthController {
         this.userService = userService;
     }
 
+    /**
+     * Registers a new user.
+     * 
+     * @param user The user data for registration.
+     * @return A response entity containing the saved user record.
+     */
     @PostMapping("/signup")
     public ResponseEntity<Map<String, UserRecord>> register(@Valid @RequestBody UserRecord user) {
         UserRecord savedUser = this.userService.saveUser(user);
         return ResponseEntity.ok(Map.of("user", savedUser));
     }
 
+    /**
+     * Authenticates a user and returns a JWT token upon successful login.
+     * 
+     * @param loginRequest The login credentials (nickname and password).
+     * @return A response entity containing the JWT token.
+     */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = userService.login(loginRequest);

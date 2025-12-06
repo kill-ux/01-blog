@@ -10,11 +10,23 @@ import com.cloudinary.Cloudinary;
 
 import jakarta.annotation.Resource;
 
+/**
+ * Service for interacting with the Cloudinary API.
+ * Provides methods for uploading files to Cloudinary.
+ */
 @Service
 public class CloudinaryService {
     @Resource
     private Cloudinary cloudinary;
 
+    /**
+     * Uploads a file to Cloudinary.
+     * @param file The multipart file to upload.
+     * @param folderName The name of the folder in Cloudinary to upload the file to.
+     * @param resourceType The type of the resource being uploaded (e.g., "image", "video").
+     * @return The secure URL of the uploaded file.
+     * @throws InternalError if the file upload fails.
+     */
     public String uploadFile(MultipartFile file, String folderName, String resourceType) {
         try {
             HashMap<Object, Object> options = new HashMap<>();

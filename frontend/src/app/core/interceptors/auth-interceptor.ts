@@ -5,6 +5,13 @@ import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+ * HTTP interceptor that automatically adds Authorization header with Bearer token to outgoing requests.
+ * Handles authentication errors by logging out user and displaying error messages.
+ * @param req The HTTP request.
+ * @param next The next handler in the interceptor chain.
+ * @returns Observable of the HTTP response.
+ */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const router = inject(Router);

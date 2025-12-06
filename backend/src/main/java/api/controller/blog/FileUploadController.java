@@ -21,9 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 import api.service.CloudinaryService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 
+/**
+ * Controller for handling file uploads.
+ * Provides an endpoint for uploading images and videos to Cloudinary.
+ */
 @RestController
 @RequestMapping("/api/upload")
-@RateLimiter(name = "myApiLimiter")
 public class FileUploadController {
 
     private CloudinaryService cloudinaryService;
@@ -34,6 +37,14 @@ public class FileUploadController {
         this.cloudinaryService = cloudinaryService;
     }
 
+    /**
+     * Uploads a file to Cloudinary.
+     * The file can be an image or a video, as determined by the file extension.
+     * 
+     * @param file The multipart file to upload.
+     * @return A response entity containing the URL of the uploaded file.
+     * @throws IllegalArgumentException if the file type is not allowed or the file has no name.
+     */
     @PostMapping
     public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = file.getOriginalFilename();

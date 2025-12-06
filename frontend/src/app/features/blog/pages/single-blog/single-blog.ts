@@ -19,6 +19,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 export type dataReport = { id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger }
 
+/**
+ * Component for displaying a single blog post and its comments.
+ * Supports viewing, liking, commenting, reporting, editing, and hiding blog posts.
+ */
 @Component({
 	selector: 'app-single-blog',
 	imports: [DatePipe, MarkdownComponent, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, ChildBlog, MatInputModule],
@@ -35,6 +39,15 @@ export class SingleBlog implements OnInit {
 	snackBar = inject(MatSnackBar)
 	public authService = inject(AuthService)
 
+	/**
+	 * Constructs the SingleBlog component.
+	 * Initializes the comment form and injects necessary services.
+	 * @param blogService Service for blog-related API calls.
+	 * @param route ActivatedRoute for accessing route parameters.
+	 * @param fb FormBuilder for creating the form group.
+	 * @param router Router for navigation.
+	 * @param dialog MatDialog for opening confirmation dialogs.
+	 */
 	constructor(private blogService: BlogService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router, public dialog: MatDialog) {
 		this.formCommend = fb.group({
 			description: ['', Validators.required],
@@ -42,6 +55,9 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	/**
+	 * Initializes the component. Fetches the blog post based on the 'id' parameter from the route.
+	 */
 	ngOnInit(): void {
 		this.route.params.subscribe(params => {
 			const id = Number(params["id"]);
@@ -53,6 +69,10 @@ export class SingleBlog implements OnInit {
 		});
 	}
 
+	/**
+	 * Toggles the like status of the current blog post.
+	 * @param blogResponce The blog post to like/unlike.
+	 */
 	toggleLike(blogResponce: BlogResponce | null) {
 		if (this.isLoading || !blogResponce) return;
 		this.isLoading = true;
@@ -73,6 +93,11 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	/**
+	 * Fetches a single blog post by its ID.
+	 * Also fetches its children (comments).
+	 * @param id The ID of the blog post to fetch.
+	 */
 	getBlog(id: number) {
 		this.blogService.getBlog(id).subscribe({
 			next: (res) => {
@@ -89,6 +114,11 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	/**
+	 * Fetches children (comments) for the current blog post.
+	 * Supports pagination using a cursor.
+	 * @param cursor The ID of the last child fetched, for pagination.
+	 */
 	getBlogChildren(cursor: number) {
 		if (this.isLoading) return;
 		this.isLoading = true;
@@ -116,12 +146,18 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	/**
+	 * Loads more children (comments) for the current blog post.
+	 */
 	loadMoreChildren() {
 		if (this.lastChild != 0 && !this.isLoading) {
 			this.getBlogChildren(this.lastChild);
 		}
 	}
 
+	/**
+	 * Submits a new comment for the current blog post.
+	 */
 	submitComment() {
 		this.formCommend.markAllAsTouched();
 		if (this.formCommend.valid && this.blog) {
@@ -149,12 +185,23 @@ export class SingleBlog implements OnInit {
 		}
 	}
 
+	/**
+	 * Handles keydown events on the comment input.
+	 * Submits the comment if Enter is pressed without Shift.
+	 * @param e KeyboardEvent.
+	 * @param btn The submit button element.
+	 */
 	onKeyDown(e: KeyboardEvent, btn: HTMLButtonElement) {
 		if (!e.shiftKey && e.key == "Enter") {
 			btn.click()
 		}
 	}
 
+	/**
+	 * Deletes the current blog post after user confirmation.
+	 * Navigates to the home page upon successful deletion.
+	 * @param id The ID of the blog post to delete.
+	 */
 	DeleteBlog(id?: number) {
 		this.openConfirmDialog(() => {
 			if (this.isLoading || !id) return;
@@ -175,10 +222,20 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	/**
+	 * Handles a report event emitted from a child component.
+	 * @param data The data related to the report, including blog ID, textarea element, and menu trigger.
+	 */
 	EmmitReport(data: dataReport) {
 		this.ReportBlog(data.id, data.e, data.menuTrigger)
 	}
 
+	/**
+	 * Reports a blog post after user confirmation.
+	 * @param id The ID of the blog post to report.
+	 * @param e The textarea element containing the report reason.
+	 * @param menuTrigger The MatMenuTrigger for the reporting menu.
+	 */
 	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger) {
 		this.openConfirmDialog(() => {
 			const value = e.value.trim();
@@ -205,17 +262,29 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	/**
+	 * Navigates to the edit page for the current blog post.
+	 * @param id The ID of the blog post to edit.
+	 */
 	EditBlog(id?: number) {
 		if (!id) return
 		this.router.navigate(["edit", id])
 	}
 
+	/**
+	 * Navigates to a user's profile page.
+	 * @param id The ID of the user to view.
+	 */
 	openUser(id?: number) {
 		if (id) {
 			this.router.navigate(["profile", id])
 		}
 	}
 
+	/**
+	 * Hides or unhides the current blog post after user confirmation.
+	 * @param id The ID of the blog post to hide/unhide.
+	 */
 	HideBlog(id?: number) {
 		this.openConfirmDialog(() => {
 			if (this.isLoading || !id) return
@@ -238,6 +307,10 @@ export class SingleBlog implements OnInit {
 		})
 	}
 
+	/**
+	 * Opens a confirmation dialog and executes a callback function if confirmed.
+	 * @param callback The function to execute upon confirmation.
+	 */
 	openConfirmDialog(callback: (() => void)): void {
 		const dialogRef = this.dialog.open(ConfirmDialog);
 

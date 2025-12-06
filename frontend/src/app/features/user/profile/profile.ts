@@ -19,6 +19,10 @@ import { AdminService } from '../../admin/services/admin-service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+ * Component for displaying and managing user profiles.
+ * Allows viewing user information, blogs, subscribers, subscriptions, and performing actions like subscribing, reporting, and uploading avatars.
+ */
 @Component({
     selector: 'app-profile',
     imports: [Blogs, DatePipe, Discover, DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, FormsModule, MatFormFieldModule, MatInputModule],
@@ -41,6 +45,9 @@ export class Profile implements OnInit {
     dialog = inject(MatDialog)
     apiUrl = environment.API_URL;
 
+    /**
+     * Initializes the component. Retrieves the user ID from the route parameters and loads the user's profile.
+     */
     ngOnInit() {
         this.router.params.subscribe(params => {
             const id = Number(params["id"]);
@@ -53,6 +60,10 @@ export class Profile implements OnInit {
         })
     }
 
+    /**
+     * Loads the user profile based on the provided user ID.
+     * @param id The ID of the user whose profile is to be loaded.
+     */
     loadProfile(id: number) {
         this.userService.getUserById(id).subscribe({
             next: (profile) => {
@@ -66,6 +77,10 @@ export class Profile implements OnInit {
         });
     }
 
+    /**
+     * Subscribes to or unsubscribes from a user.
+     * @param id The ID of the user to subscribe to/unsubscribe from.
+     */
     subscribe(id: any) {
         if (this.isLoading) return
         this.isLoading = true
@@ -95,18 +110,28 @@ export class Profile implements OnInit {
         })
     }
 
+    /**
+     * Sets the current component to display subscribers.
+     */
     getSubscribers() {
         if (this.currentComponent() != "subscribers") {
             this.currentComponent.set("subscribers")
         }
     }
 
+    /**
+     * Sets the current component to display subscriptions.
+     */
     getSubscribtions() {
         if (this.currentComponent() != "subscribtions") {
             this.currentComponent.set("subscribtions")
         }
     }
 
+    /**
+     * Updates the number of subscriptions for the current user profile.
+     * @param num The number to add or subtract from the current subscriptions count.
+     */
     setSubscribtions(num: number) {
         console.log("setSubscribtions called with", num)
         let currentUser = this.userProfile();
@@ -114,16 +139,27 @@ export class Profile implements OnInit {
             currentUser.subscribtions += num
     }
 
+    /**
+     * Updates the number of subscribers for the current user profile.
+     * @param num The number to add or subtract from the current subscribers count.
+     */
     setSubscribers(num: number) {
         let currentUser = this.userProfile();
         if (currentUser)
             currentUser.subscribers += num
     }
 
+    /**
+     * Sets the current component to display blog posts.
+     */
     seeBlogs() {
         this.currentComponent.set("blogs")
     }
 
+    /**
+     * Handles the upload of a new profile image (avatar).
+     * @param event The DOM event triggered by the file input change.
+     */
     uploadImage(event: Event) {
         const input = event.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
@@ -155,6 +191,12 @@ export class Profile implements OnInit {
         }
     }
 
+    /**
+     * Reports a user.
+     * @param id The ID of the user to report.
+     * @param reason The reason for reporting the user.
+     * @param menuTrigger The MatMenuTrigger associated with the report action.
+     */
     ReportUser(id: number | undefined, reason: string, menuTrigger: MatMenuTrigger) {
         reason = reason.trim();
         if (reason.length == 0 || !id) return

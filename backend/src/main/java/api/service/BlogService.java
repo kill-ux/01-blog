@@ -26,6 +26,10 @@ import api.repository.LikesRepository;
 import api.repository.ReportRepository;
 import api.repository.UserRepository;
 
+/**
+ * Service for handling blog-related business logic.
+ * Provides methods for creating, retrieving, updating, deleting, and interacting with blogs.
+ */
 @Service
 public class BlogService {
 
@@ -47,6 +51,11 @@ public class BlogService {
         this.likesRepository = likesRepository;
     }
 
+    /**
+     * Retrieves a paginated list of all blogs.
+     * @param cursor The pagination cursor.
+     * @return A list of blogs.
+     */
     public List<BlogResponse> getBlogs(long cursor) {
         User user = getAuthenticatedUser();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
@@ -60,10 +69,19 @@ public class BlogService {
                 .toList();
     }
 
+    /**
+     * Retrieves the total count of all blogs.
+     * @return The total blog count.
+     */
     public long getBlogsCount() {
         return this.blogRepository.count();
     }
 
+    /**
+     * Retrieves blogs from the user's network.
+     * @param cursor The pagination cursor.
+     * @return A list of blogs from the user's network.
+     */
     public List<BlogResponse> getBlogsNetworks(long cursor) {
         User user = getAuthenticatedUser();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
@@ -77,6 +95,12 @@ public class BlogService {
                 .toList();
     }
 
+    /**
+     * Retrieves a list of blogs created by a specific user.
+     * @param userId The ID of the user.
+     * @param cursor The pagination cursor.
+     * @return A list of blogs created by the user.
+     */
     public List<BlogResponse> getBlogsByUser(long userId, long cursor) {
         User user = getAuthenticatedUser();
         Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "id");
@@ -90,6 +114,11 @@ public class BlogService {
                 .toList();
     }
 
+    /**
+     * Saves a new blog post.
+     * @param blogRequest The request body containing blog details.
+     * @return The saved blog post.
+     */
     @Transactional
     public BlogResponse saveBlog(BlogRequest blogRequest) {
         User user = getAuthenticatedUser();
@@ -105,6 +134,11 @@ public class BlogService {
         return new BlogResponse(savedBlog, user.getId());
     }
 
+    /**
+     * Retrieves the currently authenticated user.
+     * @return The authenticated user.
+     * @throws ResponseStatusException if the user is not found.
+     */
     public User getAuthenticatedUser() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.findById(user.getId())
@@ -112,6 +146,11 @@ public class BlogService {
                         HttpStatus.NOT_FOUND, String.format(ERROR_USER_NOT_FOUND, user.getId())));
     }
 
+    /**
+     * Retrieves a single blog post by its ID.
+     * @param blogId The ID of the blog to retrieve.
+     * @return The requested blog post.
+     */
     public BlogResponse getBlog(long blogId) {
         User user = getAuthenticatedUser();
         return this.blogRepository
@@ -120,6 +159,10 @@ public class BlogService {
                 .get();
     }
 
+    /**
+     * Deletes a blog post by its ID.
+     * @param blogId The ID of the blog to delete.
+     */
     @Transactional
     public void deleteBlog(long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
@@ -130,6 +173,12 @@ public class BlogService {
         this.blogRepository.deleteById(blog.getId());
     }
 
+    /**
+     * Retrieves the children (comments) of a blog post.
+     * @param blogId The ID of the parent blog.
+     * @param cursor The pagination cursor.
+     * @return A response containing the children of the blog.
+     */
     public ChildrenResponse getBlogChildren(long blogId, long cursor) {
         User user = getAuthenticatedUser();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt", "id").descending());
@@ -145,6 +194,12 @@ public class BlogService {
         return children;
     }
 
+    /**
+     * Updates an existing blog post.
+     * @param blogRequest The request body containing updated blog details.
+     * @param blogId The ID of the blog to update.
+     * @return The updated blog post.
+     */
     @Transactional
     public BlogResponse updateBlog(BlogRequest blogRequest, long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
@@ -154,6 +209,11 @@ public class BlogService {
         return new BlogResponse(this.blogRepository.save(blog), blog.getUser().getId());
     }
 
+    /**
+     * Hides a blog post.
+     * @param blogId The ID of the blog to hide.
+     * @return The new hidden status of the blog.
+     */
     public boolean hideBlog(long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
         blog.setHidden(!blog.isHidden());
@@ -161,6 +221,11 @@ public class BlogService {
         return blog.isHidden();
     }
 
+    /**
+     * Converts a BlogRequest DTO to a Blog entity.
+     * @param blogRequest The BlogRequest DTO.
+     * @return The converted Blog entity.
+     */
     public Blog convertToEntity(BlogRequest blogRequest) {
         Blog blog = new Blog();
         if (blogRequest.parent() != null) {
@@ -178,13 +243,22 @@ public class BlogService {
         return blog;
     }
 
+    /**
+     * Updates a Blog entity from a BlogRequest DTO.
+     * @param blog The Blog entity to update.
+     * @param blogRequest The BlogRequest DTO containing the new data.
+     */
     private void updateBlogEntity(Blog blog, BlogRequest blogRequest) {
         blog.setDescription(blogRequest.description());
         blog.setTitle(blogRequest.title());
         blog.setUpdatedAt(LocalDateTime.now());
     }
 
-    // likes
+    /**
+     * Toggles a 'like' on a blog post.
+     * @param blogId The ID of the blog to like or unlike.
+     * @return A map containing the change in the number of likes (1 for like, -1 for unlike).
+     */
     public Map<String, Integer> likeBlog(long blogId) {
         User user = getAuthenticatedUser();
         Blog blog = this.blogRepository.findById(blogId).get();
@@ -202,6 +276,11 @@ public class BlogService {
         }
     }
 
+    /**
+     * Retrieves the total number of likes for a blog post.
+     * @param blogId The ID of the blog.
+     * @return A map containing the total number of likes.
+     */
     public Map<String, Integer> getLikes(long blogId) {
         Blog blog = this.blogRepository.findById(blogId).get();
         return Map.of("count", blog.getLikes().size());

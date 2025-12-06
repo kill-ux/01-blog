@@ -18,6 +18,10 @@ import { ConfirmDialog } from '../../../../layouts/confirm-dialog/confirm-dialog
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+ * Component for displaying a list of blog posts.
+ * Supports loading blogs by user, infinite scrolling, liking, deleting, hiding, editing, and reporting blogs.
+ */
 @Component({
 	selector: 'app-blogs',
 	imports: [DatePipe, MatProgressSpinnerModule, MatButtonModule, MatMenuModule, MatIcon, FormsModule, MatFormFieldModule, MatInputModule],
@@ -36,13 +40,27 @@ export class Blogs implements OnInit, OnChanges {
 	apiUrl = environment.API_URL;
 
 
+	/**
+	 * Constructs the Blogs component.
+	 * @param blogService Service for handling blog-related API calls.
+	 * @param router Router for navigation.
+	 * @param dialog MatDialog for opening confirmation dialogs.
+	 */
 	constructor(private blogService: BlogService, private router: Router, public dialog: MatDialog) {
 	}
 
+	/**
+	 * Initializes the component and loads the initial set of blogs.
+	 */
 	ngOnInit(): void {
 		this.loadBlogs(0)
 	}
 
+	/**
+	 * Handles changes to input properties, specifically when the `args` input changes.
+	 * Resets the blog list and reloads blogs if the user argument changes.
+	 * @param changes Object containing current and previous property values.
+	 */
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['args'] && changes['args'].currentValue !== changes['args'].previousValue) {
 			this.blogs.set([]);
@@ -51,7 +69,11 @@ export class Blogs implements OnInit, OnChanges {
 		}
 	}
 
-
+	/**
+	 * Loads a batch of blog posts from the server.
+	 * Supports loading blogs by user ID or general blogs, with pagination.
+	 * @param cursor The ID of the last blog loaded, used for pagination.
+	 */
 	loadBlogs(cursor: number) {
 		if (this.isLoading) return;
 		this.isLoading = true;
@@ -83,12 +105,21 @@ export class Blogs implements OnInit, OnChanges {
 
 	}
 
+	/**
+	 * Loads more blog posts when the user scrolls or requests more.
+	 * Only loads if not already loading and there are more blogs to load.
+	 */
 	loadMoreBlogs() {
 		if (this.lastBlog !== 0 && !this.isLoading) {
 			this.loadBlogs(this.lastBlog);
 		}
 	}
 
+	/**
+	 * Toggles the like status of a blog post.
+	 * Sends a request to the server to update the like count and status.
+	 * @param blogResponce The blog post to like/unlike.
+	 */
 	toggleLike(blogResponce: BlogResponce) {
 		this.blogService.toggleLike(blogResponce).subscribe({
 			next: res => {
@@ -101,10 +132,18 @@ export class Blogs implements OnInit, OnChanges {
 		})
 	}
 
+	/**
+	 * Navigates to the detailed view of a single blog post.
+	 * @param id The ID of the blog post to view.
+	 */
 	clickOnnArcticle(id: number) {
 		this.router.navigate(["blog", id])
 	}
 
+	/**
+	 * Copies the link to a blog post to the clipboard.
+	 * @param blogResponce The blog post whose link is to be copied.
+	 */
 	copyLink(blogResponce: BlogResponce) {
 		const blogUrl = `${window.location.origin}/blog/${blogResponce.id}`
 		navigator.clipboard.writeText(blogUrl).then(() => {
@@ -117,6 +156,10 @@ export class Blogs implements OnInit, OnChanges {
 		});
 	}
 
+	/**
+	 * Deletes a blog post after user confirmation.
+	 * @param id The ID of the blog post to delete.
+	 */
 	DeleteBlog(id: number) {
 		this.openConfirmDialog(() => {
 			this.blogService.DeleteBlog(id).subscribe({
@@ -130,6 +173,10 @@ export class Blogs implements OnInit, OnChanges {
 		})
 	}
 
+	/**
+	 * Hides or unhides a blog post after user confirmation.
+	 * @param id The ID of the blog post to hide/unhide.
+	 */
 	HideBlog(id: number) {
 		this.openConfirmDialog(() => {
 			this.blogService.HideBlog(id).subscribe({
@@ -149,10 +196,21 @@ export class Blogs implements OnInit, OnChanges {
 		})
 	}
 
+	/**
+	 * Navigates to the edit page for a specific blog post.
+	 * @param id The ID of the blog post to edit.
+	 */
 	EditBlog(id: number) {
 		this.router.navigate(["edit", id])
 	}
 
+	/**
+	 * Reports a blog post after user confirmation.
+	 * @param id The ID of the blog post to report.
+	 * @param e The textarea element containing the report reason.
+	 * @param menuTrigger The MatMenuTrigger for the reporting menu.
+	 * @param menuTrigger1 Another MatMenuTrigger (possibly for a parent menu).
+	 */
 	ReportBlog(id: number, e: HTMLTextAreaElement, menuTrigger: MatMenuTrigger, menuTrigger1: MatMenuTrigger) {
 		this.openConfirmDialog(() => {
 			const value = e.value.trim();
@@ -173,10 +231,18 @@ export class Blogs implements OnInit, OnChanges {
 		})
 	}
 
+	/**
+	 * Navigates to a user's profile page.
+	 * @param id The ID of the user to view.
+	 */
 	openUser(id: number) {
 		this.router.navigate(["profile", id])
 	}
 
+	/**
+	 * Opens a confirmation dialog and executes a callback function if confirmed.
+	 * @param callback The function to execute upon confirmation.
+	 */
 	openConfirmDialog(callback: (() => void)): void {
 		const dialogRef = this.dialog.open(ConfirmDialog);
 

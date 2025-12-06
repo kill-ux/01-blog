@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 import { ThemeToggle } from "../../../Theme/theme-toggle/theme-toggle";
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+ * Component for user sign-up.
+ * Handles new user registration, form validation, and navigation after successful sign-up.
+ */
 @Component({
 	selector: 'app-signup',
 	imports: [MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatCardModule, MatIcon, ThemeToggle],
@@ -23,6 +27,13 @@ export class Signup {
 	isLoading = false;
 	snackBar = inject(MatSnackBar)
 
+	/**
+	 * Constructs the Signup component.
+	 * Initializes the sign-up form with validation rules.
+	 * @param fb FormBuilder for creating the form group.
+	 * @param authService Service for handling authentication API calls.
+	 * @param router Router for navigation.
+	 */
 	constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 		this.myForm = this.fb.group({
 			nickname: ['', Validators.required],
@@ -31,6 +42,11 @@ export class Signup {
 		})
 	}
 
+	/**
+	 * Handles form submission.
+	 * Attempts to sign up the user if the form is valid.
+	 * Navigates to the sign-in page on success, displays an error message on failure.
+	 */
 	onSubmit() {
 		if (this.myForm.valid) {
 			this.isLoading = true;
@@ -52,19 +68,30 @@ export class Signup {
 		}
 	}
 
-
+	/**
+	 * Getter for the nickname form control.
+	 */
 	get nickname() {
 		return this.myForm.get("nickname")
 	}
 
+	/**
+	 * Getter for the password form control.
+	 */
 	get password() {
 		return this.myForm.get("password")
 	}
 
+	/**
+	 * Getter for the email form control.
+	 */
 	get email() {
 		return this.myForm.get("email")
 	}
 
+	/**
+	 * Toggles the visibility of the password input field.
+	 */
 	togglePasswordVisibility(): void {
 		this.hidePassword = !this.hidePassword;
 	}

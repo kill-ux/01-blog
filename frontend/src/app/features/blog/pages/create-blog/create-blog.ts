@@ -9,6 +9,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
 import { firstValueFrom } from 'rxjs';
 
+/**
+ * Component for creating and editing blog posts.
+ * Provides a form for title and description, supports markdown, and handles image/video uploads.
+ */
 @Component({
     selector: 'app-create-blog',
     imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MarkdownModule, MatIcon],
@@ -25,6 +29,14 @@ export class CreateBlog implements OnInit, OnDestroy {
 
     private pendingFiles = new Map<string, File>();
 
+    /**
+     * Constructs the CreateBlog component.
+     * Initializes the blog form and injects necessary services.
+     * @param fb FormBuilder for creating the form group.
+     * @param blogService Service for blog-related API calls.
+     * @param route ActivatedRoute for accessing route parameters.
+     * @param router Router for navigation.
+     */
     constructor(private fb: FormBuilder, private blogService: BlogService, private route: ActivatedRoute, private router: Router) {
         this.formBlog = this.fb.group({
             description: ['', Validators.required],
@@ -32,6 +44,9 @@ export class CreateBlog implements OnInit, OnDestroy {
         })
     }
 
+    /**
+     * Initializes the component. Checks for an 'id' in the route to determine if it's an edit operation.
+     */
     ngOnInit(): void {
         this.id = this.route.snapshot.paramMap.get("id")
         if (this.id) {
@@ -39,13 +54,19 @@ export class CreateBlog implements OnInit, OnDestroy {
         }
     }
 
-    // Clean up blob URLs when component is destroyed
+    /**
+     * Cleans up blob URLs when the component is destroyed to prevent memory leaks.
+     */
     ngOnDestroy(): void {
         for (const url of this.pendingFiles.keys()) {
             URL.revokeObjectURL(url);
         }
     }
 
+    /**
+     * Fetches an existing blog post for editing.
+     * @param id The ID of the blog post to fetch.
+     */
     getBlog(id: string) {
         this.blogService.getBlog(id).subscribe({
             next: (res) => {
@@ -63,7 +84,10 @@ export class CreateBlog implements OnInit, OnDestroy {
         })
     }
 
-    // REVISED: Handle file selection without immediate upload
+    /**
+     * Handles file selection, creating a local URL for preview and storing the file for later upload.
+     * @param file The selected file (image or video).
+     */
     private handleFileSelection(file: File): void {
         if (!file || (!file.type.startsWith('image/') && !file.type.startsWith('video/'))) {
             this.snackBar.open("invalid file", "Close", { duration: 2000 })
@@ -83,6 +107,11 @@ export class CreateBlog implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Handles the submission of the blog post form.
+     * Uploads pending files, replaces local URLs with remote URLs, and then saves/updates the blog post.
+     * @param mark The MarkdownComponent instance to clear its content after saving.
+     */
     async onSubmit(mark: MarkdownComponent) {
         if (this.isSaving) return;
 
@@ -164,8 +193,10 @@ export class CreateBlog implements OnInit, OnDestroy {
     }
 
 
-
-    // REVISED: Use handleFileSelection instead of immediate upload
+    /**
+     * Handles paste events, checking for image/video files or URLs in the clipboard.
+     * @param event The ClipboardEvent.
+     */
     async onPaste(event: ClipboardEvent) {
         const clipboardData = event.clipboardData;
         const pastedText = clipboardData?.getData('text/plain');
@@ -198,7 +229,10 @@ export class CreateBlog implements OnInit, OnDestroy {
         }
     }
 
-    // REVISED: Use handleFileSelection instead of immediate upload
+    /**
+     * Handles drop events for files, processing dropped image/video files.
+     * @param event The DragEvent.
+     */
     async onDrop(event: DragEvent) {
         event.preventDefault();
         const files = event.dataTransfer?.files;
@@ -209,7 +243,11 @@ export class CreateBlog implements OnInit, OnDestroy {
         }
     }
 
-    // REVISED: Use handleFileSelection instead of immediate upload
+    /**
+     * Handles image file selection from an input element.
+     * @param event The Event from the file input.
+     * @param textarea The HTMLTextAreaElement where markdown should be inserted.
+     */
     async onImageUpload(event: Event, textarea: HTMLTextAreaElement) {
         const files = (event.target as HTMLInputElement).files;
         if (files) {
@@ -220,46 +258,92 @@ export class CreateBlog implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Inserts markdown formatting around the selected text in a textarea.
+     * @param textarea The HTMLTextAreaElement to modify.
+     * @param start The markdown string to insert before the selected text.
+     * @param end The markdown string to insert after the selected text.
+     */
     toolBarClick(textarea: HTMLTextAreaElement, start: string, end: string) {
         textarea.focus()
         document.execCommand('insertText', false, `${start}${window.getSelection()?.toString()}${end}`);
         this.formBlog.get('description')?.setValue(textarea.value);
     }
 
+    /**
+     * Extracts the file extension from a filename.
+     * @param filename The name of the file.
+     * @returns The file extension in lowercase, or an empty string if no extension.
+     */
     getExtension(filename: string): string {
         return filename.split('.').pop()?.toLowerCase() || '';
     }
 
+    /**
+     * Checks if a filename corresponds to an image file based on its extension.
+     * @param filename The name of the file.
+     * @returns True if the file is an image, false otherwise.
+     */
     isImage(filename: string): boolean {
         return imageExtensions.has(this.getExtension(filename));
     }
 
+    /**
+     * Checks if a filename corresponds to a video file based on its extension.
+     * @param filename The name of the file.
+     * @returns True if the file is a video, false otherwise.
+     */
     isVideo(filename: string): boolean {
         return videoExtensions.has(this.getExtension(filename));
     }
 
+    /**
+     * Inserts markdown for an image into the textarea.
+     * @param url The URL of the image.
+     */
     insertMarkdownImage(url: string): void {
         const markdown = `![image](${url})`;
         this.insertText(markdown);
     }
 
+    /**
+     * Inserts markdown for a video into the textarea.
+     * @param url The URL of the video.
+     */
     insertMarkdownVideo(url: string): void {
         const markdown = `<video controls><source src="${url}" ></video>`;
         this.insertText(markdown);
     }
 
+    /**
+     * Generates HTML for a video tag.
+     * @param url The URL of the video.
+     * @returns The HTML string for the video tag.
+     */
     MarkdownVideo(url: string): string {
         return `<video controls><source src="${url}" ></video>`;
     }
 
+    /**
+     * Generates markdown for an image.
+     * @param url The URL of the image.
+     * @returns The markdown string for the image.
+     */
     MarkdownImage(url: string): string {
         return `![image](${url})`;
     }
 
+    /**
+     * Inserts text at the current cursor position in the active editable element.
+     * @param pastedText The text to insert.
+     */
     insertText(pastedText: string) {
         document.execCommand('insertText', false, pastedText);
     }
 
+    /**
+     * Toggles the display of the preview section.
+     */
     HidePrevew() {
         this.display.update(old => !old)
     }
