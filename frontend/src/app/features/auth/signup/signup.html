@@ -18,7 +18,7 @@
                     <!-- Nickname Field -->
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Nickname</mat-label>
-                        <input matInput formControlName="nickname" placeholder="Enter your nickname"
+                        <input maxlength="20" matInput formControlName="nickname" placeholder="Enter your nickname"
                             autocomplete="username">
                         <mat-icon matSuffix>person</mat-icon>
 
@@ -36,7 +36,7 @@
                     <!--Email Faild-->
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Email</mat-label>
-                        <input matInput formControlName="email" placeholder="Enter your email" autocomplete="email">
+                        <input matInput maxlength="50" formControlName="email" placeholder="Enter your email" autocomplete="email">
                         <mat-icon matSuffix>email</mat-icon>
 
                         @if (email?.hasError('required') && email?.touched) {
@@ -50,7 +50,7 @@
                     <!-- Password Field -->
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Password</mat-label>
-                        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                        <input maxlength="100" matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
                             placeholder="Enter your password" autocomplete="current-password">
                         <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
                             [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">

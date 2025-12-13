@@ -18,6 +18,7 @@ import { BlogService } from '../../blog/services/blog-service';
 import { AdminService } from '../../admin/services/admin-service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialog } from '../../../layouts/confirm-dialog/confirm-dialog';
 
 /**
  * Component for displaying and managing user profiles.
@@ -187,6 +188,10 @@ export class Profile implements OnInit {
                         });
                     }
                 })
+            } else {
+                this.snackBar.open(`Faild Operation: Uploads`, "Close", {
+                    duration: 2000,
+                });
             }
         }
     }
@@ -198,21 +203,37 @@ export class Profile implements OnInit {
      * @param menuTrigger The MatMenuTrigger associated with the report action.
      */
     ReportUser(id: number | undefined, reason: string, menuTrigger: MatMenuTrigger) {
-        reason = reason.trim();
-        if (reason.length == 0 || !id) return
-        this.blogService.Report({ userId: id, reason }).subscribe({
-            next: res => {
-                this.snackBar.open(`Operation succeced: Report`, "Close", {
-                    duration: 2000,
-                });
-            },
-            error: err => {
-                console.log(err)
-                this.snackBar.open(`Faild Operation: Report`, "Close", {
-                    duration: 2000,
-                });
-            }
+        this.openConfirmDialog(() => {
+            reason = reason.trim();
+            if (reason.length == 0 || !id) return
+            this.blogService.Report({ userId: id, reason }).subscribe({
+                next: res => {
+                    this.snackBar.open(`Operation succeced: Report`, "Close", {
+                        duration: 2000,
+                    });
+                },
+                error: err => {
+                    console.log(err)
+                    this.snackBar.open(`Faild Operation: Report`, "Close", {
+                        duration: 2000,
+                    });
+                }
+            })
+            menuTrigger.closeMenu()
         })
-        menuTrigger.closeMenu()
+    }
+
+    /**
+         * Opens a confirmation dialog and executes a callback function if confirmed.
+         * @param callback The function to execute upon confirmation.
+         */
+    openConfirmDialog(callback: (() => void)): void {
+        const dialogRef = this.dialog.open(ConfirmDialog);
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                callback()
+            }
+        });
     }
 }

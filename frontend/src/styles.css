@@ -291,7 +291,9 @@ app-signin {
 	margin: 0;
 	font-size: 1.1rem;
 	font-weight: 400;
-	color: var(--text-primary)
+	color: var(--text-primary);
+    max-width: 150px;
+    word-break: break-all;
 }
 
 .post-date {

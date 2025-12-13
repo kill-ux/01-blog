@@ -28,6 +28,7 @@
 
             <div class="flex-row">
                 <div class="nickname">@{{ userProfile()?.nickname }}</div>
+                @if (userProfile() && userProfile()!.id != authService.currentUser?.id ) {
                 <div class="end">
                     <button (click)="$event.stopPropagation()" matIconButton [matMenuTriggerFor]="menu"
                         aria-label="Example icon-button with a menu">
@@ -44,7 +45,7 @@
                                 <form class="example-form">
                                     <mat-form-field class="example-full-width">
                                         <mat-label>Report your problem</mat-label>
-                                        <textarea #textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                                        <textarea maxlength="1000" #textarea matInput placeholder="Ex. It makes me feel..."></textarea>
                                     </mat-form-field>
                                 </form>
 
@@ -54,6 +55,8 @@
                         </mat-menu>
                     </mat-menu>
                 </div>
+                }
+
             </div>
             <div class="">{{ userProfile()?.email }}</div>
             <div class=""> Joind At : {{ userProfile()?.createdAt | date:'mediumDate' }}</div>
